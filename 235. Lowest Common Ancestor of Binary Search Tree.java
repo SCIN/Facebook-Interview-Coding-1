@@ -78,13 +78,77 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 // Recursively expands the meaning of the function. If the current (sub)tree contains both p and q, then the function result 
 // is their LCA. If only one of them is in that subtree, then the result is that one of them. If neither are in that subtree, 
 // the result is null.
-
+Without Parent Pointer
+Solution 1: recursion
+// p and q are guaranteed to be in the tree. 
 public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
     if (root == null || root == p || root == q) return root;
     TreeNode left = lowestCommonAncestor(root.left, p, q);
     TreeNode right = lowestCommonAncestor(root.right, p, q);
     return left == null ? right : right == null ? left : root;
 }
+// Follow up 1
+What if p and q are no necessarily in the tree? 
+// return NULL if any of them is not in the tree
+Time O(n) n: number of treenodes in the tree
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+	if (!root) return root;
+	// check p and q before compare value
+	if (p && root->val == p->val) return p;
+	if (q && root->val == q->val) return q;
+	TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+	if (!left) return right;
+	if (!right) return left;
+	return root;
+}
+
+
+With parent pointer, without root node
+Solution 1: use unordered_set
+// https://www.geeksforgeeks.org/lowest-common-ancestor-in-a-binary-tree-set-2-using-parent-pointer/
+Time O(h) h: height of the tree
+TreeNode* lowestCommonAncestor(TreeNode* p, TreeNode* q) {
+	unordered_set<TreeNode*> st;
+	TreeNode* p_parent = p;
+	while (p_parent) {
+		st.insert(p_parent);
+		p_parent = p->parent;
+	}
+	TreeNode* q_parent = q;
+	while (q_parent) {
+		if (st.find(q_parent) != st.end()) return q_parent;
+		q_parent = q->parent;
+	}
+	return NULL;
+}
+-------------------------------------------
+1123. Lowest Common Ancestor of Deepest Leaves
+Given a rooted binary tree, return the lowest common ancestor of its deepest leaves.
+Solution (1) Recursive
+https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/discuss/334773/C%2B%2B-beats-100-time-and-space-complexity
+TreeNode* lowestCommonAncestor(TreeNode* root) {
+	return lowestCommonAncestorHelper(root).first;
+}
+pair<TreeNode*, int> lowestCommonAncestorHelper(TreeNode* root) {
+	if (!root) return make_pair(root, 0);
+	pair<TreeNode*, int> left = lowestCommonAncestor(root->left);
+	pair<TreeNode*, int> right = lowestCommonAncestor(root->right);
+	if (left.second == right.second) {
+		return make_pair(root, left.second + 1);
+	} else {
+		if (left.second > right.second) {
+			return make_pair(left.first, left.second + 1);
+		} else {
+			return make_pair(right.first, right.second + 1);
+		}
+	}
+}
+
+
+
+
+
 
 
 
