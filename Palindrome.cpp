@@ -71,3 +71,59 @@ Given a string, determine if it is a palindrome, considering only alphanumeric c
       }
       return (fast == 0) ? (slow == rhalf) : (slow / 10 == rhalf);
    }
+   
+#[5] 1216. Valid Palindrome III
+Given a string s and an integer k, find out if the given string is a K-Palindrome or not.
+
+A string is K-Palindrome if it can be transformed into a palindrome by removing at most k characters from it.
+  ## Solution (1). DFS + Memo O(n^2)
+  ```
+  bool isValidPalindrome(string s, int k) {
+      unordered_map<int, bool> cache;
+      return dfs(s, 0, s.length() - 1, k, cache); 
+  }
+  bool dfs(string& s, int left, int right, int k, unordered_map<int, bool>& cache) {
+      if (k < 0) return false;
+      if (right >= left) return true;
+      int key = hash(left, right, k);
+      if (cache.find(key) != cache.end()) return cache[key];
+      int low = left;
+      int high = right;
+      bool result;
+      if (s[left] == s[right]) {
+        result = dfs(s, left + 1, right - 1, k, cache);
+      } else {
+        result = dfs(s, left, right - 1, k - 1, cache) || dfs(s, left + 1, right, k - 1, cache);
+      }
+      cache[key] = result;
+      return result;
+  }
+  int hash(int left, int right, int k) {
+      return left * 1001 * 1001 + 1001 * right + k;
+  }
+  ```
+  ## Solution (2). DP
+  
+  
+  
+  
+  
+  
+
+#[4] 647. Palindromic Substrings
+Given a string, your task is to count how many palindromic substrings in this string.
+
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.
+  // Time: O(n^2), Space O(n^2)
+  // Method: DP
+  // dp[i][j]: how many palindromic in [i:j]
+  // dp[i][i] = 1;
+  // dp[i][j] = dp[i + 1][j - 1] + 1, if s[i] == s[j]
+  // dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]) if s[i] != s[j]
+  
+  int countSubstrings(string s) { 
+      vector<vector<int>> dp(s.length(), vector<int>(s.length(), 0));
+      
+
+
+  }
