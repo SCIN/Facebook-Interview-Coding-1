@@ -1,6 +1,6 @@
 #[1] 125. Valid Palindrome
 Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
-  `
+  ```
   bool isPalindrome(string s) {
     int i = 0; 
     int j = 0;
@@ -13,11 +13,11 @@ Given a string, determine if it is a palindrome, considering only alphanumeric c
     }
     return true;
   }
-  `
+  ```
  
  #[2] 680. Valid Palindrome II
  Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
-   `
+   ```
    bool validPalindrome(string s) {
       int i = 0; 
       int j = 0;
@@ -40,4 +40,4 @@ Given a string, determine if it is a palindrome, considering only alphanumeric c
       }
       return true;
    }
-   `
+   ```
