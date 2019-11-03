@@ -31,3 +31,26 @@ public:
     int readLeftByte = 0;
     int currIndexInBuf = 0;
 };
+
+157. Read N Characters Given Read4 (Call once)
+Given a file and assume that you can only read the file using a given method read4, 
+implement a method to read n characters.
+    ```
+    int read(char *buf, int n) {
+        int externalIdx = 0;
+        int internalIdx = 0;
+        int readByte = 0;
+        char buf4[4];
+        while (externalIdx < n) {
+            if (internalIdx == readByte) {
+                readByte = read4(buf4);
+                internalIdx = 0;
+                if (readByte == 0) break;
+            }
+            buf[externalIdx++] = buf4[internalIdx++];
+        }
+        return externalIdx;
+    }
+    ```
+    
+
