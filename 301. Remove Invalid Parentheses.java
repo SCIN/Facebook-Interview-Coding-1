@@ -112,7 +112,6 @@ private boolean isValid(String s) {
 1249. Minimum Remove to Make Valid Parentheses
 
 C++
-
 string minRemoveToMakeValid(string s) {
 	string deleteLeft = deleteParentheses(s, {'(', ')'});
 	reverse(deleteLeft);
@@ -143,6 +142,7 @@ void reverse(string& str) {
 }
 ```
 	
+Java
 Time: O(n), 2 pass
 // 思路：按照判断isValid的思路，只要遇到stack<0就remove，完了之后reverse再来一次。
 public String removeInvalidParentheses(String s) {
