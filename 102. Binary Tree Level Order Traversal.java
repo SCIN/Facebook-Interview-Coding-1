@@ -43,7 +43,7 @@ private void dfs(List<List<Integer>> res, TreeNode root, int level) {
 
 
 C++
-    
+BFS
 vector<vector<int>> levelOrder(TreeNode* root) {
     vector<vector<int>> ret;
     if (!root) return ret; // DO NOT FORGET NULL!!!
@@ -66,5 +66,20 @@ vector<vector<int>> levelOrder(TreeNode* root) {
         ret.push_back(curr);
     }
     return ret;
+}
+DFS
+vector<vector<int>> levelOrder(TreeNode* root) {
+    vector<vector<int>> ret;
+    dfs(ret, 0, root);
+    return ret;
+}
+void dfs(vector<vector<int>>& ret, int level, TreeNode* root) {
+    if (!root) return;
+    if (level == ret.size()) {
+        ret.push_back(vector<int>());
+    }
+    ret[level].push_back(root->val);
+    dfs(ret, level + 1, root->left);
+    dfs(ret, level + 1, root->right);
 }
 
