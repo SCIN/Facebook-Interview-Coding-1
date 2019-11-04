@@ -12,6 +12,36 @@ isMatch("aa", ".*") → true
 isMatch("ab", ".*") → true
 isMatch("aab", "c*a*b") → true
 
+    
+This is a regular expression question involving NFA and DFA,
+We have a DFA M on s (M_ori) already and we need to build a NFA machine on p (M_new).
+         
+Accepting State of p = Accepting State of s
+Transition function of p 
+Sigma_new(q, '*') = q;
+Sigma_new(q, '.') = any state p in Q_ori which is reachable from q.
+Sigma_new(q, char c) = Sigma_ori(q, c)
+
+This implies when we meet a kleene star, we need to stay at the same state until we meet a different char then move forward to other state.
+When we meet a '.', we can move to any state reachable from the current state. 
+For the rest, just regular matching as the same with the original machine. 
+   
+
+Then We can get the recursive solution.
+
+bool isMatch(string s, string p) {
+     if (p.empty()) return s.empty();
+     bool match_first = (!s.empty() && ((p[0] == s[0]) || p[0] == '.'));
+     if (p.length() > 2 && p[1] == '*') {
+              return isMatch(s, p.substr(2)) || isMatch(s.substr(1), p);
+     } else {
+              return match_first && isMatch(s.substr(1), p.substr(1));
+     }
+}
+
+
+         
+   
 我说DP，但他偏说喜欢递归。。。幸好时间 多 ，没让写代码，  从 没写过递归版本的。。。
 
 Solution: DP 
