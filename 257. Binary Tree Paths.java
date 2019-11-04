@@ -1,6 +1,34 @@
 257. Binary Tree Paths 
 
-Time: O(nlogn)
+C++:
+Recursive DFS Solution 
+Time: O(n), Space: O(h)
+n is the number of nodes in the tree, h is the height of the tree.
+	
+vector<string> binaryTreePaths(TreeNode* root) {
+	vector<string> ret;
+	dfs(ret, "", root);
+	return ret;
+}
+void dfs(vector<string>& ret, string path, TreeNode* root) {
+	if (!root) return;
+	if (!root->left && !root->right) {
+		path += to_string(root->val);
+		ret.push_back(path);
+		return;
+	}
+	dfs(ret, path + to_string(root->val) + "->", root->left);
+	dfs(ret, path + to_string(root->val) + "->", root->right);
+}
+
+Iterative BFS Solution 
+Time: O(n), Space: O(n)
+Use unordered_map to store predecessor (key: current node, value: predecessor)
+Notice that in C++ the built-in reverse method is not available for std::string class.
+
+
+Java: 
+Time: O(nlogn) // by the way, I think the run time is O(n) n is the number of nodes in the tree.
 
 public List<String> binaryTreePaths(TreeNode root) {
 	List<String> res = new ArrayList<>();
