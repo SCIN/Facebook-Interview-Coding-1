@@ -140,8 +140,7 @@ void reverse(string& str) {
 		swap(str[i], str[n - i - 1]); 
 	}
 }
-```
-	
+
 Java
 Time: O(n), 2 pass
 // 思路：按照判断isValid的思路，只要遇到stack<0就remove，完了之后reverse再来一次。
