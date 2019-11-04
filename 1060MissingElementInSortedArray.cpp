@@ -7,8 +7,10 @@ Space O(1)
 Binary Search
 ```
 int missingElement(vector<int>& nums, int k) {
+    int n = nums.size();
     int left = 0;
-    int right = nums.size() - 1;
+    int right = n - 1;
+    if (k > missingCountFromBeginning(nums, n - 1)) return nums[n - 1] - missingCountFromBeginning(nums, n - 1) + k;
     while (left <= right) {
         int mid = (left + right) / 2;
         if (missingCountFromBeginning(nums, mid) < k) {
@@ -21,6 +23,6 @@ int missingElement(vector<int>& nums, int k) {
 }
 
 int missingCountFromBeginning(vector<int>& nums, int index) {
-    return nums[index] - nums[0] + index;
+    return nums[index] - nums[0] - index;
 }
 ```
