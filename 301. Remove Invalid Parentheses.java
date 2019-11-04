@@ -109,7 +109,40 @@ private boolean isValid(String s) {
 
 ********变种********
 简单版：只输出第一个valid的	
+1249. Minimum Remove to Make Valid Parentheses
 
+C++
+
+string minRemoveToMakeValid(string s) {
+	string deleteLeft = deleteParentheses(s, {'(', ')'});
+	reverse(deleteLeft);
+	string deleteRight = deleteParentheses(deleteLeft, {')', '('});
+	reverse(deleteRight);
+	return deleteRight;
+}
+string deleteParentheses(string& s, vector<char> parentheses) {
+	int count = 0;
+	for (int i = 0; i < s.length(); i++) {
+		if (s[i] == parentheses[0]) count++;
+		if (s[i] == parentheses[1]) count--;
+		if (count < 0) {
+			s.erase(i, 1);
+			i = i - 1;
+			count = 0;
+		}
+	}
+	return s;
+
+}
+
+void reverse(string& str) {
+	int n = str.length();
+	for (int i = 0; i < n / 2; i++) {
+		swap(str[i], str[n - i - 1]); 
+	}
+}
+```
+	
 Time: O(n), 2 pass
 // 思路：按照判断isValid的思路，只要遇到stack<0就remove，完了之后reverse再来一次。
 public String removeInvalidParentheses(String s) {
@@ -130,6 +163,42 @@ private String remove(String s, char[] p) {
 	}
 	return s;
 }
+
+
+Time: O(n) Space: O(1) No Stack
+
+Not good enough because the interviewer might follow up: 
+what if the string includes '*'?
+	
+string minRemoveToMakeValid(string s) {
+	int count = 0;
+	for (char& c: s) {
+		if (c == '(') {
+			count++;
+		} else if (c == ')' && count > 0) {
+			count--;
+		} else if (c == ')') {
+			// mark extra right parentheses
+			c = '*';
+		}
+	}
+	// mark extra left parentheses, delete from the end of s
+	for (int i = s.length(); i >= 0 && count > 0; i++) {
+		if (s[i] == '(') {
+			count--;
+			s[i] = '*';
+		}
+	}
+	string ret = "";
+	for (int i = 0; i < s.length(); i++) {
+		if (s[i] != '*') {
+			ret += s[i];
+		}
+	}
+	return ret;
+}
+
+
 
 
 
