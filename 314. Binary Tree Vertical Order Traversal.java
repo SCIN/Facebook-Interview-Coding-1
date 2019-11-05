@@ -1,7 +1,42 @@
 314. Binary Tree Vertical Order Traversal
 
-C++ DFS
+BFS: only use one coordinate level, DFS we need to use two coordinates level and height
+Considering the case when in DFS, we are still in the left subtree while there is one node with higher height(closer to root)
+on the right subtree which is supposed to be at the front of the current node.
+In DFS, we always finish one route and go to the other. So we need another coordinate to sort(not technically sort, just the order)
+based on the height as well.
 
+C++ BFS
+
+vector<vector<int>> verticalOrder(TreeNode* root) {
+    map<int, vector<int>> m;
+    queue<pair<TreeNode*, int>> q;
+    vector<vector<int>> ret;
+
+    if (root == NULL) return ret;
+
+    q.push({root, 0});
+    while (!q.empty()) {
+        TreeNode* curr = q.front().first;
+        int idx = q.front().second;
+        q.pop();
+        m[idx].push_back(curr->val);
+        if (curr->left) {
+            q.push({curr->left, idx - 1});
+        }
+        if (curr->right) {
+            q.push({curr->right, idx + 1});
+        }       
+    }
+    for (auto it = m.begin(); it != m.end(); ++it) {
+        ret.push_back((*it).second);
+    }
+    return ret;
+}
+
+C++ DFS
+Time O(n) ? O(nlogn) because of using map
+Space O(n)
 vector<vector<int>> verticalOrder(TreeNode* root) {
     vector<vector<int>> ret;
     if (!root) return ret;
