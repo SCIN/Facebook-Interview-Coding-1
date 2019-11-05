@@ -1,5 +1,34 @@
 314. Binary Tree Vertical Order Traversal
 
+C++ DFS
+
+vector<vector<int>> verticalOrder(TreeNode* root) {
+    vector<vector<int>> ret;
+    if (!root) return ret;
+    map<int, map<int, vector<int>>> m;
+    dfs(m, root, 0, 0);
+    for (auto it = m.begin(); it != m.end(); ++it) {
+        map<int, vector<int>> currLevel = it->second;
+        vector<int> curr;
+        for (auto it2 = currLevel.begin(); it2 != currLevel.end(); ++it2) {
+            vector<int> v = it2->second;
+            for (int i = 0; i < v.size(); i++) {
+                curr.push_back(v[i]);
+            }   
+        }
+        ret.push_back(curr);
+    }
+    return ret;
+}
+void dfs(map<int, map<int, vector<int>>>& m, TreeNode* root, int level, int height) {
+    if (!root) return;
+    m[level][height].push_back(root->val);
+    dfs(m, root->left, level - 1, height + 1);
+    dfs(m, root->right, level + 1, height + 1);
+}
+   
+
+JAVA:
 class TreeNodeWithCol {
     TreeNode treeNode;
     int col;
