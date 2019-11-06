@@ -13,6 +13,10 @@ If the same sum occurs again, we increment the count corresponding to that sum i
 Fsuor every sum encountered, we also determine the number of times the sum - k has occured already,
 We increment the count by the same amount.
 
+!!EDGE CASE
+
+put m[0] = 1 into the map in case of the sum from i to j is k itself.
+
 int subarraySum(vector<int>& nums, int k) {
     int ret = 0;
     int sum = 0;
