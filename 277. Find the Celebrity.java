@@ -1,5 +1,10 @@
 277. Find the Celebrity
 
+// The first loop is to find the candidate as the author explains. In detail, suppose the candidate after the first for loop is person k, 
+// it means 0 to k-1 cannot be the celebrity, because they know a previous or current candidate. 
+// Also, 
+// since no one between k+1 and n-1 knows celebrity, k+1 to n-1 can not be the celebrity either. Therefore, 
+// k is the only possible celebrity, if there exists one.
 
 int findCelebrity(int n) {
     if (n <= 1) return n;
@@ -30,10 +35,6 @@ public int findCelebrity(int n) {
     return candidate;
 }
 
-// The first loop is to find the candidate as the author explains. In detail, suppose the candidate after the first for loop is person k, 
-// it means 0 to k-1 cannot be the celebrity, because they know a previous or current candidate. 
-// Also, 
-// since no one between k+1 and n-1 knows celebrity, k+1 to n-1 can not be the celebrity either. Therefore, 
-// k is the only possible celebrity, if there exists one.
+
 
 
