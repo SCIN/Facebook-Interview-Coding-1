@@ -14,6 +14,34 @@ Time: O(n) average, the problem is reduced to approximately half of its original
 // If we need to consider both the two halves of the array, like quicksort, then the recursion will be T(n) = 2T(n/2) + O(n) and the complexity will be O(nlogn).
 // Of course, O(n) is the average time complexity. In the worst case, the recursion may become T(n) = T(n - 1) + O(n) and the complexity will be O(n^2).
 
+int findKthLargest(vector<int>& nums, int k) { 
+	int left = 0;
+	int right = nums.size() - 1;
+	while (left < right) {
+		int pivot = partition(nums, left, right);
+		if (pivot == k) break;
+		if (pivot < k) {
+			left = pivot + 1;
+		} else {
+			right = pivot - 1;
+		}
+	}
+	return nums[k];
+}
+
+int partition(vector<int>& nums, int left, int right) [
+	int pivot = right;
+	for (int i = left; i < right; i++) {
+		if (nums[i] <= nums[pivot]) {
+			swap(nums[i], nums[left];
+			left++;
+		}
+	}
+	swap(nums[left], nums[right]);
+	return left;
+}
+				 
+				 
 public int findKthLargest(int[] nums, int k) {
 	int left = 0, right = nums.length - 1;
 	while (true) { // this problem guaranteed to have a valid answer
