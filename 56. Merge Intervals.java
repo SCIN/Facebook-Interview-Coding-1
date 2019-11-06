@@ -8,6 +8,51 @@
 if the format of intervals are "March, 2014" etc, first convert it to "201403" by "2014" + "03"(hashmap:March->03)
 or first convert it to 2014 * 12 + 3, if the output is num of months
 // http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=160738&fromuid=109727
+Sort by the beginning time.
+struct compare {
+    bool operator() (vector<int>& a, vector<int>& b) {
+        return a[0] < b[0];
+    }
+};
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ret;
+        if (intervals.size() == 0) return ret;
+        sort(intervals.begin(), intervals.end(), compare());
+        vector<int> curr = intervals[0];
+        for (int i = 0; i < intervals.size(); i++) {
+            if (intervals[i][0] > curr[1]) {
+                ret.push_back(curr);
+                curr = intervals[i];
+            } else {
+                curr[1] = max(curr[1], intervals[i][1]);
+            }
+        }
+        ret.push_back(curr);
+        return ret;
+    }
+    int followUp(vector<vector<int>>& intervals) {
+        if (intervals.size() == 0) return ret;
+        sort(intervals.begin(), intervals.end(), compare());
+        vector<int> prev = {0, 0};
+        for (int i = 0; i < intervals.size(); i++) {
+            if (intervals[i][0] > curr[1]) {
+                ret += intervals[i][1] - intervals[i][0];
+                prev = intervals[i];
+            } else {
+                if (intervals[i][1] > prev[1]) {
+                    ret += intervals[i][1] - prev[1];
+                    prev = intervals[i];
+                }
+            }
+        }
+        return ret;
+    }
+};
+
+Follow Up
+
 
 
 Solution:
