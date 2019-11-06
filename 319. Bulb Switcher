@@ -1,0 +1,19 @@
+319. Bulb Switcher
+
+This is a math problem.
+
+Numbers from 1 to n (inclusive) can be grouped into 3 groups.
+1. primes
+2. square
+3. non-primes except square
+
+Primes will be turned on at 1 and itself -> off
+Non-primes will be turned on at every factor pairs. eg 6, (1 6), (2 3) -> off
+Squares will be turned on at factor pairs and itself. eg 4 (1 4), ->off, (2 2) ->on
+
+Therefore only the square numbers can be on at last.
+There are sqrt(n) number of square numbers from 1 to n(inclusive).
+
+int bulbSwitch(int n) {
+    return sqrt(n);
+}
