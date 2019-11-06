@@ -1,0 +1,16 @@
+199. Binary Tree Right Side View
+
+DFS
+Time: O(h) -> O(n), Space O(1)
+
+vector<int> rightSideView(TreeNode* root) {
+    vector<int> ret;
+    dfs(ret, root, 0);
+    return ret;
+}
+void dfs(vector<int>& ret, TreeNode* root, int level) {
+    if (!root) return;
+    if (ret.size() <= level) ret.push_back(root->val);
+    dfs(ret, root->right, level + 1);
+    dfs(ret, root->left, level + 1);
+}
