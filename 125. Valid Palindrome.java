@@ -5,6 +5,20 @@
 
 Test: 
 "" -> true //[加分项：问面试官""应该返回什么]
+bool isPalindrome(string s) {
+	if (s.empty()) return true;
+	int i = 0;
+	int j = s.length() - 1;
+	while (i < j) {
+		while (i < j && !isalnum(s[i])) i++;
+		while (i < j && !isalnum(s[j])) j--;
+		if (s[i] != s[j]) return false;
+		i++;
+		j--;
+	}
+	return true;
+}
+	
 
 public boolean isPalindrome(String s) {
 	// if (s.equals(""))  return true;
