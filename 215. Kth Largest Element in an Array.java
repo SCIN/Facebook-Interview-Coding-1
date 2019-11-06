@@ -17,6 +17,8 @@ Time: O(n) average, the problem is reduced to approximately half of its original
 int findKthLargest(vector<int>& nums, int k) { 
 	int left = 0;
 	int right = nums.size() - 1;
+	// important !!! k th Largest
+	k = nums.size() - k;
 	while (left < right) {
 		int pivot = partition(nums, left, right);
 		if (pivot == k) break;
