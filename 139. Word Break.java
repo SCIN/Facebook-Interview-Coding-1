@@ -1,6 +1,25 @@
 139. Word Break
 // https://leetcode.com/problems/word-break/
 
+bool wordBreak(string s, vector<string>& wordDict) {
+    unordered_set<string> dict(wordDict.begin(), wordDict.end());
+    vector<int> cache(s.length(), -1);
+    return dfs(s, 0, dict, cache);
+}
+bool dfs(string& s, int pos, unordered_set<string>& dict, vector<int>& cache) {
+    if (pos == s.length()) {
+        return true;
+    }
+    if (cache[pos] != -1) return cache[pos];
+    for (int i = pos; i < s.length(); i++) {
+        if (dict.find(s.substr(pos, i - pos + 1)) != dict.end() && dfs(s, i + 1, dict, cache)) {
+            cache[pos] = true;
+            return true;
+        }
+    }
+    cache[pos] = false;
+    return false;
+}
 public boolean wordBreak(String s, Set<String> wordDict) {
     boolean[] dp = new boolean[s.length() + 1];
     dp[0] = true;
