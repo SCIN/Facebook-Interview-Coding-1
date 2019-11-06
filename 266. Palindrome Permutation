@@ -1,0 +1,26 @@
+266. Palindrome Permutation
+
+Given a string, determine if a permutation of the string could form a palindrome.
+
+The number of characters with odd number of occurences can't exceed 1 to be a palindrome.
+
+One PASS
+Time O(n), 
+Space O(n) / O(128) ASCII characters from 0 to 127
+
+bool canPermutePalindrome(string s) {
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+        m[s[i]]++;
+        if (m[s[i]] % 2 == 0) {
+            count--;
+        } else {
+            count++;
+        }
+    }
+    return (count <= 1);
+}
+private:
+unordered_map<char, int> m;
+
+
