@@ -1,5 +1,33 @@
 200. Number of Islands
 // https://leetcode.com/problems/number-of-islands/
+C++
+DFS
+Time: O(m * n), Space: O(1)
+int numIslands(vector<vector<char>>& grid) {
+    int n = grid.size();
+    if (n == 0) return 0;
+    int m = grid[0].size();
+    if (m == 0) return 0;
+    int ret = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (grid[i][j] == '1') {
+                dfs(grid, i, j);
+                ret++;
+            }
+        }
+    }
+    return ret;
+}
+void dfs(vector<vector<char>>& grid, int row, int col) {
+    if (row < 0 || col < 0 || row >= grid.size() || col >= grid[0].size() || grid[row][col] == '0') return;
+    grid[row][col] = '0';
+    dfs(grid, row - 1, col);
+    dfs(grid, row + 1, col);
+    dfs(grid, row, col + 1);
+    dfs(grid, row, col - 1);
+}
+
 
 Solution 1: DFS
 Time: O(m * n)
