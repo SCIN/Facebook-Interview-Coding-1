@@ -1,0 +1,28 @@
+543. Diameter of Binary Tree
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. 
+This path may or may not pass through the root.
+
+The length of path between two nodes is represented by the number of edges between them.
+
+Clarify diameter first!
+
+The number of edge = number of nodes along the path - 1
+Edge Case 1: if root is null, dfs will return 0 and we will return -1, which is wrong.
+Check if root is null before call dfs.
+
+
+int ret = 0;
+int diameterOfBinaryTree(TreeNode* root) {
+    //CAREFUL: edge 1
+    if (!root) return 0;
+    dfs(root);
+    return ret - 1;
+}
+int dfs(TreeNode* root) {
+    if (!root) return 0;
+    int left = dfs(root->left);
+    int right = dfs(root->right);
+    ret = max(ret, left + right + 1);
+    return max(left, right) + 1;
+}
