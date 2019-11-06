@@ -9,9 +9,66 @@ search(".ad") -> true
 search("b..") -> true
 
 
-Time: add / search: O(wordLength) average, For search -> max O(26^n)
+Time: add / search: O(wordLength) average, 
+For search -> max O(26^n)
 Space: O(numOfTrieNode * 26) = O(numOfWords * wordLength * 26)
 
+ class TrieNode {
+    public:
+        bool leaf;
+        vector<TrieNode*> children;
+        TrieNode() {
+            leaf = false;
+            children = vector<TrieNode*>(26, NULL);
+        }
+};
+
+class WordDictionary {
+public:
+    /** Initialize your data structure here. */
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    
+    /** Adds a word into the data structure. */
+    void addWord(string word) {
+        TrieNode* curr = root;
+        for (int i = 0; i < word.length(); i++) {
+            if (curr->children[word[i] - 'a'] == NULL) {
+                curr->children[word[i] - 'a'] = new TrieNode();
+            }
+            curr = curr->children[word[i] - 'a'];
+        }
+        curr->leaf = true;
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    bool search(string word) {
+       return dfs(root, word, 0);   
+    }
+    bool dfs(TrieNode* root, string& word, int index) {
+        if (!root) return false;
+        if (index == word.length()) return root->leaf;
+        if (word[index] == '.') {
+            for (int i = 0; i < 26; i++) {
+                if (dfs(root->children[i], word, index + 1)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return dfs(root->children[word[index] - 'a'], word, index + 1);
+        }
+    }
+    TrieNode* root;
+};
+    
+    
+    
+    
+    
+    
+    
 public class WordDictionary {
     class TrieNode {
         boolean isWord;
