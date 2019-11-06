@@ -1,0 +1,29 @@
+Given an array of integers and an integer k, 
+you need to find the total number of continuous subarrays whose sum equals to k.
+
+Time: O(n), Space O(n)
+
+If the cumulative sum up to two indices, i and j (i > j), sum[i] - sum[j] == k
+the sum of elements lying between i and j is k.
+
+Use a hashmap to store the number of occurence(value0 of sum(key).
+
+We encounter a new sum, we make a new entry in the hashmap corresponding to that sum. 
+If the same sum occurs again, we increment the count corresponding to that sum in the hashmap. 
+Fsuor every sum encountered, we also determine the number of times the sum - k has occured already,
+We increment the count by the same amount.
+
+int subarraySum(vector<int>& nums, int k) {
+    int ret = 0;
+    int sum = 0;
+    unordered_map<int, int> m;
+    m[0] = 1;
+    for (int i = 0; i < nums.size(); i++) {
+        sum += nums[i];
+        if (m.find(sum - k) != m.end()) {
+            ret += m[sum - k];
+        }
+        m[sum]++;
+    }
+    return ret;
+}
