@@ -28,6 +28,47 @@ void dfs(vector<vector<char>>& grid, int row, int col) {
     dfs(grid, row, col - 1);
 }
 
+BFS
+
+int numIslands(vector<vector<char>>& grid) {
+    int n = grid.size();
+    if (n == 0) return 0;
+    int m = grid[0].size();
+    if (m == 0) return 0;
+    int ret = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (grid[i][j] == '1') {
+                bfs(grid, i, j);
+                ret++;
+            }
+        }
+    }
+    return ret;
+}
+void bfs(vector<vector<char>>& grid, int row, int col) {
+    queue<pair<int, int>> q;
+    q.push({row, col});
+    grid[row][col] = '0';
+    while (!q.empty()) {
+        pair<int, int> front = q.front();
+        q.pop();
+        for (int i = 0; i < 4; i++) {
+            int new_x = front.first + dx[i];
+            int new_y = front.second + dy[i];
+            if (new_x >= 0 && new_y >= 0 && new_x < grid.size() && new_y < grid[0].size() && grid[new_x][new_y] == '1') {
+                q.push({new_x, new_y});
+                grid[new_x][new_y] = '0';
+            }
+        }
+    }
+}
+vector<int> dx = {0, 1, 0, -1};
+vector<int> dy = {1, 0, -1, 0};
+
+
+Union-find 
+
 
 Solution 1: DFS
 Time: O(m * n)
