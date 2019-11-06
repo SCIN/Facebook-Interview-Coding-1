@@ -1,0 +1,33 @@
+414. Third Maximum Number
+
+Three pointers for max_first, max_second, max_third
+
+Edge cases:
+
+1. start from index 1, use long to avoid INT_MIN
+
+2. swap in each if statement
+
+3. duplicates do not count (if statement condition: nums[i] < max_first)
+
+4. When nums.size() < 3 -> return what ? check with interviewer
+
+
+int thirdMax(vector<int>& nums) {
+    long long max_first = nums[0];
+    long long max_second = LONG_MIN;
+    long long max_third = LONG_MIN;
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] > max_first) {
+            max_third = max_second;
+            max_second = max_first;
+            max_first = nums[i];
+        } else if (nums[i] < max_first && nums[i] > max_second) {
+            max_third = max_second;
+            max_second = nums[i];
+        } else if (nums[i] < max_second && nums[i] > max_third) {
+            max_third = nums[i];
+        }
+    }
+    return (max_third == LONG_MIN) ? max_first : max_third;
+}
