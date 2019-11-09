@@ -1,3 +1,33 @@
+Easy:
+Build a map using order key char, value order[i]
+Compare two words on time,
+    if char same, continue
+    else if different
+        if the front one with higher priority -> continue, go to next word
+        the front one with lower priority -> return false
+    else if: one ends
+        if the front one is longer -> false
+        
+ bool isAlienSorted(vector<string>& words, string order) {
+    unordered_map<char, int> dict;
+    for (int i = 0; i < order.size(); i++) {
+        dict[order[i]] = i;
+    }
+    for (int i = 0; i < words.size() - 1; i++) {
+        string& word1 = words[i];
+        string& word2 = words[i + 1];
+        for (int j = 0; j < min(word1.length(), word2.length()); j++) {
+            if (dict[word1[j]] > dict[word2[j]]) return false;
+            else if (dict[word1[j]] < dict[word2[j]]) break;
+            if (j == min(word1.length(), word2.length()) - 1) {
+                if (word1.length() > word2.length()) return false;
+            }
+        }
+    }
+    return true;
+}
+
+Hard:
 Build a Directed Acyclic Graph. Every char is a node.
 Topological sort Using BFS
 initialize all words with degree 0
