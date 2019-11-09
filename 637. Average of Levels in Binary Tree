@@ -1,0 +1,24 @@
+637. Average of Levels in Binary Tree
+
+vector<double> averageOfLevels(TreeNode* root) {
+    vector<double> ret;
+    queue<TreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+        int size = q.size();
+        double sum = 0.0;
+        for (int i = 0; i < size; i++) {
+            TreeNode* front = q.front();
+            q.pop();
+            sum += front->val;
+            if (front->left) {
+                q.push(front->left);
+            }
+            if (front->right) {
+                q.push(front->right);
+            }
+        }
+        ret.push_back(double(sum / double(size)));
+    }
+    return ret;
+}
