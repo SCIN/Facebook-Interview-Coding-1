@@ -1,0 +1,72 @@
+Build a Directed Acyclic Graph. Every char is a node.
+Topological sort Using BFS
+initialize all words with degree 0
+Compare every letter in adjacent words(word i and word i+1) 
+Once we find a different letter, we know that the letter in word i+1 is greater than word i so it comes later.
+
+We add a degree to the letter in i+1 and add an entry to the letter in word i's dictionary/hashmap 
+signifying that theres an arrow from the letter in word i to the letter in word i+1.
+We break the loop on the adjacent words because we already found out the reason why word i is before word i+1
+
+Once we have our degree counts, we traverse the graph (similar to a BFS) from the nodes with degree 0. 
+When we visit a node, we append it to the result string. 
+We subtract one from all of the words repeatedly until all of the words have had degree 0 and have been added to the result string.
+
+1. Init all letter in words with degree 0
+2. For each word[i] and word[i + 1]  
+    if we find word[i][j] != word[i + 1][j] -> increase indegree and break 
+3. Go through all nodes with degree 0 and add them into queue
+4. pop front, append it to alphabet, remove front ->
+    For each letter b in letter a's set of letters:
+    subtract 1 from the degree
+    If it's degree is 0, add it to the queue because all it's dependencies have been added already
+    Repeat 4.
+5. if the size of the result string != the size of the initialized letters then return an empty string
+    (not all of the degrees hit 0 so there's a conflict)
+    
+string alienOrder(vector<string>& words) {
+    if (words.size() == 0) return "";
+    // key: char node, value: number of incoming edges
+    unordered_map<char, int> indegree;
+     // key: char node, value: neighbors(directed)
+    unordered_map<char, unordered_set<char>> graph;
+    for (string s : words) {
+        for (char c : s) {
+            indegree[c] = 0;
+        }
+    }
+    for (int i = 0; i < words.size() - 1; i++) {
+        string curr = words[i];
+        string next = words[i + 1];
+        int length = min(curr.length(), next.length());
+        for (int j = 0; j < length; j++) {
+            if (curr[j] != next[j]) {
+                unordered_set<char> curr_neighbors = graph[curr[j]];
+                if (curr_neighbors.find(next[j]) == curr_neighbors.end()) {
+                    graph[curr[j]].insert(next[j]);
+                    indegree[next[j]]++;
+                }
+                break;
+            }
+        }
+    }
+    queue<char> q;
+    for (auto it : indegree) {
+        if (it.second == 0) {
+            q.push(it.first);
+        }
+    } 
+    string alphbet = "";
+    while (!q.empty()) {
+        char front = q.front();
+        q.pop();
+        alphbet += front;
+        for (auto& e : graph[front]) {
+            indegree[e]--;
+            if (indegree[e] == 0) {
+                q.push(e);
+            }
+        }
+    }
+    return (alphbet.size() == indegree.size()) ? alphbet : "";   
+}
