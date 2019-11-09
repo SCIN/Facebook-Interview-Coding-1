@@ -1,8 +1,8 @@
 Easy:
 Build a map using order key char, value order[i]
 Compare two words on time,
-    if char same, continue
-    else if different
+    if: char same, continue
+    else if: different
         if the front one with higher priority -> continue, go to next word
         the front one with lower priority -> return false
     else if: one ends
