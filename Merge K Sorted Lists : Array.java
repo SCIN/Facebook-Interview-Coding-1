@@ -1,4 +1,135 @@
 Merge K Sorted Lists / Array
+23. Merge k Sorted Lists
+
+Recursion: 
+Time: O(NlogK), Space O(1)
+N: total number of nodes in two lists. K: number of lists
+merge list O(n), logK level, in place sort
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    return partition(lists, 0, lists.size() - 1);
+}
+ListNode* partition(vector<ListNode*>& lists, int left, int right) {
+    if (left == right) {
+        return lists[left];
+    }
+    if (left < right) {
+        int mid = (left + right) / 2;
+        ListNode* left_half = partition(lists, left, mid);
+        ListNode* right_half = partition(lists, mid + 1, right);
+        return merge(left_half, right_half);
+    }
+    return NULL;
+}
+ListNode* merge(ListNode* left_half, ListNode* right_half) {
+    if (!left_half) return right_half;
+    if (!right_half) return left_half;
+
+    if (left_half->val < right_half->val) {
+        left_half->next = merge(left_half->next, right_half);
+        return left_half;
+    } else {
+        right_half->next = merge(right_half->next, left_half);
+        return right_half;
+    }
+}
+
+Priority Queue
+
+Time O(NlogK), Space O(K)
+
+struct compare {
+    bool operator() (ListNode* l1, ListNode* l2) {
+        return l1->val > l2->val;
+    }
+};
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    // careful! check NULL
+    if (lists.size() == 0) return NULL;
+    priority_queue<ListNode*, vector<ListNode*>, compare> pq;
+    for (int i = 0; i < lists.size(); i++) {
+         // careful! check NULL
+        if (lists[i]) pq.push(lists[i]);
+    }
+    ListNode* head = new ListNode(0);
+    ListNode* curr = head;
+    while (!pq.empty()) {
+        ListNode* min = pq.top();
+        pq.pop();
+        curr->next = min;
+        curr = curr->next;
+        // careful! check NULL
+        if (min->next) {
+            pq.push(min->next);
+        }
+    }
+    return head->next;
+}
+
+21. Merge Two Sorted Lists
+Recursion:
+Time O(n + m), Space O(1)
+    
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    if (!l1) return l2;
+    if (!l2) return l1;
+    if (l1->val < l2->val) {
+        l1->next = mergeTwoLists(l1->next, l2);
+        return l1;
+    } else {
+        l2->next = mergeTwoLists(l2->next, l1);
+        return l2;
+    }
+}
+
+Iteration
+Time O(n + m), Space O(1)
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    ListNode* p1 = l1;
+    ListNode* p2 = l2;
+    ListNode* dummy = new ListNode(0);
+    ListNode* curr = dummy;
+    while (p1 || p2) {
+        if (!p1 && !p2) break;
+        if (!p1) {
+            curr->next = p2;
+            break;
+        }
+        if (!p2) {
+            curr->next = p1;
+            break;
+        }
+        if (p1->val < p2->val) {
+            curr->next = p1;
+            p1 = p1->next;
+        } else {
+            curr->next = p2;
+            p2 = p2->next;
+        }
+        curr = curr->next;
+    }
+    return dummy->next;
+}
+88. Merge Sorted Array
+Two pointer
+Time: O(n+m), Space O(1)
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    int idx = m + n - 1;
+    int idx1 = m - 1;
+    int idx2 = n - 1;
+    while (idx2 >= 0) {
+        if (idx1 >= 0 && nums1[idx1] > nums2[idx2]) {
+            nums1[idx] = nums1[idx1];
+            idx1--;
+        } else {
+            nums1[idx] = nums2[idx2];
+            idx2--;
+        }
+        idx--;
+    }
+}
+
 
 88. Merge Sorted Array
 // https://leetcode.com/problems/merge-sorted-array/
