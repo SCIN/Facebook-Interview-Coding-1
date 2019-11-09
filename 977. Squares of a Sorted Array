@@ -1,0 +1,28 @@
+977. Squares of a Sorted Array
+
+We can use two pointers to read the positive and negative parts of the array - 
+one pointer j in the positive direction, and another i in the negative direction.
+
+Time O(n), Space O(n)
+
+Now that we are reading two increasing arrays (the squares of the elements), we can merge these arrays together using a two-pointer technique.
+vector<int> sortedSquares(vector<int>& A) {
+    int left = 0;
+    int right = A.size() - 1;
+    // include overlap
+    vector<int> ret(A.size(), 0);
+    int position = A.size() - 1;
+    while (left <= right) {
+        int x = A[left] * A[left];
+        int y = A[right] * A[right];
+        if (x < y) {
+            ret[position] = y;
+            right--;
+        } else {
+            ret[position] = x;
+            left++;
+        }
+        position--;
+    }
+    return ret;
+}
