@@ -1,0 +1,28 @@
+31. Next Permutation
+
+A man named Narayana Pandita presented the following simple algorithm to solve this problem in the 14th century.
+
+Find the largest index k such that nums[k] < nums[k + 1]. If no such index exists, just reverse nums and done.
+Find the largest index l > k such that nums[k] < nums[l].
+Swap nums[k] and nums[l].
+Reverse the sub-array nums[k + 1:].
+
+
+void nextPermutation(vector<int>& nums) {
+    int k = nums.size() - 2;
+    while (k >= 0 && nums[k] >= nums[k + 1]) {
+        k--;
+    }
+    // 54321
+    if (k == -1) {
+        reverse(nums.begin(), nums.end());
+        return;
+    }
+    for (int i = nums.size() - 1; i > k; i--) {
+        if (nums[i] > nums[k]) {
+            swap(nums[i], nums[k]);
+            break;
+        }
+    }
+    reverse(nums.begin() + k + 1, nums.end());
+}
