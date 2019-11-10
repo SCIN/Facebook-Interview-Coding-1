@@ -9,9 +9,9 @@ Now that we are reading two increasing arrays (the squares of the elements), we 
 vector<int> sortedSquares(vector<int>& A) {
     int left = 0;
     int right = A.size() - 1;
-    // include overlap
     vector<int> ret(A.size(), 0);
     int position = A.size() - 1;
+    // including overlap
     while (left <= right) {
         int x = A[left] * A[left];
         int y = A[right] * A[right];
