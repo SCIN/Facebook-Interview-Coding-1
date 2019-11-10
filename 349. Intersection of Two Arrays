@@ -1,0 +1,43 @@
+349. Intersection of Two Arrays
+
+One set
+
+Time O(n + m) Space O(n)
+
+vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+    unordered_set<int> st(nums1.begin(), nums1.end());
+    vector<int> ret;
+    for (int i = 0; i < nums2.size(); i++) {
+        if (st.find(nums2[i]) != st.end()) {
+            ret.push_back(nums2[i]);
+            st.erase(nums2[i]);
+        }   
+    }
+    return ret;
+}
+
+Two Pointers 
+Expensive but possible asked in an interview
+Time O(nlogn + mlogm) Space O(1)
+
+vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+    vector<int> ret;
+    sort(nums1.begin(), nums1.end());
+    sort(nums2.begin(), nums2.end());
+    int i = 0;
+    int j = 0;
+    while (i < nums1.size() && j < nums2.size()) {
+        if (nums1[i] == nums2[j]) {
+            ret.push_back(nums1[i]);
+            i++;
+            j++;
+        } else if (nums1[i] > nums2[j]) {
+            j++;
+        } else {
+            i++;
+        }
+        while (i > 0 && i < nums1.size() && nums1[i] == nums1[i - 1]) i++;
+        while (j > 0 && j < nums2.size() && nums2[j] == nums2[j - 1]) j++;
+    }
+    return ret;
+}
