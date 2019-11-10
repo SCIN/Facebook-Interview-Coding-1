@@ -1,0 +1,39 @@
+689. Maximum Sum of 3 Non-Overlapping Subarrays
+
+vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
+    int n = nums.size();
+    vector<int> sum(n + 1, 0);
+    for (int i = 0; i < n; i++) {
+        sum[i + 1] = sum[i] + nums[i];
+    }
+    vector<int> pos_left(n, 0);
+    for (int i = k, tot = sum[k] - sum[0]; i < n; i++) {
+        if (sum[i + 1] - sum[i + 1 - k] > tot) {
+            pos_left[i] = i + 1 - k;
+            tot = sum[i + 1] - sum[i + 1 - k];
+        } else {
+            pos_left[i] = pos_left[i - 1];
+        }
+    }
+    vector<int> pos_right(n, n - k);
+    for (int i = n - k - 1, tot = sum[n] - sum[n - k]; i >= 0; i--) {
+        if (sum[i + k] - sum[i] >= tot) {
+            pos_right[i] = i;
+            tot = sum[i + k] - sum[i];
+        } else {
+            pos_right[i] = pos_right[i + 1];
+        }
+    }
+    int ans_sum = 0;
+    vector<int> ret(3, 0);
+    for (int i = k; i <= nums.size() - k * 2; i++) {
+        int l = pos_left[i - 1];
+        int r = pos_right[i + k];
+        int t = (sum[i + k] - sum[i]) + (sum[l + k] - sum[l]) + (sum[r + k] - sum[r]);
+        if (ans_sum < t) {
+            ans_sum = t;
+            ret = {l, i, r};
+        }
+    }
+    return ret;
+}
