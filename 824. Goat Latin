@@ -1,0 +1,21 @@
+824. Goat Latin
+
+string toGoatLatin(string S) {
+    unordered_set<char> vowel = {'a', 'e', 'i', 'o', 'u'};
+    queue<string> q;
+    stringstream ss(S);
+    string added = "a";
+    string ret = "";
+    while (ss) {
+        string word;
+        getline(ss, word, ' ');
+        if (word.empty()) continue;
+        if (vowel.find(tolower(word[0])) == vowel.end()) {
+            word = word.substr(1) + word[0];
+        }
+        ret += word + "ma" + added + " "; 
+        added += 'a';
+    }        
+    ret.pop_back();
+    return ret;
+}
