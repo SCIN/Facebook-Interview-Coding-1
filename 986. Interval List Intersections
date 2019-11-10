@@ -1,0 +1,21 @@
+986. Interval List Intersections
+Two Pointers
+O(m + n) O(1)
+vector<vector<int>> intervalIntersection(vector<vector<int>>& A, vector<vector<int>>& B) {
+    int i = 0;
+    int j = 0;
+    vector<vector<int>> ret;
+    while (i < A.size() && j < B.size()) {
+        int low = max(A[i][0], B[j][0]);
+        int high = min(A[i][1], B[j][1]);
+        if (low <= high) {
+            ret.push_back({low, high});
+        }
+        if (A[i][1] < B[j][1]) {
+            i++;
+        } else {
+            j++;
+        }
+    }
+    return ret;
+}
