@@ -1,0 +1,18 @@
+1004. Max Consecutive Ones III
+
+Sliding Window 
+O(n), O(1)
+int longestOnes(vector<int>& A, int K) {
+    int slow = 0;
+    int count_0 = 0;
+    int ret = 0;
+    for (int fast = 0; fast < A.size(); fast++) {
+        if (A[fast] == 0) count_0++;
+        while (count_0 > K) {
+            if (A[slow] == 0) count_0--;
+            slow++;
+        }
+        ret = max(ret, fast - slow + 1);
+    }
+    return ret;
+}
