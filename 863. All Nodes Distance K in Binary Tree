@@ -1,0 +1,124 @@
+863. All Nodes Distance K in Binary Tree
+
+build graph + bfs
+build graph O(n) visited every node once
+bfs O(n)
+
+Two ways to build the graph
+1. Easy to think of -> just usual graph
+vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+    //edge case
+    if (K == 0) {
+        return {target->val};
+    }
+    unordered_map<TreeNode*, vector<TreeNode*>> graph;
+    buildGraph(graph, root);
+    queue<TreeNode*> q;
+    q.push(target);
+    int level = 0;
+    unordered_set<TreeNode*> visited;
+    while (!q.empty()) {
+        int size = q.size();
+        level++;
+        for (int i = 0; i < size; i++) {
+            TreeNode* front = q.front();
+            q.pop();
+            visited.insert(front);
+            for (auto node : graph[front]) {
+                if (visited.find(node) == visited.end()) {
+                    q.push(node);
+                }
+            }
+        }
+        if (level == K) {
+            break;
+        }
+    }
+    vector<int> ret;
+    if (level == K) {
+        while (!q.empty()) {
+            ret.push_back(q.front()->val);
+            q.pop();
+        }
+    }
+    return ret;
+}
+void buildGraph(unordered_map<TreeNode*, vector<TreeNode*>>& graph, TreeNode* root) {
+    if (!root) return;
+    if (root->left) {
+        graph[root].push_back(root->left);
+        graph[root->left].push_back(root);
+        buildGraph(graph, root->left);
+    }
+    if (root->right) {
+        graph[root].push_back(root->right);
+        graph[root->right].push_back(root);
+        buildGraph(graph, root->right);
+    }
+
+}
+
+2. Make the graph as a predecessor, key -> node, value -> parent
+
+class Solution {
+public:
+    unordered_map<TreeNode*, TreeNode*> graph;
+    unordered_set<TreeNode*> visited;
+    
+public:
+    void buildGraph(TreeNode* node, TreeNode* parent) {
+        if (node == NULL) return;
+        graph[node] = parent;
+        if (node->left) {
+            buildGraph(node->left, node);
+        }
+        if (node->right) {
+            buildGraph(node->right, node);
+        }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+        buildGraph(root, NULL);
+        vector<int> ret;
+        if (K == 0) {
+            ret.push_back(target->val);
+            return ret;
+        }
+        queue<TreeNode*> q;
+        q.push(target);
+        visited.insert(target);
+        int size = 1;
+        int level = 0;
+        
+        while (!q.empty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode* curr = q.front();
+                if (curr->left && visited.find(curr->left) == visited.end()) {
+                    visited.insert(curr->left);
+                    q.push(curr->left);
+                }
+                if (curr->right && visited.find(curr->right) == visited.end()) {
+                    visited.insert(curr->right);
+                    q.push(curr->right);
+                }
+                if (graph.find(curr) != graph.end() && graph[curr] && visited.find(graph[curr]) == visited.end()) {
+                    visited.insert(graph[curr]);
+                    q.push(graph[curr]);
+                }
+                q.pop();
+            }
+            level++;
+            if (level == K) {
+                break;
+            }
+        }
+        if (level == K) {
+            while (!q.empty()) {
+                ret.push_back(q.front()->val);
+                q.pop();
+            }
+        }
+        return ret;
+        
+    }
+};
