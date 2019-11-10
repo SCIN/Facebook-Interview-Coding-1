@@ -9,6 +9,7 @@ Time calling find() once
 O(1) -> only height 1
 O(logn) -> balanced tree (rank by height or rank by size)
 O(n) -> normal tree worst case O(h) = O(n)
+Total O(nlogn) n: number of emails in the accounts
 
 Requirement: 
 After merging the accounts, return the accounts in the following format: 
