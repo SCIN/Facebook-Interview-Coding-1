@@ -1,0 +1,32 @@
+416. Partition Equal Subset Sum
+
+Brute force DFS
+
+bool canPartition(vector<int>& nums) {
+   int sum = accumulate(nums.begin(), nums.end(), 0);
+   // edge case, check odd number
+   if (sum % 2 != 0) return false;
+   return dfs(nums, 0, sum / 2);
+} 
+bool dfs(vector<int>& nums, int start, int target) {
+  if (target <= 0) return target == 0;
+  for (int i = start; i < nums.size(); i++) {
+    if (dfs(nums, i + 1, target - nums[i]) return true;
+  }
+  return false;
+}
+
+DP O(sum * n)
+
+bool canPartition(vector<int>& nums) {
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    if (sum % 2 != 0) return false;
+    vector<int> dp((sum / 2) + 1, 0);
+    dp[0] = 1;
+    for (int i = 0; i < nums.size(); i++) {
+        for (int j = sum / 2; j >= nums[i]; j--) {
+            dp[j] = dp[j] || dp[j - nums[i]];
+        }
+    }
+    return dp[sum / 2];
+}
