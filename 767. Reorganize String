@@ -1,0 +1,31 @@
+767. Reorganize String
+
+O(n) n is the length of S
+string reorganizeString(string S) {
+    int N = S.length();
+    vector<int> count(26, 0);
+    int most_frequent = 0;
+    int i = 0;
+    for (char c : S) {
+        count[c-'a']++;
+        if (count[c - 'a'] > count[most_frequent]) {
+            most_frequent = (c - 'a');
+        }
+    }
+
+    if (count[most_frequent] * 2 - 1 > S.size()) return "";
+    while (count[most_frequent]) {
+        S[i] = most_frequent + 'a';
+        i += 2;
+        count[most_frequent]--;
+    }
+    for (int j = 0; j < 26; j++) {
+        while (count[j]) {
+            if (i >= S.size()) i = 1;
+            S[i] = j + 'a';
+            count[j]--;
+            i += 2;
+        }
+    }
+    return S;
+}
