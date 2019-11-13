@@ -37,31 +37,28 @@ vector<vector<int>> verticalOrder(TreeNode* root) {
 C++ DFS
 Time O(n) ? O(nlogn) because of using map
 Space O(n)
+    
 vector<vector<int>> verticalOrder(TreeNode* root) {
+    map<int, map<int, vector<int>>> coordinate;
     vector<vector<int>> ret;
-    if (!root) return ret;
-    map<int, map<int, vector<int>>> m;
-    dfs(m, root, 0, 0);
-    for (auto it = m.begin(); it != m.end(); ++it) {
-        map<int, vector<int>> currLevel = it->second;
-        vector<int> curr;
-        for (auto it2 = currLevel.begin(); it2 != currLevel.end(); ++it2) {
-            vector<int> v = it2->second;
-            for (int i = 0; i < v.size(); i++) {
-                curr.push_back(v[i]);
-            }   
+    dfs(coordinate, 0, 0, root);
+    for (auto it_x : coordinate) {
+        vector<int> curr_level;
+        for (auto it_y : it_x.second) {
+            for (int val : it_y.second) {
+                 curr_level.push_back(val);
+            }
         }
-        ret.push_back(curr);
+        ret.push_back(curr_level);
     }
     return ret;
 }
-void dfs(map<int, map<int, vector<int>>>& m, TreeNode* root, int level, int height) {
+void dfs(map<int, map<int, vector<int>>>& coordinate, int height, int level, TreeNode* root) {
     if (!root) return;
-    m[level][height].push_back(root->val);
-    dfs(m, root->left, level - 1, height + 1);
-    dfs(m, root->right, level + 1, height + 1);
+    coordinate[level][height].push_back(root->val);
+    dfs(coordinate, height + 1, level - 1, root->left);
+    dfs(coordinate, height + 1, level + 1, root->right);
 }
-   
 
 JAVA:
 class TreeNodeWithCol {
