@@ -1,0 +1,45 @@
+227. Basic Calculator II
+
+We use stack to store previous numbers
+We only update number when we met a operator
+We store the previous sign using variable sign, sign gets updated each time we meet a new one
+Number keeps growing until there is a operator -> do calculation
+
+For + and -, we do not need the previous number at all, just push number into stack
+For * and /, we do care about the previous number. We use st.top() to do math and pop and then push the new number
+
+int calculate(string s) {
+    if (s.empty()) return 0;
+    stack<int> st;
+    long number = 0;
+    char sign = '+';
+    
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] >= '0' && s[i] <= '9') {
+            number = number * 10 + s[i] - '0';
+        }
+        if (((s[i] < '0' || s[i] > '9') && s[i] != ' ') || i == s.length() - 1) {
+            if (sign == '+') {
+                st.push(number);
+            } else if (sign == '-') {
+                st.push(-number);
+            } else if (sign == '*') {
+                int prev = st.top();
+                st.pop();
+                st.push(prev * number);
+            } else if (sign == '/') {
+                int prev = st.top();
+                st.pop();
+                st.push(prev / number);
+            }
+            sign = s[i];
+            number = 0;
+        }
+    }
+    int ret = 0;
+    while (!st.empty()) {
+        ret += st.top();
+        st.pop();
+    }
+    return ret;
+}
