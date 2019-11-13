@@ -1,0 +1,45 @@
+249. Group Shifted Strings
+O(m * n)
+n: number of strings in strings
+m: number of chars for every word
+
+vector<vector<string>> groupStrings(vector<string>& strings) {
+      vector<vector<string>> ret;
+      if (strings.size() == 0) return ret;
+      unordered_set<int> visited;
+      for (int i = 0; i < strings.size(); i++) {
+          if (visited.find(i) != visited.end()) continue;
+          vector<string> pattern;
+          dfs(strings, visited, i, pattern);
+          ret.push_back(pattern);
+      }
+      return ret;
+  }
+  void dfs(vector<string>& strings, unordered_set<int>& visited, int index, vector<string>& pattern) {
+      if (index == strings.size()) { return; }
+      if (visited.find(index) != visited.end()) return;
+
+      visited.insert(index);
+      string curr = strings[index];
+      pattern.push_back(curr);
+
+      for (int i = index + 1; i < strings.size(); i++) {
+          if (strings[i].length() != curr.length()) {
+              continue;
+          }
+          bool same_pattern = true;
+          int dist = curr[0] - strings[i][0];
+          if (dist < 0 ) dist += 26;
+          for (int j = 1; j < curr.length(); j++) {
+              int t_dist = curr[j] - strings[i][j];
+              if (t_dist < 0) t_dist += 26;
+              if (t_dist != dist) {
+                  same_pattern = false;
+                  break;
+              }
+          }
+          if (same_pattern) {
+              dfs(strings, visited, i, pattern);
+          }
+      } 
+  }
