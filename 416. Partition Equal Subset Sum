@@ -17,6 +17,15 @@ bool dfs(vector<int>& nums, int start, int target) {
 }
 
 DP O(sum * n)
+This problem is essentially let us to find whether there are several numbers in a set which are able to sum to a specific value (in this problem, the value is sum/2).
+
+Actually, this is a 0/1 knapsack problem, for each number, we can pick it or not. 
+We maintain a dp array with length sum / 2 + 1. 
+Each index represents if we can reach sum == i by collecting some elements from the array.
+transition function: 
+For every sum = i, we try every number from nums to see if i - nums[j] is reachable.
+dp[i] = dp[i] || dp[i - nums[j]]
+
 
 bool canPartition(vector<int>& nums) {
     int sum = accumulate(nums.begin(), nums.end(), 0);
