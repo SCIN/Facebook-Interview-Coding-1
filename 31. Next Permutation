@@ -2,18 +2,33 @@
 
 A man named Narayana Pandita presented the following simple algorithm to solve this problem in the 14th century.
 
-Find the largest index k such that nums[k] < nums[k + 1]. If no such index exists, just reverse nums and done.
-Find the largest index l > k such that nums[k] < nums[l].
-Swap nums[k] and nums[l].
-Reverse the sub-array nums[k + 1:].
+We know one thing for sure is that, when we have a decreasing array, the next permutation is the reverse.
+For any string, consider there is a decreasing part at the end, (we dont know the length yet), 
+while there is a increasing part before the decreasing part, i.e. at index k, A[k] < A[k + 1], 
+we know for the next permutation, this small number A[k] has to be moved to the decreasing part 
+and the decreasing part will be somehow reversed.
+Consider [5,7,6,4], k will be 0 pointing to 5, we know we need to move 5 backwards. 
+Considering the array as a real number, we want the next real number as small as possible. 
+For example, if we swap 4 with 5, this is not the next permutation because 4 < 5. (Only possible when the whole array is reversed)
+Then we know we need to choose some digit greater than 5. If we try 7, it would be much greater than "next" because there is a 6 left.
+So we know we need to put 6 at the position k. Then we have [6,7,5,4], this is not the next yet because 7 5 4 is still decreasing and 
+a decreasing sequence is always greater than the increasing sequence, so we reverse the decreasing part and got [6,4,5,7]
 
+Therefore, the thing we need to do for this problem is:
+
+1. Find the largest index k such that nums[k] < nums[k + 1].(Because we want some number like 6 not 7)
+    If no such index exists, the whole array is reversed, just reverse nums and done.
+2. Find the largest index l > k such that nums[k] < nums[l]. (We need a greater number before the increasing end point and we want this number to be
+    as far as possible to the position we want to swap. Again, we want that 6 rather than 7)
+3. Swap nums[k] and nums[l].(Now we have a larger number)
+4. Reverse the sub-array nums[k + 1:].(We want it to be as small as possible while it is a greater than the original number.)
 
 void nextPermutation(vector<int>& nums) {
     int k = nums.size() - 2;
     while (k >= 0 && nums[k] >= nums[k + 1]) {
         k--;
     }
-    // 54321
+    
     if (k == -1) {
         reverse(nums.begin(), nums.end());
         return;
