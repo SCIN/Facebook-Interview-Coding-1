@@ -7,29 +7,27 @@ In DFS, we always finish one route and go to the other. So we need another coord
 based on the height as well.
 
 C++ BFS
-
 vector<vector<int>> verticalOrder(TreeNode* root) {
-    map<int, vector<int>> m;
-    queue<pair<TreeNode*, int>> q;
     vector<vector<int>> ret;
-
-    if (root == NULL) return ret;
-
+    if (!root) return ret;
+    map<int, vector<int>> level_map;
+    queue<pair<TreeNode*, int>> q;
     q.push({root, 0});
     while (!q.empty()) {
-        TreeNode* curr = q.front().first;
-        int idx = q.front().second;
+        auto front = q.front();
+        TreeNode* curr = front.first;
+        int level = front.second;
         q.pop();
-        m[idx].push_back(curr->val);
+        level_map[level].push_back(curr->val);
         if (curr->left) {
-            q.push({curr->left, idx - 1});
+            q.push({curr->left, level - 1});
         }
         if (curr->right) {
-            q.push({curr->right, idx + 1});
-        }       
+            q.push({curr->right, level + 1});
+        }
     }
-    for (auto it = m.begin(); it != m.end(); ++it) {
-        ret.push_back((*it).second);
+    for (auto it : level_map) {
+        ret.push_back(it.second);
     }
     return ret;
 }
