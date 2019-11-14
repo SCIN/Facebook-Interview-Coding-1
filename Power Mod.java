@@ -1,3 +1,47 @@
+50. Pow(x, n)
+Time O(log(n)) For each n's binary number, at most multiply once. base x
+Space O(1)
+Iteritive
+
+double myPow(double x, int n) {
+	long long N = n;
+	if (n < 0) {
+		N = -N;
+		x = 1 / x;
+	}
+	double power = 1;
+	double product = x;
+	for (long long i = N; i > 0; i /= 2) {
+		if ((i % 2 )== 1) {
+			power *= product;
+		}   
+		product *= product;   
+	}
+	return power;
+}
+
+Recursive:
+double myPow(double x, int n) {
+	long long N = n;
+	if (N < 0) {
+		x = 1/ x;
+		N = -N;
+	}
+	return half(x, N);
+}
+double half(double x, long long n ) {
+	if (n == 0) {
+		return 1.0;
+	}
+	double product = half(x, n / 2);
+	if (n % 2 == 1) {
+		return x * product * product;
+	} else {
+		return product * product;
+	}
+}
+
+
 Power Mod
 
 Calculates a to the power of b, mod c. 
