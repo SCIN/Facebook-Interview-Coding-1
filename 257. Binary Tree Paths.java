@@ -12,13 +12,13 @@ vector<string> binaryTreePaths(TreeNode* root) {
 }
 void dfs(vector<string>& ret, string path, TreeNode* root) {
 	if (!root) return;
+	path += to_string(root->val);
 	if (!root->left && !root->right) {
-		path += to_string(root->val);
-		ret.push_back(path);
-		return;
+	    ret.push_back(path);
+	    return;
 	}
-	dfs(ret, path + to_string(root->val) + "->", root->left);
-	dfs(ret, path + to_string(root->val) + "->", root->right);
+	dfs(ret, path + "->", root->left);
+	dfs(ret, path + "->", root->right);
 }
 
 Iterative BFS Solution 
