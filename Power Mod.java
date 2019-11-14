@@ -21,6 +21,8 @@ double myPow(double x, int n) {
 }
 
 Recursive:
+Time O(log(n))
+Space O(log(n))
 double myPow(double x, int n) {
 	long long N = n;
 	if (N < 0) {
