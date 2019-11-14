@@ -31,6 +31,7 @@ public int shortestKnightMove(int a1, int a2, int b1, int b2) {
 }
 
 玩法就是马走日
+IMPORTANT: VISITED!
 Update: Leetcode 1197. Minimum Knight Moves
 https://leetcode.com/problems/minimum-knight-moves/
 Infinite board, starting from (0, 0) to input (x, y)
