@@ -39,53 +39,29 @@ bool isMatch(string s, string p) {
         return first_match && isMatch(s.substr(1), p.substr(1));
     }
 }
-Hard版本
 
-301. Remove Invalid Parentheses
-C++ DFS Solution
-vector<string> removeInvalidParentheses(string s) {
-    int countLeft = 0;
-    int countRight = 0;
-    for (int i = 0; i < s.length(); i++) {
-        countLeft += (s[i] == '(');
-        if (countLeft == 0) {
-            countRight += (s[i] == ')');
-        } else {
-            countLeft -= (s[i] == ')');
+DP O(m*n)
+    
+dp[i][j] to be true if s[0..i) matches p[0..j) and false otherwise.
+1. dp[i][j] = dp[i - 1][j - 1], if p[j - 1] != '*' && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+2. dp[i][j] = dp[i][j - 2], if p[j - 1] == '*' and the pattern repeats for 0 time;
+3. dp[i][j] = dp[i - 1][j] && (s[i - 1] == p[j - 2] || p[j - 2] == '.'), if p[j - 1] == '*' and the pattern repeats for at least 1 time.
+                     
+bool isMatch(string s, string p) {
+    int m = s.size(), n = p.size();
+    vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
+    dp[0][0] = true;
+    for (int i = 0; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (p[j - 1] == '*') {
+                dp[i][j] = dp[i][j - 2] || (i && dp[i - 1][j] && (s[i - 1] == p[j - 2] || p[j - 2] == '.'));
+            } else {
+                dp[i][j] = i && dp[i - 1][j - 1] && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+            }
         }
     }
-    unordered_set<string> st;
-    dfs(st, s, 0, "", countLeft, countRight, 0);
-    return vector<string>(st.begin(), st.end());
+    return dp[m][n];
 }
-
-void dfs(unordered_set<string>& ret, string& s, int index, string path, int countLeft, int countRight, int pair) {
-    if (index == s.size()) {
-        if (countLeft == 0 && countRight == 0 && pair == 0) {
-            ret.insert(path);
-        }
-        return;
-    }
-    if (s[index] != '(' && s[index] != ')') {
-        dfs(ret, s, index + 1, path + s[index], countLeft, countRight, pair);
-    } else {
-        if (s[index] == '(') {
-            if (countLeft > 0) {
-                dfs(ret, s, index + 1, path, countLeft - 1, countRight, pair);
-            }
-            dfs(ret, s, index + 1, path + s[index], countLeft, countRight, pair + 1);
-        } else {
-            if (countRight > 0) {
-                dfs(ret, s, index + 1, path, countLeft, countRight - 1, pair);
-            }
-            if (pair > 0) {
-                dfs(ret, s, index + 1, path + s[index], countLeft, countRight, pair - 1);
-            }
-        }
-    }
-}
-         
-   
 我说DP，但他偏说喜欢递归。。。幸好时间 多 ，没让写代码，  从 没写过递归版本的。。。
 
 Solution: DP 
