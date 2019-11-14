@@ -1,0 +1,10 @@
+246. Strobogrammatic Number
+
+bool isStrobogrammatic(string num) {
+    unordered_map<char, char> dict = {{'6', '9'}, {'1', '1'}, {'0', '0'}, {'9', '6'}, {'8', '8'}};
+    for (int i = 0, j = num.size() - 1; i <= j; i++, j--) {
+        if (dict.find(num[i]) == dict.end()) return false;
+        if (dict[num[i]] != num[j]) return false;
+    }
+    return true;
+}
