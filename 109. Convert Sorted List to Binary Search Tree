@@ -2,6 +2,7 @@
 
 TreeNode* sortedListToBST(ListNode* head) {
     if (!head) return NULL;
+    // This base case is really important!!
     if (!head->next) return new TreeNode(head->val);
     ListNode* fast = head;
     ListNode* slow = head;
@@ -12,6 +13,7 @@ TreeNode* sortedListToBST(ListNode* head) {
         slow = slow->next;
     }
     if (!slow) return NULL;
+    // split the list into two parts, THIS NULL is IMPORTANT!
     if (prev) prev->next = NULL;
     TreeNode* root = new TreeNode(slow->val);
     root->right = slow->next ? sortedListToBST(slow->next) : NULL;
