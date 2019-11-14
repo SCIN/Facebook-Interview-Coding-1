@@ -3,6 +3,55 @@
 
 // 0,0,1,1,2,1,0,2,2
 
+3 COLORS
+void sortColors(vector<int>& nums) {
+    int start = 0;
+    int end = nums.size() - 1;
+    int curr = 0;
+    while (curr <= end) {
+        if (nums[curr] == 1) {
+            curr++;
+        } else if (nums[curr] == 2) {
+            swap(nums[end], nums[curr]);
+            end--;
+        } else {
+            swap(nums[curr], nums[start]);
+            start++;
+            curr++;
+        }
+    }
+}
+
+Sort k Colors
+O(n)
+void sortColors(vector<int>& nums) {
+    int left = 0;
+    int right = nums.size() - 1;
+    while (left < right) {
+        int min_color = INT_MAX;
+        int max_color = INT_MIN;
+        for (int i = left; i <= right; i++) {
+            min_color = min(nums[i], min_color);
+            max_color = max(nums[i], max_color);
+        }
+        int i = left;
+        while (i <= right) {
+            if (nums[i] == min_color) {
+                swap(nums[i], nums[left]);
+                i++;
+                left++;
+            }
+            else if (nums[i] > min_color && nums[i] < max_color) i++;
+            else {
+                swap(nums[i], nums[right]);
+                right--;
+            }
+        }
+    }
+}
+
+Java:
+
 public void sortColors(int[] nums) {
     int zero = 0, two = nums.length - 1, i = 0;
     while (i <= two) {
