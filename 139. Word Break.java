@@ -76,6 +76,49 @@ private int getMaxLength(Set<String> dict) {
 ------------------------------------------
 140. Word Break II
 // https://leetcode.com/problems/word-break-ii/
+DFS MEMO
+O(m*n)
+m : longest word length in wordDict
+n: length of s
+vector<string> wordBreak(string s, vector<string>& wordDict) {
+    int n = s.length();
+    unordered_set<string> dict(wordDict.begin(), wordDict.end());
+    vector<vector<int>> break_points(n + 1);
+    break_points[0].push_back(-1);
+    for (int i = 1; i < n + 1; i++) {
+        for (int j = 0; j < i; j++) {
+            if (break_points[j].size() && dict.find(s.substr(j, i - j)) != dict.end()) {
+                break_points[i].push_back(j);
+            }
+        }
+    }
+    return dfs(s, n, break_points);   
+}
+vector<string> dfs(string& s, int index, vector<vector<int>>& break_points) {
+    vector<string> ret;
+    if (index <= 0) {
+        ret.push_back("");
+        return ret;
+    }
+    for (int i = 0; i < break_points[index].size(); i++) {
+        string curr = s.substr(break_points[index][i], index - break_points[index][i]);
+        vector<string> words = dfs(s, break_points[index][i], break_points);
+        for (string& word : words) {
+            if (word == "") ret.push_back(curr);
+            else ret.push_back(word + " " + curr);
+        }
+    }
+    return ret;
+}
+
+
+
+
+
+
+
+
+
 
 Solution 1: DP + DFS
 Time: O(n * m) + O(n * # of solutions), 
