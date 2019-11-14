@@ -30,15 +30,15 @@ For the rest, just regular matching as the same with the original machine.
 Then We can get the recursive solution.
 
 bool isMatch(string s, string p) {
-     if (p.empty()) return s.empty();
-     bool match_first = (!s.empty() && ((p[0] == s[0]) || p[0] == '.'));
-     if (p.length() > 2 && p[1] == '*') {
-              return isMatch(s, p.substr(2)) || isMatch(s.substr(1), p);
-     } else {
-              return match_first && isMatch(s.substr(1), p.substr(1));
-     }
+    if (p.empty()) { return s.empty(); }
+    if (s.empty()) { return p[1] == '*' && isMatch(s, p.substr(2)); }
+    bool first_match = (s[0] == p[0] || p[0] == '.');
+    if (p[1] == '*') {
+        return isMatch(s, p.substr(2)) || (first_match && isMatch(s.substr(1), p));
+    } else {
+        return first_match && isMatch(s.substr(1), p.substr(1));
+    }
 }
-
 Hard版本
 
 301. Remove Invalid Parentheses
