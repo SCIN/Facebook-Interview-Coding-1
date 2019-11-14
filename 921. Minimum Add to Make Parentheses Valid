@@ -1,0 +1,20 @@
+921. Minimum Add to Make Parentheses Valid
+
+int minAddToMakeValid(string S) {
+    if (S.empty()) return 0;
+    stack<char> st;
+    int count = 0;
+    for (char c : S) {
+        if (c == '(') {
+            st.push(c);
+        } else {
+            if (st.empty()) {
+                count++;
+            } else {
+                st.pop();
+            }
+        }
+    }
+    count += st.size();
+    return count;
+}
