@@ -4,7 +4,50 @@
 "()())()" -> ["()()()", "(())()"]
 "(a)())()" -> ["(a)()()", "(a())()"]
 ")(" -> [""]
+301. Remove Invalid Parentheses
 
+C++ DFS Solution
+vector<string> removeInvalidParentheses(string s) {
+    int countLeft = 0;
+    int countRight = 0;
+    for (int i = 0; i < s.length(); i++) {
+        countLeft += (s[i] == '(');
+        if (countLeft == 0) {
+            countRight += (s[i] == ')');
+        } else {
+            countLeft -= (s[i] == ')');
+        }
+    }
+    unordered_set<string> st;
+    dfs(st, s, 0, "", countLeft, countRight, 0);
+    return vector<string>(st.begin(), st.end());
+}
+
+void dfs(unordered_set<string>& ret, string& s, int index, string path, int countLeft, int countRight, int pair) {
+    if (index == s.size()) {
+        if (countLeft == 0 && countRight == 0 && pair == 0) {
+            ret.insert(path);
+        }
+        return;
+    }
+    if (s[index] != '(' && s[index] != ')') {
+        dfs(ret, s, index + 1, path + s[index], countLeft, countRight, pair);
+    } else {
+        if (s[index] == '(') {
+            if (countLeft > 0) {
+                dfs(ret, s, index + 1, path, countLeft - 1, countRight, pair);
+            }
+            dfs(ret, s, index + 1, path + s[index], countLeft, countRight, pair + 1);
+        } else {
+            if (countRight > 0) {
+                dfs(ret, s, index + 1, path, countLeft, countRight - 1, pair);
+            }
+            if (pair > 0) {
+                dfs(ret, s, index + 1, path + s[index], countLeft, countRight, pair - 1);
+            }
+        }
+    }
+}
 Solution 1: DFS
 // To make the prefix valid, we need to remove a ‘)’. The problem is: which one? The answer is any one in the prefix. 
 // However, if we remove any one, we will generate duplicates, e.x. s = ()). Thus, we noly remove 1st ) in a series of concecutive )s.
