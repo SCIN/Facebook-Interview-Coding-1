@@ -1,4 +1,4 @@
-Shortest Knight Move
+1197. Minimum Knight Moves
 
 就是在象棋棋盘上给你两个点A，B，问 个Knight( 哥说，就是骑 那个哈)最少要 步从A跳到B。 珠从来没玩过 国际象棋，于是问Knight咋 。Turns out只要 任意朝向的L形就好。具体来说，如coordinate是(x,y) 那么在这 的 只knight可以跳到  个position中任何 个: (x-2,y-1); (x-2,y+1);(x+2,y-1);(x+2,y+1);(x-1,y+2);(x-1,y-2);(x+1,y-2);(x+1,y+2).
 
