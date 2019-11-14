@@ -1,5 +1,6 @@
 490. The Maze
-
+Do not use DFS for this problem. -> TLE
+O(m*n)
 bool hasPath(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination) {
     vector<int> dx = {0, 0, -1, 1};
     vector<int> dy = {1, -1, 0, 0};
