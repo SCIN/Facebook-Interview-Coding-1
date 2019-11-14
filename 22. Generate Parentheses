@@ -1,0 +1,26 @@
+22. Generate Parentheses
+
+Time: exponential 4^n / sqrt(n)
+Space: exponential 4^n / sqrt(n)
+
+The upper bound for left is n
+The upper bound for right is left
+
+vector<string> generateParenthesis(int n) {
+    vector<string> ret;
+    dfs(ret, "", 0, 0, n);
+    return ret;
+}
+void dfs(vector<string>& ret, string path, int left, int right, int n) {
+    if (left < right) return;
+    if (left == n && right == n) {
+        ret.push_back(path);
+        return;
+    }
+    if (left < n) {
+        dfs(ret, path + '(', left + 1, right, n);
+    }
+    if (right < left) {
+        dfs(ret, path + ')', left, right + 1, n);
+    }
+}
