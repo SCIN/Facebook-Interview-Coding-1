@@ -18,6 +18,7 @@ TreeNode* dfs(TreeNode* root) {
         left = left->right;
     }
     left->right = right;
+    //THIS LINE IS SUPER SUPER IMPORTANT
     root->left = NULL;
     return root;
 }
