@@ -1,0 +1,31 @@
+549. Binary Tree Longest Consecutive Sequence II
+
+O(n)
+
+int longestConsecutive(TreeNode* root) {
+    findPath(root);
+    return maxpath;
+}
+pair<int, int> findPath(TreeNode* root) {
+    if (!root) return {0, 0};
+    pair<int, int> ret = {1, 1};
+    auto left = findPath(root->left);
+    auto right = findPath(root->right);
+    if (root->left) {
+        if (root->val == root->left->val + 1) {
+            ret.second = left.second + 1;
+        } else if (root->val == root->left->val - 1) {
+            ret.first = left.first + 1;
+        }
+    }
+    if (root->right) {
+        if (root->val == root->right->val + 1) {
+            ret.second = max(right.second + 1, ret.second);
+        } else if (root->val == root->right->val - 1) {
+            ret.first = max(right.first + 1, ret.first);
+        }
+    }
+    maxpath = max(maxpath, ret.first + ret.second - 1);
+    return ret;
+}
+int maxpath = 0;
