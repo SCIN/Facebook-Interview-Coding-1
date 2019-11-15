@@ -1,3 +1,52 @@
+39. Combination Sum
+
+Input: candidates = [2,3,6,7], target = 7,
+A solution set is:
+[
+  [7],
+  [2,2,3]
+]
+
+Input: candidates = [2,3,5], target = 8,
+A solution set is:
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+	vector<vector<int>> ret;
+	vector<int> path;
+	dfs(ret, path, candidates, target, 0);
+	return ret;
+}
+void dfs(vector<vector<int>>& ret, vector<int> path, vector<int>& candidates, int target, int index) {
+	if (target < 0) return;
+	if (target == 0) {
+		ret.push_back(path);
+		return;
+	}
+	for (int i = index; i < candidates.size(); i++) {
+		path.push_back(candidates[i]);
+		dfs(ret, path, candidates, target - candidates[i], i);
+		path.pop_back();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 9377. Combination Sum IV
 
 比如[1,2,3] 4例子，当我们在计算dp[3]的时候，3可以拆分为1+x，而x即为x=dp[3-1]=dp[2]，3也可以拆分为2+x，此时x为x=dp[3-2]=dp[1]，
