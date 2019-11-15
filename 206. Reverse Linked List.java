@@ -1,6 +1,20 @@
 206. Reverse Linked List
 // https://leetcode.com/problems/reverse-linked-list/
 
+ListNode* reverseList(ListNode* head) {
+    if (!head) return head;
+    ListNode* prev = NULL;
+    ListNode* curr = head;
+    ListNode* next = head;
+    while (curr) {
+        next = next->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
 Solution 1: iterative
 public ListNode reverseList(ListNode head) {
     ListNode newHead = null;
