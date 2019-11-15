@@ -1,0 +1,16 @@
+398. Random Pick Index
+
+class Solution {
+public:
+    Solution(vector<int>& nums) {
+        for (int i = 0; i < nums.size(); i++) {
+            dict[nums[i]].push_back(i);
+        }
+    }
+    
+    int pick(int target) {
+        auto v = dict[target];
+        return v[rand() % v.size()];
+    }
+    unordered_map<int, vector<int>> dict;
+};
