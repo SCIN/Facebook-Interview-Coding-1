@@ -1,0 +1,25 @@
+670. Maximum Swap
+
+Greedy approach
+Start from the end -> we will search for small digit before it   like 4..7 swap -> 7..4 
+O(n)
+
+int maximumSwap(int num) {
+    string number = to_string(num);
+    int max_index = -1;
+    int left = -1;
+    int right = -1;
+    for (int i = number.size() - 1; i >= 0; i--) {
+        if (number[i] > number[max_index]) {
+            max_index = i;
+            continue;
+        }
+        if (number[i] < number[max_index]) {
+            left = i;
+            right = max_index;
+        }
+    }
+    if (left == -1) return num;
+    swap(number[left], number[right]);
+    return stoi(number);
+}
