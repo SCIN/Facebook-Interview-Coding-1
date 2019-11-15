@@ -1,0 +1,23 @@
+114. Flatten Binary Tree to Linked List
+
+void flatten(TreeNode* root) {
+    dfs(root);
+}
+TreeNode* dfs(TreeNode* root) {
+    if (!root) return NULL;
+    if (!root->left && !root->right) return root;
+    TreeNode* left = dfs(root->left);
+    TreeNode* right = dfs(root->right);
+
+    if (!left) {
+        root->right = right;
+        return root;    
+    } 
+    root->right = left;
+    while (left && left->right) {
+        left = left->right;
+    }
+    left->right = right;
+    root->left = NULL;
+    return root;
+}
