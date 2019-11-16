@@ -1,7 +1,31 @@
+49. Group Anagrams
 
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    unordered_map<string, vector<string>> dict;
+    for (string& str: strs) {
+        dict[mySort(str)].push_back(str);
+    }
+    vector<vector<string>> ret;
+    for (auto it : dict) {
+        ret.push_back(it.second);
+    }
+    return ret;
+}
+string mySort(const string& s) {
+    vector<int> alphabet(26, 0);
+    string ret = "";
+    for (char c : s) {
+        alphabet[c - 'a']++;
+    }
+    for (int i = 0; i < 26; i++) {
+        while (alphabet[i] > 0) {
+            ret += i + 'a';
+            alphabet[i]--;
+        }
+    }
+    return ret;
+}
 
-
-}49. Group Anagrams
 
 Solution 1: hash+counting sort
 
