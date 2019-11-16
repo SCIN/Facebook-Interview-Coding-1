@@ -1,0 +1,22 @@
+430. Flatten a Multilevel Doubly Linked List
+
+Node* flatten(Node* head) {
+    if (!head) return head;
+
+    Node* curr = head;
+    while (curr && !curr->child) {
+        curr = curr->next;
+    }
+    if (!curr) return head;
+    Node* connect = curr->next;
+    Node* child = flatten(curr->child);
+    curr->next = child;
+    child->prev = curr;
+    curr->child = NULL;
+    while (child && child->next) {
+        child = child->next;
+    }
+    child->next = flatten(connect);
+    if (connect) connect->prev = child;
+    return head;
+}
