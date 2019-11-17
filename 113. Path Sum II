@@ -1,0 +1,25 @@
+113. Path Sum II
+
+vector<vector<int>> pathSum(TreeNode* root, int sum) {
+    vector<vector<int>> ret;
+    vector<int> path;
+    dfs(ret, root, path, sum);
+    return ret;
+}
+void dfs(vector<vector<int>>& ret, TreeNode* root, vector<int>& path, int target) {
+    if (!root) return;
+    path.push_back(root->val);
+    if (!root->left && !root->right && root->val == target) {
+        ret.push_back(path);
+        return;
+    }
+    if (root->left) {
+        dfs(ret, root->left, path, target - root->val);
+        path.pop_back();
+    }
+    if (root->right) {
+        dfs(ret, root->right, path, target - root->val);
+        path.pop_back();
+    }
+
+}
