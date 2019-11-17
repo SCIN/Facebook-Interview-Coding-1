@@ -1,0 +1,28 @@
+692. Top K Frequent Words
+
+struct compare {
+    bool operator() (pair<string, int>& a, pair<string, int>& b) {
+        if (a.second == b.second) return a.first < b.first;
+        return a.second > b.second;
+    }
+};
+vector<string> topKFrequent(vector<string>& words, int k) {
+    vector<string> ret;
+    unordered_map<string, int> dict;
+    for (string& word : words) {
+        dict[word]++;
+    }
+    priority_queue<pair<string, int>, vector<pair<string, int>>, compare> pq;
+    for (auto it : dict) {
+        pq.push(make_pair(it.first, it.second));
+        if (pq.size() > k) {
+            pq.pop();
+        }
+    }
+    while (!pq.empty()) {
+        ret.push_back(pq.top().first);
+        pq.pop();
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
