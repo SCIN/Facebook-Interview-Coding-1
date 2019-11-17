@@ -1,0 +1,20 @@
+105. Construct Binary Tree from Preorder and Inorder Traversal
+
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    for (int i = 0; i < inorder.size(); i++) {
+        dict[inorder[i]] = i;
+    }
+    return build(preorder, inorder, 0, preorder.size() - 1);
+}
+TreeNode* build(vector<int>& preorder, vector<int>& inorder, int left, int right) {
+    if (left > right || root_index == preorder.size()) return NULL;
+    TreeNode* root = new TreeNode(preorder[root_index]);
+    if (dict.find(preorder[root_index]) == dict.end()) return root;
+    int pos = dict[preorder[root_index]];
+    root_index++;
+    root->left = build(preorder, inorder, left, pos - 1);
+    root->right = build(preorder, inorder, pos + 1, right);
+    return root;
+}
+unordered_map<int, int> dict;
+int root_index = 0;
