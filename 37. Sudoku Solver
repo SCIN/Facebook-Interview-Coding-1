@@ -1,0 +1,42 @@
+37. Sudoku Solver
+
+For every position try charcter from 1 to 9 and check if it is a valid board each time.
+No more than 9 for the first column, no more than 8 for the second... Every row, 9!
+9 rows total 
+Time O((9!)^9) = O(1)
+Space O(81)
+void solveSudoku(vector<vector<char>>& board) {
+        solve(board, 0, 0);
+}
+bool solve(vector<vector<char>>& board, int i, int j) {
+    if (i == 9) return true;
+    if (j == 9) return solve(board, i + 1, 0);
+    if (board[i][j] != '.') return solve(board, i, j + 1);
+    for (int c = '1'; c <= '9'; c++) {
+        if (check(board, i, j, c)) {
+            board[i][j] = c;
+            if (solve(board, i, j + 1)) return true;
+            board[i][j] = '.';
+        }
+    }
+    return false;
+}
+bool check(vector<vector<char>>& board, int i, int j, char c) {
+    //check row 
+    for (int x = 0; x < 9; x ++) {
+        if (board[x][j] == c) return false;
+    }
+    //check col
+    for (int y = 0; y < 9; y++){
+        if (board[i][y] == c) return false;
+    }
+    //check inner square
+    int row = i - i % 3;
+    int col = j - j % 3;
+    for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {
+            if (board[row + x][col + y] == c) return false;
+        }
+    }
+    return true;
+}
