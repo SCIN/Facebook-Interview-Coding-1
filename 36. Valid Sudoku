@@ -1,0 +1,23 @@
+36. Valid Sudoku
+
+bool isValidSudoku(vector<vector<char>>& board) {
+    unordered_set<string> st;
+    for (int i = 0; i < board.size(); i++) {
+        for (int j = 0; j < board[0].size(); j++) {
+            if (board[i][j] != '.') {
+                string val = "("+ string(1, board[i][j]) + ")";
+                string hash_row = to_string(i) + val;
+                string hash_col = val + to_string(j);
+                string hash_squ = to_string(i / 3) + val + to_string(j / 3);
+                if (st.find(hash_row) != st.end() ||
+                    st.find(hash_col) != st.end() || 
+                    st.find(hash_squ) != st.end()) {
+                    return false;
+                }
+                st.insert(hash_row);
+                st.insert(hash_col);
+                st.insert(hash_squ);
+            }
+        }
+    }
+    return true;
