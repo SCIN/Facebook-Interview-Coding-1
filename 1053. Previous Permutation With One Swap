@@ -1,0 +1,15 @@
+1053. Previous Permutation With One Swap
+search from the back
+Find the end of decreasing sequence, A[i], (after A[i] decrease)
+Find the previous of begin (A[j]) of the sequence greater or equal to A[i]
+
+vector<int> prevPermOpt1(vector<int>& A) {
+    int i = A.size() - 2;
+    while (i >= 0 && A[i] <= A[i + 1]) i--;
+    if (i < 0) return A;
+    int j = A.size() - 1;
+    while (A[i] <= A[j]) j--;
+    while (j - 1 >= 0 && A[j] == A[j - 1]) j--;
+    swap(A[i], A[j]);
+    return A;
+}
