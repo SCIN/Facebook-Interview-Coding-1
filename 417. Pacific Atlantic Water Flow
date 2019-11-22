@@ -1,0 +1,40 @@
+417. Pacific Atlantic Water Flow
+
+ vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        vector<vector<int>> ret;
+        int m = matrix.size();
+        if (m == 0) return ret;
+        int n = matrix[0].size();
+        if (n == 0) return ret;
+        
+        vector<vector<bool>> pacific(m, vector<bool>(n, 0));
+        vector<vector<bool>> atlantic(m, vector<bool>(n, 0));
+        
+        for (int i = 0; i < m; i++) {
+            dfs(matrix, pacific, i, 0);
+            dfs(matrix, atlantic, i, n - 1);
+        }
+        for (int i = 0; i < n; i++) {
+            dfs(matrix, pacific, 0, i);
+            dfs(matrix, atlantic, m - 1, i);
+        }
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    ret.push_back({i, j});
+                }
+            }
+        }
+        return ret;
+    }
+    void dfs(vector<vector<int>>& matrix, vector<vector<bool>>& visited, int row, int col) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        if (row < 0 || col < 0 || row >= m || col >= n || visited[row][col]) return;
+        visited[row][col] = 1;
+        if (row - 1 >= 0 && matrix[row - 1][col] >= matrix[row][col]) dfs(matrix, visited, row - 1, col);
+        if (row + 1 < m && matrix[row + 1][col] >= matrix[row][col]) dfs(matrix, visited, row + 1, col);
+        if (col - 1 >= 0 && matrix[row][col - 1] >= matrix[row][col]) dfs(matrix, visited, row, col - 1);
+        if (col + 1 < n && matrix[row][col + 1] >= matrix[row][col]) dfs(matrix, visited, row, col + 1);
+    }
