@@ -135,3 +135,32 @@ n = -2147483648
             return x * product * product;
         }
     }
+5. 166. Fraction to Recurring Decimal
+string fractionToDecimal(int numerator, int denominator) {
+        assert(denominator != 0);
+        if (numerator == 0) return "0";
+        
+        int sign = numerator > 0 ^ denominator > 0;
+        string ret = "";
+        
+        if (sign == 1) ret += '-';    
+        long n = labs(numerator), d = labs(denominator), r = n % d;
+        ret += to_string(n / d);
+        if (!r) return ret;
+        
+        ret += '.';
+        unordered_map<long, int> repeat;
+        
+        while (r) {
+            if (repeat.find(r) != repeat.end()) {
+                ret.insert(repeat[r], "(");
+                ret += ")";
+                return ret;
+            }
+            repeat[r] = ret.size();
+            r *= 10;
+            ret += to_string(r / d);
+            r %= d;
+        }
+        return ret;
+    }
