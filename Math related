@@ -1,0 +1,137 @@
+1. addition
+  (1) add binary string https://leetcode.com/problems/add-binary/
+  string addBinary(string a, string b) {
+      int i = a.length() - 1;
+      int j = b.length() - 1;
+      int carry = 0;
+      string ret = "";
+      while (i >= 0 || j >= 0 || carry) {
+          int val_a = (i >= 0) ? (a[i] - '0') : 0;
+          int val_b = (j >= 0) ? (b[j] - '0') : 0;
+          int sum = val_a + val_b + carry;
+          carry = sum / 2;
+          ret = to_string((int)sum % 2) + ret;
+          i--;
+          j--;
+      }
+      return ret;
+  }
+  (2) 
+  string addStrings(string num1, string num2) {
+      int i = num1.length() - 1;
+      int j = num2.length() - 1;
+      string ret = "";
+      int carry = 0;
+      while (i >= 0 || j >= 0 || carry) {
+          int val1 = (i >= 0) ? num1[i] - '0' : 0;
+          int val2 = (j >= 0) ? num2[j] - '0' : 0;
+          int sum = val1 + val2 + carry;
+          carry = sum / 10;
+          ret = to_string(sum % 10) + ret;
+          i--;
+          j--;
+      }
+      return ret;
+  }
+2. Multiply
+  (1) 43. Multiply Strings
+      string multiply(string num1, string num2) {
+        string ret(num1.length() + num2.length(), '0');
+        for (int i = num1.length() - 1; i >= 0; i--) {
+            int carry = 0;
+            for (int j = num2.length() - 1; j >= 0; j--) {
+                int tmp = (ret[i + j + 1] - '0') + carry + (num1[i] - '0') * (num2[j] - '0');
+                ret[i + j + 1] = tmp % 10 + '0';
+                carry = tmp / 10;
+            }
+            ret[i] += carry;
+        }
+        for (int i = 0; i < ret.size(); i++) {
+            if (ret[i] != '0') return ret.substr(i);
+        } 
+        return "0";
+    }
+3. Divide
+ Use Long
+ (1). binary search 
+ int divide(int dividend, int divisor) {
+      if (dividend == INT_MIN && divisor == -1) return INT_MAX;
+      int sign = (dividend > 0) ^ (divisor > 0);
+      long dvd = labs(dividend), dvs = labs(divisor);
+      long left = 0, right = dvd;
+      while (left < right) {
+          long mid = left + (right - left) / 2 + 1;
+          if (mid * dvs <= dvd) left = mid;
+          else right = mid - 1;
+      }
+      return sign == 1 ? -left : left;
+  }
+  (2). bit shift
+  int divide(int dividend, int divisor) {
+        if (dividend == INT_MIN && divisor == -1) return INT_MAX;
+        long dvd = labs(dividend), dvs = labs(divisor), ans = 0;
+        int sign = (dividend > 0) ^ (divisor > 0);
+        while (dvd >= dvs) {
+            long temp = dvs, m = 1;
+            while (temp << 1 <= dvd) {
+                temp <<= 1;
+                m <<= 1;
+            }
+            dvd -= temp;
+            ans += m;
+        }
+        return sign == 1 ? -ans : ans;   
+    }
+    Do not use long
+    
+    The idea is convert both number to negative to avoid overflow(negative is one more than positive)
+    However, left shift in c++ could cause compiler error
+    The idea is correct but the code wont compile.
+    
+    int divide(int dividend, int divisor) {
+        if (dividend == INT_MIN && divisor == -1) return INT_MAX;
+        int sign = (dividend > 0) ^ (divisor > 0);
+        int dvd = abs(dividend), dvs = abs(divisor);
+        int res = helper(-dvd, -dvs);
+        return sign == 1 ? -res : res;
+    }
+    int helper(int dividend, int divisor) {
+        int result = 0;
+        int currentDivisor = divisor;
+        while(true) {
+            if(dividend > divisor) {
+                break;
+            }
+            int temp = 1;
+            while(dividend <= currentDivisor << 1 && currentDivisor << 1 < 0) {
+                temp = temp << 1;
+                currentDivisor = currentDivisor << 1;
+            }
+            dividend -= currentDivisor;
+            result += temp;
+            currentDivisor = divisor;
+        }
+        return result;
+    }
+4. Pow
+log(n) each time n is reduced by half
+The reason use long long: 
+x = 1.00000
+n = -2147483648
+  double myPow(double x, int n) {
+        long long N = n;
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+        return half(x, N);
+    }
+    double half(double x, long long n) {
+        if (n == 0) return 1.0;
+        double product = half(x, n / 2);
+        if (n % 2 == 0) {
+            return product * product;
+        } else {
+            return x * product * product;
+        }
+    }
