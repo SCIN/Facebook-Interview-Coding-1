@@ -130,6 +130,15 @@ Can be optimized using dp
 
   Two pointer, from the beginning and the end, 
   if not the same, try remove one of them and check the rest need to be a valid Palindrome.
+  
+  1216. Valid Palindrome III https://leetcode.com/problems/valid-palindrome-iii/
+  
+  Brute Force: DFS
+  
+  Optimized: DFS with memo O(n^2), hardcore is to find a workable hash function
+  i * 1001 * 1001 + j * 1001 + k, OR hash string i + "," + j + "," + k
+  
+  Optimized: DP Longest subsequence, return dp[0][n - 1] + k >= n
 
   125 https://leetcode.com/problems/valid-palindrome/
   Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
