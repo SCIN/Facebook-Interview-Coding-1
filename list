@@ -167,6 +167,30 @@ Can be optimized using dp
   }
   return count;
   
+  5 https://leetcode.com/problems/longest-palindromic-substring/
+  Palindromic substring的dp题可以用expandAroundCenter的办法将space降至O(1)
+  
+  string longestPalindrome(string s) {
+      int n = s.length(), start = 0, end = 0;
+      for (int i = 0; i < n; i++) {
+          int lenOdd = expandAroundCenter(s, i, i);
+          int lenEven = expandAroundCenter(s, i, i + 1);
+          int len = max(lenOdd, lenEven);
+          if (len > (end - start)) {
+              end = i + len / 2;
+              start = i - (len - 1) / 2;
+          }
+      }
+      return s.substr(start, end - start + 1);
+  }
+  int expandAroundCenter(string& s, int i, int j) {
+      int left = i, right = j, n = s.length();
+      while (left >= 0 && right < n && s[left] == s[right]) {
+          left--, right++;
+      }
+      return right - left - 1;
+  }
+  
   516 https://leetcode.com/problems/longest-palindromic-subsequence/
   2D DP(n * n)
   dp[i][j] longest palindromic subsequence from i to j inclusive
@@ -188,6 +212,25 @@ Can be optimized using dp
       }
       return dp[0][n - 1];
   }
+  
+  214 https://leetcode.com/problems/shortest-palindrome/
+  O(n^2): T(n) = T(n - 2) + O(n) 
+  Two pointers, from begining and end, i increase by one when s[i] == s[j]
+  if i == n return s;
+  extra = s.substr(i) is the extra part in this call.
+  ret = reversed(extra) + shortestPalindrome(s.substr(0, i)) + extra;
+  
+  336 https://leetcode.com/problems/palindrome-pairs/
+  Brute force: concatenate every two of the strings and call checkValid() O(n^2 * k)
+  Optimized: O(k^2 * n)
+  Build hashmap containing reversed words from input as key, the index in input as value.
+  For i from 0 to n - 1
+    For j from 0 to n - i?
+      string left = words[i].substr(0, j);
+      string right = words[i].substr(j + 1);
+      if (dict.find(left) != dict.end() && dict[left] != i && isPalindrome(right)) ret.push_back({i, dict[left]});
+      if (dict.find(right) != dict.end() && dict[right] != i && isPalindrome(left) && !left.empty()) ret.push_back({dict[right], i});
+  
 
 
 
