@@ -111,15 +111,43 @@
   
 2. DFS Backtrack
 (1) Add operation
+  494 https://leetcode.com/problems/target-sum/
+  + or - on every number 
+  Can be optimized using dp
 
-494 https://leetcode.com/problems/target-sum/
-+ or - on every number 
-Can be optimized using dp
 (2) Word Break
-139 https://leetcode.com/problems/word-break/
-Remember Cache! 用index cache就可以
-140 https://leetcode.com/problems/word-break-ii/
-（有更简单的解法，补上）
+  139 https://leetcode.com/problems/word-break/
+  Remember Cache! 用index cache就可以
+  140 https://leetcode.com/problems/word-break-ii/
+ （有更简单的解法，补上）
+
+(3) Word Ladder
+  127 https://leetcode.com/problems/word-ladder/
+  Return 最短路径 from beginWord to endWord
+  O(m*n)
+  Check if endWord in wordList before search
+  BFS from beginWord, try to change a-z for every position on current word(front of the queue)
+  As long as reach endWord, return step directly.
+
+  126 https://leetcode.com/problems/word-ladder-ii/
+  Return every shortest path from beginWord to endWord
+  O(2^n)
+  Best Solution so far
+  Maintain two unordered_set<string> curr, next;
+  Maintain unordered_map<string, vector<string>> parents;
+  While (!curr.empty()) {
+    remove every word in curr from dict;
+    add children for every word in dict to next;
+    if next empty break
+    if next contains endWord, do dfs to get paths and break;
+    swap(curr, next)
+    clear next
+  }
+  add children: try to change a-z for every position on current word, add into next if in dict
+  DFS get paths: from endWord to beginWord, try every parents, reverse path before return
+
+
+
 
 
 3. Palindrome
