@@ -115,6 +115,11 @@
 494 https://leetcode.com/problems/target-sum/
 + or - on every number 
 Can be optimized using dp
+(2) Word Break
+139 https://leetcode.com/problems/word-break/
+Remember Cache! 用index cache就可以
+140 https://leetcode.com/problems/word-break-ii/
+（有更简单的解法，补上）
 
 
 3. Palindrome
