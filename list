@@ -267,9 +267,11 @@ Update when grid[next_r][next_c] > grid[r][c] + 1,
 Start next search from (next_r, next_c) 
 
 317 https://leetcode.com/problems/shortest-distance-from-all-buildings/
+
 BFS 这道题因为要sum up all distance，所以更新visited的方式是对于每一个building的search，要找的target数字不一样
 第一个building search 0，每个push进queue的空地都要grid[][]--；对于下一个building， search -1， 以此类推。
-
+Also need to maintain another distance matrix to do the sum.
+At last, traverse the distance matrix and return the smallest distance in it.
 
 
 
