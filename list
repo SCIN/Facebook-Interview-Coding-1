@@ -17,14 +17,15 @@
    Using two pointer O(n)
 
    304 https://leetcode.com/problems/range-sum-query-2d-immutable/
-
+   2D Pre-fix Sum array O(1) get function
+   303 https://leetcode.com/problems/range-sum-query-immutable/
+   Simple Pre-fix Sum array O(1) get function
 
    689 https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/
    In a given array nums of positive integers, find three non-overlapping subarrays with maximum sum.
    Each subarray will be of size k, and we want to maximize the sum of all 3*k entries.
    Return the result as a list of indices representing the starting position of each interval (0-indexed). 
    If there are multiple answers, return the lexicographically smallest one.
-
    Input: [1,2,1,2,6,7,5,1], 2
    Output: [0, 3, 5]
    Explanation: Subarrays [1, 2], [2, 6], [7, 5] correspond to the starting indices [0, 3, 5].
@@ -39,12 +40,27 @@
    416 https://leetcode.com/problems/partition-equal-subset-sum/
    Given a non-empty array containing only positive integers, 
    find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
-
    Input: [1, 5, 11, 5]
    Output: true
    Explanation: The array can be partitioned as [1, 5, 5] and [11].
    
    494 https://leetcode.com/problems/target-sum/
+   You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. 
+   Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+   Find out how many ways to assign symbols to make sum of integers equal to target S.
+   
+   Brute Force: DFS, O(2^n) n: size of array.
+   From index 0 to n - 1, try +nums[i], -nums[i] every call of dfs.
+   
+   DP: (The sum of elements in the given array will not exceed 1000.) So use 2d dp array of size n * 2001.
+   
+   Base: dp[0][nums[0] + 1000] = 1, dp[0][-nums[0] + 1000] += 1.
+   For i from 0 to n - 1
+    For sum from -1000 to 1000
+      if (dp[i][sum + 1000] > 0)
+        dp[i][sum + 1000 + nums[i]] += dp[i - 1][sum + 1000];
+        dp[i][sum + 1000 - nums[i]] += dp[i - 1][sum + 1000];
+   Return dp[n - 1][S + 1000];    
    
  
  (3) Other
@@ -56,14 +72,47 @@
    Input: [[1,1],2,[1,1]]
    Output: 10 
    Explanation: Four 1's at depth 2, one 2 at depth 1.
-
+   
    Basic DFS, add one level each list
+   
+   364 https://leetcode.com/problems/nested-list-weight-sum-ii/
+   Input: [[1,1],2,[1,1]]
+   Output: 8 
+   Explanation: Four 1's at depth 1, one 2 at depth 2.
+   
+   Input: [1,[4,[6]]]
+   Output: 17 
+   Explanation: One 1 at depth 3, one 4 at depth 2, and one 6 at depth 1; 1*3 + 4*2 + 6*1 = 17.
+   
+   The most inner Integer is at level 1.
+   Two int variables, weighted and unweighted. 
+   unweighted += item.getInteger();
+   If !item.isInteger(), push the list into next level
+   swap two list
+   
+   
+   
  
  (5) Binary Tree Path
    124 https://leetcode.com/problems/binary-tree-maximum-path-sum/
-   129 https://leetcode.com/problems/sum-root-to-leaf-numbers/
    
+   129 https://leetcode.com/problems/sum-root-to-leaf-numbers/
    DFS, pass sum * 10 + root->val as new sum to next level(children)
    
+   113 https://leetcode.com/problems/path-sum-ii/
+   DFS, base: check target == root->val
+   Use reference, no RETURN in check condition. 
+ (6) Backtrack in Array
+   39 https://leetcode.com/problems/combination-sum/
+   DFS, start with every index, (next dfs may start with the same index)
+   To avoid duplicates: 1. no dulicates in the input, 2. sort before dfs.
    
- 
+  
+  
+DFS
+(1) Add operation
+
+494 https://leetcode.com/problems/target-sum/
++ or - on every number 
+Can be optimized using dp
+(2) Tree
