@@ -109,10 +109,85 @@
    
   
   
-DFS
+2. DFS
 (1) Add operation
 
 494 https://leetcode.com/problems/target-sum/
 + or - on every number 
 Can be optimized using dp
 (2) Tree
+
+
+
+3. Palindrome
+  266 https://leetcode.com/problems/palindrome-permutation/
+  这个题和Palindrome几乎无关。
+  最优解是用hashmap存一次每个char的次数，然后再loop一次，maintain一个count variable，每次碰到出现次数为1的count++，当count大于1直接break
+  return count <= 1
+  
+  680 https://leetcode.com/problems/valid-palindrome-ii/
+  You may delete at most one character. Judge whether you can make it a palindrome.
+
+  Two pointer, from the beginning and the end, 
+  if not the same, try remove one of them and check the rest need to be a valid Palindrome.
+
+  125 https://leetcode.com/problems/valid-palindrome/
+  Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+  Input: "A man, a plan, a canal: Panama"
+  Output: true
+
+  Two pointer, from the beginning and the end, 
+  while not isalnum i++, j--, compare lowercase and move pointers.
+
+  9 https://leetcode.com/problems/palindrome-number/
+
+  Two corner cases: 1. negative return false directly, 2. x % 10 == 0 && x != 0, false directly.
+  O(log(n)), while x > last_half, x /= 10 each iteration and keep track of the reversed last half.
+
+  647 https://leetcode.com/problems/palindromic-substrings/（似乎有一个O(1) time solution）
+  Given a string, your task is to count how many palindromic substrings in this string.
+  The substrings with different start indexes or end indexes are counted as different substrings 
+  even they consist of same characters.
+
+  2D DP n * n
+  Initialization: dp[i][i] = 1; count = n;
+  For i from n - 2 to 0
+    For j from i + 1 to n
+      If (s[i] == s[j]) 
+         If (j == i + 1) dp[i][j] = 1;
+         Else dp[i][j] = dp[i + 1][j - 1];
+      count += dp[i][j];
+  return count;
+
+  O(1) memory:
+  int n = s.length(), count = 0;
+  for (int i = 0; i < n; i++) {
+      for (int l = i, r = i; l >= 0 && r < n && s[l] == s[r]; l--, r++) count++;
+      for (int l = i, r = i + 1; l >= 0 && r < n && s[l] == s[r]; l--, r++) count++;
+  }
+  return count;
+  
+  516 https://leetcode.com/problems/longest-palindromic-subsequence/
+  2D DP(n * n)
+  dp[i][j] longest palindromic subsequence from i to j inclusive
+  init: dp[i][i] = 1;
+  return: from 0 to n - 1 dp[0][n - 1]
+  int longestPalindromeSubseq(string s) {
+      int n = s.length();
+      vector<vector<int>> dp(n, vector<int>(n, 0));
+      for (int i = 0; i < n; i++) dp[i][i] = 1;
+      for (int i = n - 2; i >= 0; i--) {
+          for (int j = i + 1; j < n; j++) {
+              if (s[i] == s[j]) {
+                  if (j == i + 1) dp[i][j] = 2;
+                  else dp[i][j] = dp[i + 1][j - 1] + 2;
+              } else {
+                  dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+              }
+          }
+      }
+      return dp[0][n - 1];
+  }
+
+
+
