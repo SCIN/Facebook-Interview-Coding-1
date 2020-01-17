@@ -109,14 +109,12 @@
    
   
   
-2. DFS
+2. DFS Backtrack
 (1) Add operation
 
 494 https://leetcode.com/problems/target-sum/
 + or - on every number 
 Can be optimized using dp
-(2) Tree
-
 
 
 3. Palindrome
@@ -240,6 +238,38 @@ Can be optimized using dp
       if (dict.find(left) != dict.end() && dict[left] != i && isPalindrome(right)) ret.push_back({i, dict[left]});
       if (dict.find(right) != dict.end() && dict[right] != i && isPalindrome(left) && !left.empty()) ret.push_back({dict[right], i});
   
+4. Search
+(1) The Maze
+490 https://leetcode.com/problems/the-maze/
+
+DFS, return bool, O(m*n)
+Start DFS from start[0],start[1].
+Base case: out of bound(4) || if maze[row][col] != 0
+Mark Visited: maze[row][col] = 2;
+Try four direction(while loop) until the end(hit a wall), do dfs from the end
+return dfs(left) || dfs(right) || dfs(up) || dfs(down).
+
+505 https://leetcode.com/problems/the-maze-ii/
+
+Find the shortest distance for the ball to stop at the destination
+BFS O(m*n) return pathLength
+Build another distance 2D vector, starting with INT_MAX, and update it duing the traversal.
+Return dist[end[0]][end[1]] == INT_MAX ? -1 : dist[end[0]][end[1]];
+
+(2) Walls and Gates/Shortest Distance from All Buildings
+286 https://leetcode.com/problems/walls-and-gates/
+Fill each empty room with the distance to its nearest gate. 
+If it is impossible to reach a gate, it should be filled with INF
+
+DFS/BFS
+Do search on every gate, 
+Update when grid[next_r][next_c] > grid[r][c] + 1, 
+Start next search from (next_r, next_c) 
+
+317 https://leetcode.com/problems/shortest-distance-from-all-buildings/
+BFS 这道题因为要sum up all distance，所以更新visited的方式是对于每一个building的search，要找的target数字不一样
+第一个building search 0，每个push进queue的空地都要grid[][]--；对于下一个building， search -1， 以此类推。
+
 
 
 
