@@ -529,8 +529,37 @@ if empty, push i
   用一个unordered_map<int, int>记录，key是row index - col index，value是对应row col的val
   if not find, add, else compare and return
   O(1) Space是不用hashmap，每次都和左上角比较
+  (2) Sprial Matrix
+  54 Spiral Matrix https://leetcode.com/problems/spiral-matrix/
+  继续转圈的if条件是r2 > r1 && c2 > c1
+  885 https://leetcode.com/problems/spiral-matrix-iii/
+  rpos, cpos, dis(推dis个进去per direction), dir(奇数dir增加dis)
+  (3) Search
+  240 https://leetcode.com/problems/search-a-2d-matrix-ii/
+  O(m + n)经典做法
+  O(nlogn) Binary Search 每个row扫一遍，有true即return，对each row做binary search
   
-  (2) Sparse Matrix Compression
+  378 https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
+  Minheap O(nlogm + n)
+  Binary Search O(n*log(max−min)) 
+  Search value not index!
+  int kthSmallest(vector<vector<int>>& matrix, int k) {
+     int n = matrix.size();
+     int lo = matrix[0][0], hi = matrix[n - 1][n - 1] + 1;
+     while (lo < hi) {
+         int mid = lo + (hi - lo) / 2;
+         int count = 0, j = n - 1;
+         for (int i = 0; i < n; i++) {
+             while (j >= 0 && matrix[i][j] > mid) j--;
+             count += j + 1;
+         }
+         if (count < k) lo = mid + 1;
+         else hi = mid;
+     }
+     return lo;
+  }
+  
+  (4) Sparse Matrix Compression
   311 https://leetcode.com/problems/sparse-matrix-multiplication/
   There is no better solution than O(m*n*k) given the input like this problem.
   However, we can do optimization if the input have already been compressed. 
@@ -645,4 +674,4 @@ if empty, push i
            }
        }
        return res;
-  
+13. Binary Search
