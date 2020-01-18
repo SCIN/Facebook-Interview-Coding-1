@@ -473,13 +473,17 @@ dfs backtrack
 
 32 https://leetcode.com/problems/longest-valid-parentheses/submissions/
 三种方法，最简单的是stack
-1.stack O(n), O(n)
+1.Stack. O(n), O(n)
 stack storing index
 left parenthese, push(i)
 right, pop
 if not empty, update ret
 if empty, push i
-2. dp
-3. Two pointers
+2. DP
+3. Two pointers. O(n), O(1)
 
-
+8. operator/calculaters
+9. Math related
+10. Tree related recursion
+11. stack
+12. Matrix related
