@@ -416,5 +416,8 @@
         hasNext();
         return (st.top()++)->getInteger(); // remember to move to next one in the current list
     }
+6. Merge Interval
+
+3. https://leetcode.com/problems/interval-list-intersections/
 
 
