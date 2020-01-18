@@ -328,6 +328,50 @@
   (Iterative) 328 https://leetcode.com/problems/odd-even-linked-list/
      odd even pointer，形成两条list，最后将odd的next连到even的head上
 (3) Linked List - Binary Tree
-(4)
+    426 https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/submissions/
+    
+    Convert a Binary Search Tree to a sorted Circular Doubly-Linked List in place.
+    
+    114 https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+    
+    Given a binary tree, flatten it to a linked list in-place.
+    Set root->right = func(root->left), root->left = NULL
+    
+    109 https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+    Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+    
+    O(nlogn), O(logn): 思路是找midpoint作为root，然后左为left，右边为right，实际操作中，任何情况左，root，右存在重叠，都会seg fault。
+    
+    避免bug的几个地方：
+    1. base return null，
+    2. 如果slow是null，return null，
+    3. 如果slow是head，应该直接return root，而不再进行dfs（很迷），
+    4. set prev->next = NULL前检查prev
+    
+    O(n), 0(n): convert list to array, and build
+    O(n), O(1): Store a public ListNode* curr, count length first, set left-right boundary, build left part first.
+    
+    ListNode* curr = NULL;
+    TreeNode* sortedListToBST(ListNode* head) {
+        int n = 0;
+        curr = head;
+        for (ListNode* curr = head; curr; curr = curr->next) n++;
+        return dfs(0, n - 1);
+    }
+    TreeNode* dfs(int left, int right) {
+        if (left > right) return NULL;
+        int mid = (left + right) / 2;
+        TreeNode* prev = dfs(left, mid - 1);
+        TreeNode* root = new TreeNode(curr->val);
+        if (left == right) {
+            curr = curr->next;
+            return root;
+        }
+        root->left = prev;
+        curr = curr->next;
+        root->right = dfs(mid + 1, right);
+        return root;
+    }
+(4) 
 
 
