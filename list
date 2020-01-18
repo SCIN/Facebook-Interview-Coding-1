@@ -417,24 +417,69 @@
         return (st.top()++)->getInteger(); // remember to move to next one in the current list
     }
 6. Merge Interval
-56 https://leetcode.com/problems/merge-intervals/
-Input: [[1,3],[2,6],[8,10],[15,18]]
-Output: [[1,6],[8,10],[15,18]]
+  56 https://leetcode.com/problems/merge-intervals/
+  Input: [[1,3],[2,6],[8,10],[15,18]]
+  Output: [[1,6],[8,10],[15,18]]
 
-  先sort, curr = intervals[0]
-  push at last
+    先sort, curr = intervals[0]
+    push at last
 
-986 https://leetcode.com/problems/interval-list-intersections/
-  two pointers,谁先结束谁++
+  986 https://leetcode.com/problems/interval-list-intersections/
+    two pointers,谁先结束谁++
 
-57 https://leetcode.com/problems/insert-interval/
-  input has been sorted by start time
-  1. One index variable, push every interval while intervals[i][1] < newIntervals[0]
-  2. merge, while intervals[i][0] < newIntervals[1], update newIntervals[0], newIntervals[1]
-  3. push newIntervals
-  4. push the rest
-253 https://leetcode.com/problems/meeting-rooms-ii/
-  O(nlogn) priority_queue, push intervals[i][1] only
-????? https://leetcode.com/problems/add-bold-tag-in-string/
+  57 https://leetcode.com/problems/insert-interval/
+    input has been sorted by start time
+    1. One index variable, push every interval while intervals[i][1] < newIntervals[0]
+    2. merge, while intervals[i][0] < newIntervals[1], update newIntervals[0], newIntervals[1]
+    3. push newIntervals
+    4. push the rest
+  253 https://leetcode.com/problems/meeting-rooms-ii/
+    O(nlogn) priority_queue, push intervals[i][1] only
+  ????? https://leetcode.com/problems/add-bold-tag-in-string/
+7. Parentheses
+
+20 https://leetcode.com/problems/valid-parentheses/
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+O(n), O(n) 用stack，左括号推入，右括号检查，valid pop，invalid return，中间任何时候stack空了都false，最后查stack是否空了
+
+22 https://leetcode.com/problems/generate-parentheses/
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+DFS, left right start with n 
+If(left > 0), dfs加左括号
+If(right > left) dfs加右括号
+
+921 https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/
+分别记多出来的左括号和右括号最后加起来return
+
+1249 https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
+If: s[i] is one of  '(' , ')' and lowercase English letters.
+Loop from left to right, if meet ')' when count < 0, change char to *
+Loop from right to left, if count > 0, change '(' to *, decrease count by 1
+Mark extra parentheses as '*', and loop again, add chars not '*'
+Else, use helper function, removeParentheses()
+Remove s ()
+reverse the removed s, remove again )(
+reverse again, return 
+
+301 https://leetcode.com/problems/remove-invalid-parentheses/
+1249升级版, return all
+
+DFS
+算extra left, extra right
+dfs backtrack
+*** 同一个括号内，是否remove是没有else的，都要查 是if if 而非if else
+
+32 https://leetcode.com/problems/longest-valid-parentheses/submissions/
+三种方法，最简单的是stack
+1.stack O(n), O(n)
+stack storing index
+left parenthese, push(i)
+right, pop
+if not empty, update ret
+if empty, push i
+2. dp
+3. Two pointers
 
 
