@@ -491,38 +491,158 @@ if empty, push i
 
 8. operator/calculaters
 9. Math related
-(1) Addition/Subtraction
-67 Add binary https://leetcode.com/problems/add-binary/
-2 Add Two Numbers https://leetcode.com/problems/add-two-numbers/
-415 Add Strings https://leetcode.com/problems/add-strings/
-(2) Division
-29 https://leetcode.com/problems/divide-two-integers/submissions/
-OVERFLOW because of INT_MIN
-在操作前解决所有overflow的可能
-转换成abs
-用binary search的方法不断的从dvd减去dvs的倍数，该倍数呈2的指数次增长
-增长的方法：tmp << 1 然后从dvd中减去，quotient += m
-检查符号并return
-(3) Multiply
-43 https://leetcode.com/problems/multiply-strings/
-两个for loop，inner loop前set carry = 0，在inner loop内做加法，但要记得同样的位置要累加 +=
-在inner loop外，outer loop内，结束加法后，检查carry，加到i - 1上，如果i是0，增加一位
-最后检查前面的leading zeros，并且trim掉，return
-(4) Power
-50 https://leetcode.com/problems/powx-n/
-如果n是负数，把x变成1/x，n变正
-Recursion
-base 如果n == 0，return 1, 如果n == 1，return x
-如果n为偶数，return pow(x, n / 2) * pow(x, n / 2)
-n为奇数return pow(x, n / 2) * pow(x, n / 2) * x
-(5) Fraction to Recurring Decimal
-166 https://leetcode.com/problems/fraction-to-recurring-decimal/
-查0，加符号，转成abs，如果整除return，没有加dot，build hashmap<long, int>进入whileloop (while(r))
-先查是否循环，循环insert括号return
-不循环把当前r加入map, m[r] = ret.size();把r乘10（借位除法）结果加上商(r / d)（注意是商）; r %= d;
-
-
+  (1) Addition/Subtraction
+    67 Add binary https://leetcode.com/problems/add-binary/
+    2 Add Two Numbers https://leetcode.com/problems/add-two-numbers/
+    415 Add Strings https://leetcode.com/problems/add-strings/
+  (2) Division
+    29 https://leetcode.com/problems/divide-two-integers/submissions/
+    OVERFLOW because of INT_MIN
+    在操作前解决所有overflow的可能
+    转换成abs
+    用binary search的方法不断的从dvd减去dvs的倍数，该倍数呈2的指数次增长
+    增长的方法：tmp << 1 然后从dvd中减去，quotient += m
+    检查符号并return
+  (3) Multiply
+    43 https://leetcode.com/problems/multiply-strings/
+    两个for loop，inner loop前set carry = 0，在inner loop内做加法，但要记得同样的位置要累加 +=
+    在inner loop外，outer loop内，结束加法后，检查carry，加到i - 1上，如果i是0，增加一位
+    最后检查前面的leading zeros，并且trim掉，return
+  (4) Power
+    50 https://leetcode.com/problems/powx-n/
+    如果n是负数，把x变成1/x，n变正
+    Recursion
+    base 如果n == 0，return 1, 如果n == 1，return x
+    如果n为偶数，return pow(x, n / 2) * pow(x, n / 2)
+    n为奇数return pow(x, n / 2) * pow(x, n / 2) * x
+  (5) Fraction to Recurring Decimal
+    166 https://leetcode.com/problems/fraction-to-recurring-decimal/
+    查0，加符号，转成abs，如果整除return，没有加dot，build hashmap<long, int>进入whileloop (while(r))
+    先查是否循环，循环insert括号return
+    不循环把当前r加入map, m[r] = ret.size();把r乘10（借位除法）结果加上商(r / d)（注意是商）; r %= d;
 10. Tree related recursion
 
 11. stack
 12. Matrix related
+  (1) Traversal 
+  766 https://leetcode.com/problems/toeplitz-matrix/
+  用一个unordered_map<int, int>记录，key是row index - col index，value是对应row col的val
+  if not find, add, else compare and return
+  O(1) Space是不用hashmap，每次都和左上角比较
+  
+  (2) Sparse Matrix Compression
+  311 https://leetcode.com/problems/sparse-matrix-multiplication/
+  There is no better solution than O(m*n*k) given the input like this problem.
+  However, we can do optimization if the input have already been compressed. 
+    vector<vector<int>> multiply(vector<vector<int>>& A, vector<vector<int>>& B) {
+       int m = A.size(), n = A[0].size(), k = B[0].size();
+       vector<vector<int>> ret(m, vector<int>(k, 0));
+       for (int i = 0; i < m; i++) {
+           for (int j = 0; j < n; j++) {
+               if (A[i][j] != 0) {
+                   for (int h = 0; h < k; h++) {
+                       ret[i][h] += A[i][j] * B[j][h];
+                   }
+               }
+           }
+       }
+       return ret;
+     }
+   Do compression
+     int m = A.size(), n = A[0].size(), k = B[0].size();
+     vector<vector<int>> ret(m, vector<int>(k, 0));
+     unordered_map<int, unordered_map<int, int>> map;
+     for (int i = 0; i < m; i++) {
+         unordered_map<int, int> tmp;
+         for (int j = 0; j < n; j++) {
+             if (A[i][j] != 0) {
+                 tmp[j] = A[i][j];
+             }
+         }
+         map[i] = tmp;
+     }
+     for (auto it : map) {
+         for (int j = 0; j < k; j++) {
+             for (auto itt : it.second) {
+                 if (B[itt.first][j] != 0) {
+                     ret[it.first][j] += B[itt.first][j] * itt.second;
+                 } 
+             }
+         }
+     }
+    return ret;
+  Sparse Vector Multiplication
+  vector<pair<int, int>> a, vector<pair<int, int>> b.
+  If sorted,  O(m+n)
+    int i = 0;
+    int j = 0;
+    while (i < m && j < n) {
+        ArrayList<Integer> pairA = a.get(i);
+        ArrayList<Integer> pairB = b.get(j);
+        if (pairA.get(0) < pairB.get(0)) {
+            i++;
+        } else if (pairA.get(0) > pairB.get(0)) {
+            j++;
+        } else {
+            res += pairA.get(1) * pairB.get(1);
+            i++;
+            j++;
+        }
+    }
+  If not, O(m*n) or sort first O(mlogm + nlogn)
+     for (int i = 0; i < m; i++) {
+         ArrayList<Integer> pairA = a.get(i);
+         for (int j = 0; j < n; j++) {
+             ArrayList<Integer> pairB = b.get(i);
+             if (pairA.get(0) == pairB.get(0)) {//if their indices are the same, calculate and break
+                 res += pairA.get(1) * pairB.get(1);
+                 break;//pairA has been calculated, jump to next pair
+             }
+         }
+     }
+   If two inputs are sorted by index0, have same size, sometimes dense, sometimes sparse; two pointes + binary search
+   用两个count记录a超出b多少orb超出a多少个index
+       int i = 0;
+       int j = 0;
+       int countA = 0;
+       int countB = 0;
+       while (i < m && j < n) {
+           ArrayList<Integer> pairA = a.get(i);
+           ArrayList<Integer> pairB = b.get(j);
+           if (pairA.get(0) < pairB.get(0)) {
+               i++;
+               countA++;
+               countB = 0;
+               if (countA > Math.log(m)) {
+                   i = search(a, i, m, pairB.get(0));
+                   countA = 0;
+               }
+           } else if (pairA.get(0) > pairB.get(0)) {
+               j++;
+               countB++;
+               countA = 0;
+               if (countB > Math.log(n)) {
+                   j = search(b, j, n, pairA.get(0));
+                   countB = 0;
+               }
+           } else {
+               res += pairA.get(1) * pairB.get(1);
+               i++;
+               j++;
+               countA = 0;
+               countB = 0;
+           }
+       }
+   If two inputs are sorted by index0, input b is much larger than input a, iterate a and binary search b; O(m*logn) time
+       int i = 0;
+       int j = 0;
+       while (i < m) {
+           ArrayList<Integer> pairA = a.get(i++);
+           j = search(b, j, n, pairA.get(0));
+           ArrayList<Integer> pairB = b.get(j++);
+           if (pairA.get(0) == pairB.get(0)) {
+               res += pairA.get(1) * pairB.get(1);
+           }
+       }
+       return res;
+  
