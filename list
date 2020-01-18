@@ -372,6 +372,31 @@
         root->right = dfs(mid + 1, right);
         return root;
     }
-(4) 
+(4) Iterator
+    314 https://leetcode.com/problems/flatten-nested-list-iterator/
+    很容易忘！
+    maintain two stack<vector<Integer>::iterator> begins, ends;
+    Constructor: push begin to begins, end to ends in constructor
+    
+    hasNext(): 
+    while (!begins.empty()) { // while loop is to get inner lists, each pop, we move to the next item
+        if (begins.top() == ends.top()) {
+            begins.pop();
+            ends.pop();
+        } else {
+            auto it = begins.top();
+            if (it->isInteger()) return true;
+            begins.top()++ // move to next one
+            begins.push(it->getList().begin());
+            ends.push(it->getList().end());
+        }
+    }
+    return false;
+    
+    int next() {
+        hasNext();
+        return (st.top()++)->getInteger(); // remember to move to next one in the current list
+    }
+    
 
 
