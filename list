@@ -308,7 +308,7 @@
 
 
 5. Recursive Data Structures
-(1) Copy/Clone
+(1) Copy/Clone Same data structure
   用unordered_map<Node*, Node*>记录已经build的新node，key: 原有的，value: 新的
   找到了return，null return，
   build root，加入cache（！）
@@ -322,12 +322,31 @@
   findHalf(2), reverse last half(3), and merge(Recursion)
   
   (BOTH) 206 https://leetcode.com/problems/reverse-linked-list/
-  (BOTH) 21 https://leetcode.com/problems/merge-two-sorted-lists/
+  (BOTH)(Merge) 21 https://leetcode.com/problems/merge-two-sorted-lists/
   (Iterative) 19 https://leetcode.com/problems/remove-nth-node-from-end-of-list/
      用fast and slow pointer做，fast和slow start from dummy head，fast先走n+1次，然后再一起update，直到fast到null
   (Iterative) 328 https://leetcode.com/problems/odd-even-linked-list/
      odd even pointer，形成两条list，最后将odd的next连到even的head上
-(3) Linked List - Binary Tree
+  (BOTH)(Merge)23 https://leetcode.com/problems/merge-k-sorted-lists/
+     1. Priority Queue. O(nlogk), O(k).
+     2. Merge Sort. O(nlogk), O(n).
+  (Iterative) 160 https://leetcode.com/problems/intersection-of-two-linked-lists/
+     O(n), O(1) 两个指针from p1 = a and p2 = b，when p1 reaches end, redirect p1 to b, when p2 reaches end, redirect p2 to a.
+  (Recursive) 430 https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/ O(n),O(n)
+     Similar to 114 https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+  (Iterative) 708 https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/
+     If list empty, build, set pointers and return.
+     While(true) {
+        if (3conditions) {
+           set inserted = true;
+        }
+        move pointers;
+        if goes back to head, break;
+     }
+     check inserted, if not, insert right after head // This is for size 1 list
+     return head
+     
+(3) (!Recursive) Linked List - Binary Tree
     426 https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/submissions/
     
     Convert a Binary Search Tree to a sorted Circular Doubly-Linked List in place.
@@ -397,6 +416,5 @@
         hasNext();
         return (st.top()++)->getInteger(); // remember to move to next one in the current list
     }
-    
 
 
