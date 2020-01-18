@@ -418,7 +418,7 @@
     O(1) amrotized, O(h)
     
     145 https://leetcode.com/problems/binary-tree-postorder-traversal/
-    先推左，用一个prev node记录刚刚pop过的node避免重复推right
+        先推左，用一个prev node记录刚刚pop过的node避免重复推right
   (5) Tree
   
     [1]. Traverse but not return recursive call
@@ -738,8 +738,9 @@ if empty, push i
        }
        return res;
 12. Binary Search
+(first)(last)
 13. MultiSet
-14. Data Structure Design
+// 14. Data Structure Design
 15. Resourviar Sampling
 16. Trie
     如果不只是26个字母，用unorderedmap存children
@@ -765,3 +766,4 @@ if empty, push i
     Topo Sort
 21. Sliding Window
 
+next permutation
