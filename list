@@ -90,9 +90,6 @@
    If !item.isInteger(), push the list into next level
    swap two list
    
-   
-   
- 
  (5) Binary Tree Path
    124 https://leetcode.com/problems/binary-tree-maximum-path-sum/
    
@@ -107,8 +104,6 @@
    DFS, start with every index, (next dfs may start with the same index)
    To avoid duplicates: 1. no dulicates in the input, 2. sort before dfs.
    
-  
-  
 2. DFS Backtrack
 (1) Add operation
   494 https://leetcode.com/problems/target-sum/
@@ -145,9 +140,6 @@
   }
   add children: try to change a-z for every position on current word, add into next if in dict
   DFS get paths: from endWord to beginWord, try every parents, reverse path before return
-
-
-
 
 
 3. Palindrome
@@ -272,6 +264,7 @@
       if (dict.find(right) != dict.end() && dict[right] != i && isPalindrome(left) && !left.empty()) ret.push_back({dict[right], i});
   
 4. Search
+   一定要想怎么mark visited！
 (1) The Maze
   490 https://leetcode.com/problems/the-maze/
 
@@ -305,6 +298,10 @@
   第一个building search 0，每个push进queue的空地都要grid[][]--；对于下一个building， search -1， 以此类推。
   Also need to maintain another distance matrix to do the sum.
   At last, traverse the distance matrix and return the smallest distance in it.
+ (3) Infinite Board
+     1197 https://leetcode.com/problems/minimum-knight-moves/ 记visited！step<=3可以不同方向跳
+     
+ 
 
 
 5. Recursive Data Structures
@@ -422,7 +419,74 @@
     
     145 https://leetcode.com/problems/binary-tree-postorder-traversal/
     先推左，用一个prev node记录刚刚pop过的node避免重复推right
-    
+  (5) Tree
+  
+    [1]. Traverse but not return recursive call
+       Be Careful about what to return when !root and !root->left && !root->right (recursive call may not change the return value)
+       [124] https://leetcode.com/problems/binary-tree-maximum-path-sum/
+       [543] https://leetcode.com/problems/diameter-of-binary-tree/
+       (!) [298] https://leetcode.com/problems/binary-tree-longest-consecutive-sequence/
+       
+       int ret = 0;
+       int longestConsecutive(TreeNode* root) {
+           if (!root) return 0;
+           dfs(root, 0, root->val);
+           return ret;
+       }
+       void dfs(TreeNode* root, int count, int target) {
+           if (!root) return;
+           if (root->val == target) count = count + 1;
+           else count = 1;
+           ret = max(ret, count);
+           dfs(root->left, count, root->val + 1);
+           dfs(root->right, count, root->val + 1);
+       }
+       [549] https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/
+             pair<int, int> first: increase from root, second: decrease from root
+       
+    [2]. DFS to fill the returned valuE
+       [DFS]199 https://leetcode.com/problems/binary-tree-right-side-view/
+       [LCA] 865 https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
+       [DFS] 257 https://leetcode.com/problems/binary-tree-paths/
+       [DFS][BFS] 575 https://leetcode.com/problems/find-largest-value-in-each-tree-row/
+    [3]. Return recursive call
+       98 https://leetcode.com/problems/validate-binary-search-tree/
+       111 [BFS BETTER] https://leetcode.com/problems/minimum-depth-of-binary-tree/
+       104 https://leetcode.com/problems/maximum-depth-of-binary-tree/
+       100 https://leetcode.com/problems/same-tree/
+       
+    [4]. Traversal
+       vertical order用dfs会增加复杂度，因为要sort height，用bfs自带sorting
+       要看清同一位置的return顺序，一般traverse都是需要level和height两变量
+       987 https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+       314 https://leetcode.com/problems/binary-tree-vertical-order-traversal/
+       
+       [BFS] 863 https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
+             Build parents map first using DFS, then use BFS to count distance as a graph problem
+       [BFS] 958 https://leetcode.com/problems/check-completeness-of-a-binary-tree/
+             用vector或queue都可以，null进去，检查方法是null后面没有非null的node（用bool或者move index）
+       [BFS][LevelOrder] 637 https://leetcode.com/problems/average-of-levels-in-binary-tree/
+       [BFS] 103 https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+       [Iterative] 145 https://leetcode.com/problems/binary-tree-postorder-traversal/
+      
+    [5]. BST BST考虑boundary！！
+       270 O(h) https://leetcode.com/problems/closest-binary-search-tree-value/
+       
+    [6]. Build Tree
+       297 https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+           用stringstream，null用#，用space分开
+       428 https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/
+           stringstream存的是val和children size，space分割
+       1008 https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/
+            需要传boundary
+       
+       
+    [7]. LCA Sequence 
+         236 https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+         用parent就是hashmap从一个走到root再从另一个走，遇到即return
+         用recursion做就是post order traversal，左null返回右，右null返回左，都有返回root，这里的return node像是一个bool证明有or没有
+         865 https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
+
 6. Merge Interval
   56 https://leetcode.com/problems/merge-intervals/
   Input: [[1,3],[2,6],[8,10],[15,18]]
@@ -489,7 +553,8 @@ if empty, push i
 2. DP
 3. Two pointers. O(n), O(1)
 
-8. operator/calculaters
+8. Operator/Calculaters
+
 9. Math related
   (1) Addition/Subtraction
     67 Add binary https://leetcode.com/problems/add-binary/
@@ -520,10 +585,8 @@ if empty, push i
     查0，加符号，转成abs，如果整除return，没有加dot，build hashmap<long, int>进入whileloop (while(r))
     先查是否循环，循环insert括号return
     不循环把当前r加入map, m[r] = ret.size();把r乘10（借位除法）结果加上商(r / d)（注意是商）; r %= d;
-10. Tree related recursion
-
-11. stack
-12. Matrix related
+10. Stack
+11. Matrix related
   (1) Traversal 
   766 https://leetcode.com/problems/toeplitz-matrix/
   用一个unordered_map<int, int>记录，key是row index - col index，value是对应row col的val
@@ -674,4 +737,30 @@ if empty, push i
            }
        }
        return res;
-13. Binary Search
+12. Binary Search
+13. MultiSet
+14. Data Structure Design
+15. Resourviar Sampling
+16. Trie
+    如果不只是26个字母，用unorderedmap存children
+    有的trie需要存string，count（autocomplete）
+    208 https://leetcode.com/problems/implement-trie-prefix-tree/ 没有任何花样
+    211 https://leetcode.com/problems/add-and-search-word-data-structure-design/ 只有dot时有for loop，用recursion check children
+    642 https://leetcode.com/problems/design-search-autocomplete-system/ 非常复杂
+        存一个共用的maxHeap pq<pair<string, int>>, 共用的string s记录所有加入的char, 共用的trienode* curr记录现在到了trie tree的哪里
+        Trienode: unordered_map存children，存count，存string（不到end存empty string）
+        Constructor insert所有的string
+        vector<string> input(c) {
+          c==# insert, set s empty, set curr back to root, return empty
+          s adds char, re-build empty pq, check curr and curr->children[c], move curr to curr->chilren if valid, set to null and return empty elsewise 
+          search all children from curr
+          clear pq and return top 3
+        }
+        Helpers: insert, search
+    
+17. Union Find
+18. Greedy
+19. Task Schedule系列
+20. Graph
+    Topo Sort
+
