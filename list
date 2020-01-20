@@ -143,6 +143,15 @@
   (4) Graph Painting 
       785 https://leetcode.com/problems/is-graph-bipartite/
       用int代表0和1代表颜色，换颜色1-color即可
+  568 https://leetcode.com/problems/maximum-vacation-days/
+  78 https://leetcode.com/problems/subsets/ From every position, jump from 1 to n(if in bound)
+  394 [RECURSION!] https://leetcode.com/problems/decode-string/
+       while (i < s.length() && s[i] != ']') {
+       
+       }
+  
+  
+  
       
 
 3. Palindrome
@@ -273,7 +282,8 @@
        329 [DFS] https://leetcode.com/problems/longest-increasing-path-in-a-matrix/ 对每个index都search，dfs返回上下左右最大的+1，记得cache
        200 https://leetcode.com/problems/number-of-islands/[Union find]适合此题变形
        305 [Union find] https://leetcode.com/problems/number-of-islands-ii/ 这个题不查visited, roots[child] == -1 means grid[][] = 0
-       
+       79 https://leetcode.com/problems/word-search/ O(m*n*4^k)这道题没有memo, 对每个char检查一遍，mark visited是改成空格并在recursion后改回来
+       529 https://leetcode.com/problems/minesweeper/ 开始bfs前先查start point是e的两种情况
        
        
    (1) The Maze
@@ -460,7 +470,7 @@
        [549] https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/
              pair<int, int> first: increase from root, second: decrease from root
        
-    [2]. DFS to fill the returned valuE
+    [2]. DFS to fill the returned value
        [DFS]199 https://leetcode.com/problems/binary-tree-right-side-view/
        [LCA] 865 https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
        [DFS] 257 https://leetcode.com/problems/binary-tree-paths/
@@ -502,6 +512,7 @@
          用parent就是hashmap从一个走到root再从另一个走，遇到即return
          用recursion做就是post order traversal，左null返回右，右null返回左，都有返回root，这里的return node像是一个bool证明有or没有
          865 https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
+         1123 https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
 
 6. Merge Interval
   56 https://leetcode.com/problems/merge-intervals/
@@ -522,6 +533,11 @@
     4. push the rest
   253 https://leetcode.com/problems/meeting-rooms-ii/
     O(nlogn) priority_queue, push intervals[i][1] only
+  1094 O(n) Bucket Sort https://leetcode.com/problems/car-pooling/
+  452 https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/ 
+      Sort by end time,
+      for loop, if found start time later than current end_time, count++, re-set end_time;
+  435 https://leetcode.com/problems/non-overlapping-intervals/
   ????? https://leetcode.com/problems/add-bold-tag-in-string/
 7. Parentheses
 
@@ -567,7 +583,7 @@ right, pop
 if not empty, update ret
 if empty, push i
 2. DP
-3. Two pointers. O(n), O(1)
+3. Two pointers. O(n), O(1) 查一遍左，right超过left take max of ret, 再查一遍右
 
 8. Operator/Calculaters
 
@@ -786,6 +802,10 @@ if empty, push i
        如果在sorted part search sorted一侧 如果不在search另一侧
        If there are duplicates, if (nums[left] == nums[mid] && nums[mid] == nums[right]) left++, right--;
        Worst Case O(n)
+    1060 https://leetcode.com/problems/missing-element-in-sorted-array/ right starts from nums.size()
+    162 https://leetcode.com/problems/find-peak-element/
+    1146 https://leetcode.com/problems/snapshot-array/
+    658 https://leetcode.com/problems/find-k-closest-elements/ 
     
 13. MultiSet
     MultiSet -- AVL tree allowing duplicates keys
@@ -840,7 +860,6 @@ if empty, push i
         }
         Helpers: insert, search
 17. Union Find
-    
     Accounts Merge 721 https://leetcode.com/problems/accounts-merge/
       First nested For loop
       Build owner map, key: email, value, name
@@ -856,7 +875,10 @@ if empty, push i
       Fourth for loop
       add owner name and insert all emails in this group
     
-18. Greedy
+18. [Greedy][array]
+    277 https://leetcode.com/problems/find-the-celebrity/
+    334 https://leetcode.com/problems/increasing-triplet-subsequence/ init两个variable to intmax, update两个最大值, 找到大于最大的即为true 找最小值
+    414 https://leetcode.com/problems/third-maximum-number/ 三个variable, 遇到大数要把比这个数小的variables都swap,最后查第三大variable是不是int max still
 19. Task Schedule系列
     767 O(nlogA, A = 26) https://leetcode.com/problems/reorganize-string/
     621 O(n) https://leetcode.com/problems/reorganize-string/
@@ -870,7 +892,11 @@ if empty, push i
         
     
 20. Graph
-    Topo Sort
+    Topo Sort 最后检查的都是process的count和一共的degree array的key的数量一不一样
+    207 Return True or False https://leetcode.com/problems/course-schedule/
+    210 与207完全一样, pop的时候pushback即可 https://leetcode.com/problems/course-schedule-ii/
+    
+    
 21. Sliding Window [Substring Search]
     438 https://leetcode.com/problems/find-all-anagrams-in-a-string/ i - j + 1 == p.size()合法
     76 https://leetcode.com/problems/minimum-window-substring/ i - j + 1 < max_length update
@@ -881,6 +907,7 @@ if empty, push i
         所以先从0查到s1.length(), s1有的++, s2有的--, 结束后如果all zeros return true
         从s1.length() 到s2.length(), 每一步s2有的++, s2[i - s1.length()]++, 每一步都要查是否all zeros
         all zeros considers as o(1) operation(only 26 chars）
+    209 [sum >= s] https://leetcode.com/problems/minimum-size-subarray-sum/
     
     
     
@@ -908,6 +935,11 @@ if empty, push i
     对每一个dp[dist][i]去max return
     161 https://leetcode.com/problems/one-edit-distance/
     72 https://leetcode.com/problems/edit-distance/
+    91 https://leetcode.com/problems/decode-ways/
+       dp[0] = 1, dp[1] = s[0] == '0' ? 0 : 1;
+       for loop starts from 2 to n]
+    691 https://leetcode.com/problems/wildcard-matching/
+       
 24. Strobogrammatic number
     246 https://leetcode.com/problems/strobogrammatic-number/
         Write a function to determine if a number is strobogrammatic.
@@ -917,6 +949,15 @@ if empty, push i
         dfs with left right boundary, hardcode every pair
         注意如果left = 0不能放(0,0)
 
-
+25. Use nums[i] as index 
+    [binary search] 1060 https://leetcode.com/problems/missing-element-in-sorted-array/ right starts from nums.size()
+    
+26. Sorting 
+    969 O(n^2) https://leetcode.com/problems/pancake-sorting/
+        search from the maximum(size), fint the index
+        Reverse from beginning to index, to make search at A[0], push i + 1;
+        Reverse from beginning to search, to make search at position, push search;
+        
+     
     
 next permutation
