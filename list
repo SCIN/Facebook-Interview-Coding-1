@@ -1,11 +1,9 @@
 1. Sum
 
  (1) Prefix-Sum, Hashmap
- 
-   523 https://leetcode.com/problems/continuous-subarray-sum/
-
+   724 https://leetcode.com/problems/find-pivot-index/
    560 https://leetcode.com/problems/subarray-sum-equals-k/
-
+   523 https://leetcode.com/problems/continuous-subarray-sum/
    325 https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
 
    (!) 209 https://leetcode.com/problems/minimum-size-subarray-sum/solution/
@@ -37,6 +35,8 @@
    loop from k to n - 2k 
  
  (2) DP
+   53 https://leetcode.com/problems/maximum-subarray/submissions/
+   
    416 https://leetcode.com/problems/partition-equal-subset-sum/
    Given a non-empty array containing only positive integers, 
    find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
@@ -91,6 +91,7 @@
    swap two list
    
  (5) Binary Tree Path
+   112 https://leetcode.com/problems/path-sum/
    124 https://leetcode.com/problems/binary-tree-maximum-path-sum/
    
    129 https://leetcode.com/problems/sum-root-to-leaf-numbers/
@@ -99,6 +100,8 @@
    113 https://leetcode.com/problems/path-sum-ii/
    DFS, base: check target == root->val
    Use reference, no RETURN in check condition. 
+   129 https://leetcode.com/problems/sum-root-to-leaf-numbers/ 从root开始每一层的sum传下去，在dfs中乘10 + rootval
+   
  (6) Backtrack in Array
    39 https://leetcode.com/problems/combination-sum/
    DFS, start with every index, (next dfs may start with the same index)
@@ -149,6 +152,10 @@
        while (i < s.length() && s[i] != ']') {
        
        }
+  93 https://leetcode.com/problems/restore-ip-addresses/
+  679 https://leetcode.com/problems/24-game/
+  17 O(3^n * 4^m) https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+  
   
   
   
@@ -284,6 +291,12 @@
        305 [Union find] https://leetcode.com/problems/number-of-islands-ii/ 这个题不查visited, roots[child] == -1 means grid[][] = 0
        79 https://leetcode.com/problems/word-search/ O(m*n*4^k)这道题没有memo, 对每个char检查一遍，mark visited是改成空格并在recursion后改回来
        529 https://leetcode.com/problems/minesweeper/ 开始bfs前先查start point是e的两种情况
+       463 https://leetcode.com/problems/island-perimeter/ boundary and 0 grid ++
+       212 [Trie][DFS] https://leetcode.com/problems/word-search-ii/
+       694 [Hash path by string] https://leetcode.com/problems/number-of-distinct-islands/
+           path += (row - start_x) + "," + (col - start_y);
+       417 https://leetcode.com/problems/pacific-atlantic-water-flow/ 两个矩阵, 分别记两个ocean, 从边缘开始dfs, 最后合法的是两个board都能到的
+       
        
        
    (1) The Maze
@@ -339,6 +352,7 @@
   133 https://leetcode.com/problems/clone-graph/
   138 https://leetcode.com/problems/copy-list-with-random-pointer/
 (2) Pure Linked List
+  24 (Recursive) https://leetcode.com/problems/swap-nodes-in-pairs/
   143 https://leetcode.com/problems/reorder-list/
   Given a singly linked list L: L0→L1→…→Ln-1→Ln,
   reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
@@ -586,6 +600,10 @@ if empty, push i
 3. Two pointers. O(n), O(1) 查一遍左，right超过left take max of ret, 再查一遍右
 
 8. Operator/Calculaters
+   679 https://leetcode.com/problems/24-game/
+   224 https://leetcode.com/problems/basic-calculator-i/
+   227 https://leetcode.com/problems/basic-calculator-ii/
+   772 https://leetcode.com/problems/basic-calculator-iii/
 
 9. Math related
   (1) Addition/Subtraction
@@ -640,6 +658,10 @@ if empty, push i
       int bulbSwitch(int n) {
           return sqrt(n);
       }
+   (8) 8 https://leetcode.com/problems/string-to-integer-atoi/ 查overflow before *10
+   (9) 13 https://leetcode.com/problems/roman-to-integer/
+       从后往前走, 遇到比后面一位小的剪掉，否则加上
+       
       
 10. Stack
     636 https://leetcode.com/problems/exclusive-time-of-functions/ 
@@ -822,7 +844,13 @@ if empty, push i
     162 https://leetcode.com/problems/find-peak-element/
     1146 https://leetcode.com/problems/snapshot-array/
     658 https://leetcode.com/problems/find-k-closest-elements/ 
-    
+    875 https://leetcode.com/problems/koko-eating-bananas/
+        O(nlogW) count += (pile + mid - 1) / mid
+    540 https://leetcode.com/problems/single-element-in-a-sorted-array/ SORTED! 
+        This one is not sorted, therefore, we should use bit manipulation! 136 https://leetcode.com/problems/single-number/
+    852 https://leetcode.com/problems/peak-index-in-a-mountain-array/
+    153 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+    154 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
 13. MultiSet
     MultiSet -- AVL tree allowing duplicates keys
     
@@ -855,6 +883,8 @@ if empty, push i
               unordered_map<int, list<pair<int, int>>::iterator> key: key, value: position in list
               stl list in c++ special function: splice 
               move iterator it to the begining of the list: splice(cache.begin(), cache, it);
+    [Tic-Tac-Toe] 348 https://leetcode.com/problems/design-tic-tac-toe/
+    
               
 15. Reservoir Sampling
     [ONLY THIS ONE] 398 https://leetcode.com/problems/random-pick-index/
@@ -924,6 +954,7 @@ if empty, push i
         从s1.length() 到s2.length(), 每一步s2有的++, s2[i - s1.length()]++, 每一步都要查是否all zeros
         all zeros considers as o(1) operation(only 26 chars）
     209 [sum >= s] https://leetcode.com/problems/minimum-size-subarray-sum/
+    3 https://leetcode.com/problems/longest-substring-without-repeating-characters/ map no erase no count
     
     
     
@@ -944,6 +975,9 @@ if empty, push i
          88 [2 while loops] https://leetcode.com/problems/merge-sorted-array/
          先从后往前同时移动ij
          如果num1移到开始但nums2还有剩下的,还需要一直把nums2剩下的移进去
+         283 https://leetcode.com/problems/move-zeroes/ lastNonZero++;
+         977 https://leetcode.com/problems/squares-of-a-sorted-array/
+         
          
 23. DP
     1027 https://leetcode.com/problems/longest-arithmetic-sequence/
@@ -955,7 +989,7 @@ if empty, push i
        dp[0] = 1, dp[1] = s[0] == '0' ? 0 : 1;
        for loop starts from 2 to n]
     691 https://leetcode.com/problems/wildcard-matching/
-       
+    312 https://leetcode.com/problems/burst-balloons/
 24. Strobogrammatic number
     246 https://leetcode.com/problems/strobogrammatic-number/
         Write a function to determine if a number is strobogrammatic.
@@ -965,15 +999,21 @@ if empty, push i
         dfs with left right boundary, hardcode every pair
         注意如果left = 0不能放(0,0)
 
-25. Use nums[i] as index 
+25. Use nums[i] as index : nums[i] from 1 to n inclusive
     [binary search] 1060 https://leetcode.com/problems/missing-element-in-sorted-array/ right starts from nums.size()
+    41 https://leetcode.com/problems/first-missing-positive/
+    287 [binary search better] https://leetcode.com/problems/find-the-duplicate-number/
+    442 https://leetcode.com/problems/find-all-duplicates-in-an-array/ 
+        abs(nums[i]) is the key!
     
 26. Sorting 
     969 O(n^2) https://leetcode.com/problems/pancake-sorting/
         search from the maximum(size), fint the index
         Reverse from beginning to index, to make search at A[0], push i + 1;
         Reverse from beginning to search, to make search at position, push search;
-        
+    791 O(n) https://leetcode.com/problems/custom-sort-string/
      
-    
+27. monotonous array
+monotonous
+
 next permutation
