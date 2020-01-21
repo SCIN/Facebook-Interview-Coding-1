@@ -552,7 +552,7 @@
       Sort by end time,
       for loop, if found start time later than current end_time, count++, re-set end_time;
   435 https://leetcode.com/problems/non-overlapping-intervals/
-  ????? https://leetcode.com/problems/add-bold-tag-in-string/
+  616 https://leetcode.com/problems/add-bold-tag-in-string/
 7. Parentheses
 
 20 https://leetcode.com/problems/valid-parentheses/
@@ -588,7 +588,7 @@ DFS
 dfs backtrack
 *** 同一个括号内，是否remove是没有else的，都要查 是if if 而非if else
 
-32 https://leetcode.com/problems/longest-valid-parentheses/submissions/
+32 https://leetcode.com/problems/longest-valid-parentheses/
 三种方法，最简单的是stack
 1.Stack. O(n), O(n)
 stack storing index
@@ -677,7 +677,6 @@ if empty, push i
         空了return/
         pop空stack全部加入ret
     
-        
 11. Matrix related
   (1) Traversal 
   766 https://leetcode.com/problems/toeplitz-matrix/
@@ -842,6 +841,8 @@ if empty, push i
        如果在sorted part search sorted一侧 如果不在search另一侧
        If there are duplicates, if (nums[left] == nums[mid] && nums[mid] == nums[right]) left++, right--;
        Worst Case O(n)
+    153 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+    154 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
     1060 https://leetcode.com/problems/missing-element-in-sorted-array/ right starts from nums.size()
     162 https://leetcode.com/problems/find-peak-element/
     1146 https://leetcode.com/problems/snapshot-array/
@@ -851,11 +852,9 @@ if empty, push i
     540 https://leetcode.com/problems/single-element-in-a-sorted-array/ SORTED! 
         This one is not sorted, therefore, we should use bit manipulation! 136 https://leetcode.com/problems/single-number/
     852 https://leetcode.com/problems/peak-index-in-a-mountain-array/
-    153 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
-    154 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
+
 13. MultiSet
     MultiSet -- AVL tree allowing duplicates keys
-    
     295 https://leetcode.com/problems/find-median-from-data-stream/
     maintain 2 iterators, 
     if odd size before insertion, move 
@@ -1025,4 +1024,7 @@ find celebrity
 Average Case T(n) = T(n/2) + O(n) => O(n)
 Worst Case T(n) = T(n - 1) + O(n)
 Sort By Frequency: Best Solution is Bucket Sort O(n) else, priorityqueue
-next permutation
+30 next permutation
+31 sudoku
+check valid use hashset, hash string, c + "in row" + i, c+ "col" + j ...
+
