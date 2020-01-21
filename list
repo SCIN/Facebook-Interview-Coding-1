@@ -600,10 +600,12 @@ if empty, push i
 3. Two pointers. O(n), O(1) 查一遍左，right超过left take max of ret, 再查一遍右
 
 8. Operator/Calculaters
+   查0
    679 https://leetcode.com/problems/24-game/
    224 https://leetcode.com/problems/basic-calculator-i/
    227 https://leetcode.com/problems/basic-calculator-ii/
    772 https://leetcode.com/problems/basic-calculator-iii/
+   282 https://leetcode.com/problems/expression-add-operators/
 
 9. Math related
   (1) Addition/Subtraction
@@ -1015,5 +1017,12 @@ if empty, push i
      
 27. monotonous array
 monotonous
-
+28 Boyer-Moore Voting Algorithm
+https://leetcode.com/problems/majority-element/
+https://leetcode.com/problems/majority-element-ii/
+find celebrity
+29 Kth O(n)
+Average Case T(n) = T(n/2) + O(n) => O(n)
+Worst Case T(n) = T(n - 1) + O(n)
+Sort By Frequency: Best Solution is Bucket Sort O(n) else, priorityqueue
 next permutation
