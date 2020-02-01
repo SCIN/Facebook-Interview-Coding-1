@@ -1,0 +1,10 @@
+136. Single Number
+
+INIT to 0
+int singleNumber(vector<int>& nums) {
+    int ret = 0;
+    for (int num : nums) {
+        ret ^= num;
+    }
+    return ret;
+}

@@ -1,0 +1,139 @@
+65. Valid Number
+
+Validate if a given string can be interpreted as a decimal number.
+
+Some examples:
+"0" => true
+" 0.1 " => true
+"abc" => false
+"1 a" => false
+"2e10" => true
+" -90e3   " => true
+" 1e" => false
+"e3" => false
+" 6e-1" => true
+" 99e2.5 " => false
+"53.5e93" => true
+" --6 " => false
+"-+3" => false
+"95a54e53" => false
++111.111 => true
+
+Use DFA to solve this
+https://leetcode.wang/leetCode-65-Valid-Number.html
+STATE { 0, 1, 2, 3, 4, 5, 6, 7, 8}
+
+q(0, '+') = 1;
+q(0, '-') = 1;
+q(0, number) = 2;
+q(0, '.') = 7;
+
+q(1, number) = 2
+q(1, '.') = 7;
+
+q(2, number) = 2;
+q(2, '.') = 3 
+q(2, 'e') = 4;
+
+q(3, number) = 3;
+q(3, 'e') = 4;
+
+q(4, number) = 5;
+q(4, '+') = 6;
+q(4, '-') = 6;
+
+q(5, number) = 5;
+
+q(6, number) = 5;
+
+q(7, number) = 8;
+
+q(8, number) = 8
+q(8, e) = 4;
+
+
+bool isNumber(string s) {
+        int state = 0;
+        int start = 0, j = s.length() - 1;
+        while (s[start] == ' ') {
+            start++;
+        }
+        while (s[j] == ' ') {
+            j--;
+        }
+        
+        for (int i = start; i <= j; i++) {
+            switch (s[i]) {
+                case '+':
+                case '-':
+                    if (state == 0) {
+                        state = 1;
+                    } else if (state == 4) {
+                        state = 6;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    switch (state) {
+                        case 0:
+                        case 1:
+                        case 2:
+                            state = 2;
+                            break;
+                        case 3:
+                            state = 3;
+                            break;
+                        case 4:
+                        case 5:
+                        case 6:
+                            state = 5;
+                            break;
+                        case 7: 
+                            state = 8;
+                            break;
+                        case 8:
+                            state = 8;
+                            break;
+                        default:
+                            return false;
+                    }
+                    break;
+                case '.':
+                    switch (state) {
+                        case 0:
+                        case 1:
+                            state = 7;
+                            break;
+                        case 2:
+                            state = 3;
+                            break;
+                        default:
+                            return false;
+                    }
+                    break;
+                case 'e':
+                    switch (state) {
+                        case 2:
+                        case 3:
+                        case 8:
+                            state = 4;
+                            break;
+                        default:
+                            return false;
+                    }
+                    break;
+                default: return false;
+            }
+        }
+        return state == 2 || state == 3 || state == 5 || state == 8;
+    }

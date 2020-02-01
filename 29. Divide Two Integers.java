@@ -20,6 +20,28 @@ Time: O((logn)^2)
 // The outer loop reduces n by at least half each iteration. So It has O(log N) iterations.
 // The inner loop has at most log N iterations. So the overall complexity is O((logN)^2)
 n
+
+int divide(int dividend, int divisor) {
+    if (dividend == INT_MIN && divisor == -1) {
+        return INT_MAX;
+    }   
+    int sign = (dividend > 0 ^ divisor > 0) ? -1 : 1;
+    long dvd = labs(dividend);
+    long dvs = labs(divisor);
+    long ans = 0;
+    while (dvd >= dvs) {
+        long temp = dvs;
+        long m = 1;
+        while (temp << 1 <= dvd) {
+            temp <<= 1;
+            m <<= 1;
+        }
+        dvd -= temp;
+        ans += m;
+    }
+    return sign * ans;
+}
+
 public int divide(int dividend, int divisor) {
     if (divisor == 0 || dividend == Integer.MIN_VALUE && divisor == -1)
         return Integer.MAX_VALUE;
@@ -48,6 +70,23 @@ public int divide(int dividend, int divisor) {
 
 Solution 2 (with multiply): Binary Search
 Time: O(logn)
+    
+int divide(int dividend, int divisor) {
+    if (dividend == INT_MIN && divisor == -1) {
+        return INT_MAX;
+    }   
+    int sign = (dividend > 0 ^ divisor > 0) ? -1 : 1;
+    long dvd = labs(dividend);
+    long dvs = labs(divisor);
+    long left = 0;
+    long right = dvd;
+    while (left < right) {
+        long mid = left + (right - left) / 2 + 1;
+        if (mid * dvs <= dvd) left = mid;
+        else right = mid - 1;
+    }
+    return (sign == 1) ? left : -left;
+ }
 
 public int divide(int dividend, int divisor) {
     if (divisor == 0 || dividend == Integer.MIN_VALUE && divisor == -1)

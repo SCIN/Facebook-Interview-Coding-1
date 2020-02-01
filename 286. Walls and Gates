@@ -1,0 +1,33 @@
+286. Walls and Gates 
+
+void wallsAndGates(vector<vector<int>>& rooms) {
+    vector<int> dx = {1, -1, 0, 0};
+    vector<int> dy = {0, 0, 1, -1};
+    int n = rooms.size();
+    if (n == 0) return;
+    int m = rooms[0].size();
+    if (m == 0) return;
+    queue<pair<int, int>> q;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (rooms[i][j] == 0) {
+                q.push({i, j});
+            }
+        }
+    }
+    while (!q.empty()) {
+        pair<int, int> curr = q.front();
+        int x = curr.first;
+        int y = curr.second;
+        q.pop();
+        for (int i = 0; i < 4; i++) {
+            int new_x = x + dx[i];
+            int new_y = y + dy[i];
+            if (new_x < 0 || new_x >= n || new_y < 0 || new_y >= m || rooms[new_x][new_y] != INT_MAX) {
+                continue;
+            }
+            q.push({new_x, new_y});
+            rooms[new_x][new_y] = rooms[x][y] + 1;
+        }
+    }
+}

@@ -20,12 +20,51 @@ Test:
 // If you want to add a * between 3 and 4, you would take 3 as the digit to be multiplied, so you want to take it out from the existing eval. 
 // You have 1 + 2 + 3 * 4 and the eval now is (1 + 2 + 3) - 3 + (3 * 4). 
 
-Time: O(n * 4^n) ???
-// Each digit have 4 situations(+,-,*,none)下面分析不对
-// T(n) = 3 * T(n-1) + 3 * T(n-2) + 3 * T(n-3) + ... + 3 *T(1);
-// T(n-1) = 3 * T(n-2) + 3 * T(n-3) + ... 3 * T(1);
-// Thus T(n) = 4T(n-1);
+Time: O(N * 4^(N - 1))
+    
+we can choose + , - , * and empty space 
+(in this case, eg. 12 was treated as one number), 
+in total four kinds of choices. O(4^(N - 1))
+Also, remember there is a for loop inside every call stack, 
+So, for the call stack of length N,
+Total time complexity should be N * 4^(N - 1)
+   
 
+vector<string> addOperators(string num, int target) {
+    vector<string> ret;
+    dfs(ret, num, "", 0, target, 0, 0);
+    return ret;
+}
+
+void dfs(vector<string>& ret, const string& num, string path, int index, int target, long prev, long curr) {
+    if (index == num.length()) {
+        if (curr == target) {
+            ret.push_back(path);
+        }
+        return;
+    }
+    for (int i = 1; i <= num.length() - index; i++) {
+        //number is not single digit!
+        string tmp = num.substr(index, i);
+        //edge case 1: starting with 0 like 011 break directly, invalid
+        if (tmp[0] == '0] && tmp.length() > 1) break;
+        long n = stol(tmp);
+        // in case stol fails
+        if (n > INT_MAX) break;
+        // the first recursion, just add the number, no operator
+        if (index == 0) {
+            dfs(ret, num, tmp, i, target, n, n);
+            continue;
+        }
+        dfs(ret, num, path + '+' + tmp, index + i, target, n, curr + n);
+        dfs(ret, num, path + '-' + tmp, index + i, target, -n, curr - n);
+        dfs(ret, num, path + '*' + tmp, index + i, target, prev * n, curr - prev + prev * n);
+    }
+}
+    
+    
+    
+    
 public List<String> addOperators(String num, int target) {
     List<String> res = new ArrayList<>();
     StringBuilder sb = new StringBuilder();

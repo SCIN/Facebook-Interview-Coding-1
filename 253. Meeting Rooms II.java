@@ -3,6 +3,30 @@
 Given [[0, 30],[5, 10],[15, 20]],
 return 2.
 
+Priority Queue
+Time O(nlogn), n: number of intervals Space: O(n)
+Sort by starting time -> greedily allocate rooms for meeting starting earlier
+Put every end time into priority queue(min heap)
+If the current interval's begin time is greater than the pq.top(), there is a room available right now, so pop
+else We need a new room for this interval.
+After processing all the meetings, the size of the heap will tell us the number of rooms allocated. 
+	
+int minMeetingRooms(vector<vector<int>>& intervals) {
+	if (intervals.size() == 0) return 0;
+	//sort by start time
+	sort(intervals.begin(), intervals.end());
+	//min heap
+	priority_queue<int, vector<int>, std::greater<int>> pq;
+	for (int i = 0; i < intervals.size(); i++) {
+		if (!pq.empty() && intervals[i][0] >= pq.top()) {
+			pq.pop();
+		}
+		pq.push(intervals[i][1]);
+	}
+	return pq.size();
+}
+
+
 Solution 1: greedy
 public int minMeetingRooms(Interval[] intervals) {
 	int[] start = new int[intervals.length];

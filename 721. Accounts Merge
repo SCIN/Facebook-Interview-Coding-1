@@ -1,0 +1,62 @@
+721. Accounts Merge
+
+
+Union Find
+Time: 
+find method in union find may vary depends on if we use path compression or not. 
+
+Time calling find() once
+O(1) -> only height 1
+O(logn) -> balanced tree (rank by height or rank by size)
+O(n) -> normal tree worst case O(h) = O(n)
+Total O(nlogn) n: number of emails in the accounts
+
+Requirement: 
+After merging the accounts, return the accounts in the following format: 
+the first element of each account is the name, and the rest of the elements are emails in sorted order. 
+The accounts themselves can be returned in any order.
+
+If we need to sort by name, we need to change groups to map<string, set<>>
+
+vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+    unordered_map<string, string> emails_group;
+    unordered_map<string, string> owners;
+    // emails required to be in sorted order
+    unordered_map<string, set<string>> groups;
+    //initialization
+    for (int i = 0; i < accounts.size(); i++) {
+        string name = accounts[i][0];
+        for (int j = 1; j < accounts[i].size(); j++) {
+            emails_group[accounts[i][j]] = accounts[i][j];
+            owners[accounts[i][j]] = name;
+        }
+    }
+    // put emails belongs to one group into one group
+    // union same emails belongs to different people into one group
+    for (int i = 0; i < accounts.size(); i++) {
+        string group_name = find(accounts[i][1], emails_group);
+        for (int j = 2; j < accounts[i].size(); j++) {
+            emails_group[find(accounts[i][j], emails_group)] = group_name;
+        }
+    }
+    // output the groups and sort emails using treeset
+    for (int i = 0; i < accounts.size(); i++) {
+        for (int j = 1; j < accounts[i].size(); j++) {
+            groups[find(accounts[i][j], emails_group)].insert(accounts[i][j]);
+        }
+    }
+    vector<vector<string>> ret;
+    for (auto it : groups) {
+        vector<string> emails(it.second.begin(), it.second.end());
+        emails.insert(emails.begin(), owners[it.first]);
+        ret.push_back(emails);
+    }
+    return ret;
+}
+string find(string& s, unordered_map<string, string>& emails_group) {
+    if (emails_group[s] == s) {
+        return s;
+    } else {
+        return find(emails_group[s], emails_group);
+    }
+}

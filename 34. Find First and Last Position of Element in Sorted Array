@@ -1,0 +1,33 @@
+34. Find First and Last Position of Element in Sorted Array
+
+Binary search
+Built in function 
+O(logn)
+vector<int> searchRange(vector<int>& nums, int target) {
+    auto low = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+    auto high = lower_bound(nums.begin(), nums.end(), target + 1) - nums.begin();
+
+    if (low < 0 || low >= nums.size() || nums[low] != target) return {-1, -1};
+    return {low, high - 1};
+}
+
+Recursion:
+vector<int> searchRange(vector<int>& nums, int target) {
+    if (nums.empty()) return {-1, -1};
+    return search(nums, target, 0, nums.size() - 1);
+}
+vector<int> search(vector<int>& nums, int target, int left, int right) {
+    if (nums[left] == target && nums[right] == target) {
+        return {left, right};
+    }
+    if (nums[left] <= target && nums[right] >= target) {
+        int mid = (left + right) / 2;
+        vector<int> left_half = search(nums, target, left, mid);
+        vector<int> right_half = search(nums, target, mid + 1, right);
+        if (left_half[0] >= 0 && right_half[0] >= 0) {
+            return {left_half[0], right_half[1]};
+        }
+        return left_half[0] == -1 ? right_half : left_half;
+    } 
+    return {-1, -1};
+}

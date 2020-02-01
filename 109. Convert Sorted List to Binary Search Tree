@@ -1,0 +1,22 @@
+109. Convert Sorted List to Binary Search Tree
+
+TreeNode* sortedListToBST(ListNode* head) {
+    if (!head) return NULL;
+    // This base case is really important!!
+    if (!head->next) return new TreeNode(head->val);
+    ListNode* fast = head;
+    ListNode* slow = head;
+    ListNode* prev = NULL;
+    while (slow && fast && fast->next) {
+        fast = fast->next->next;
+        prev = slow;
+        slow = slow->next;
+    }
+    if (!slow) return NULL;
+    // split the list into two parts, THIS NULL is IMPORTANT!
+    if (prev) prev->next = NULL;
+    TreeNode* root = new TreeNode(slow->val);
+    root->right = slow->next ? sortedListToBST(slow->next) : NULL;
+    root->left = head ? sortedListToBST(head) : NULL;
+    return root;
+}

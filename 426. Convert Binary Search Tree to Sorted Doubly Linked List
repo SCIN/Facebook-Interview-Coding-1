@@ -1,0 +1,63 @@
+426. Convert Binary Search Tree to Sorted Doubly Linked List
+
+BST->SORTED : IN order
+
+O(n) Space Solution
+Not the best but easy to implement and clear
+
+Node* treeToDoublyList(Node* root) {
+  if (!root) return root;
+  vector<Node*> ret;
+  dfs(ret, root);
+  Node* head = ret[0];
+  for (int i = 0; i < ret.size(); i++) {
+    if (i == 0) {
+      if (ret.size() == 1) {
+        ret[0]->left = ret[0];
+        ret[0]->right = ret[0];
+      } else {
+        ret[0]->right = ret[1];
+        ret[0]->left = ret[ret.size() - 1];
+      }
+    } else if (i == ret.size() - 1) {
+      ret[i]->left = ret[i - 1];
+      ret[i]->right = ret[0];
+    } else {
+      ret[i]->left = ret[i - 1];
+      ret[i]->right = ret[i + 1];
+    }
+  }
+  return head;
+}
+void dfs(vector<Node*> ret, Node* root) {
+  if (!root) return;
+  dfs(ret, root->left);
+  ret.push_back(root);
+  dfs(ret, root->right);
+}
+
+
+Better: O(1) space, complete recursion
+
+Node* first = NULL;
+Node* last = NULL;
+
+Node* treeToDoublyList(Node* root) {
+  if (!root) return root;
+  connect(root);
+  if (last) last->right = first;
+  if (first) first->left = last;
+  return first;
+}
+void connect(Node* root) {
+  if (!root) return;
+  connect(root->left);
+  if (last) {
+    last->right = root;
+    root->left = last;
+  } else {
+    first = root;
+  }
+  last = root;
+  connect(root->right);
+}

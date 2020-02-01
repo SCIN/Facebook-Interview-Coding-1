@@ -1,0 +1,21 @@
+7. Reverse Integer
+
+int reverse(int x) {
+    if (x >= 0 && x < 10) return x;
+    string num = to_string(x);
+    bool neg = (x < 0);
+    int i = num.length() - 1;
+    for (; i >= 0; i--) {
+        if (num[i] != 0) break;
+    }
+    num = num.substr(0, i + 1);
+    int left = 0;
+    int right = num.length() - 1;
+
+    while (left < right) {
+        swap(num[left++], num[right--]);
+    }
+    long ret = stol(num);
+    if (ret > INT_MAX) return 0;
+    return (neg) ? -ret: ret;
+}

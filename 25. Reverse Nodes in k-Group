@@ -1,0 +1,23 @@
+25. Reverse Nodes in k-Group
+
+ListNode* reverseKGroup(ListNode* head, int k) {
+    if (!head) return head;
+    if (!head->next) return head;
+    ListNode* count = head;
+    for (int i = 0; i < k; i++) {
+        if (!count) return head;
+        count = count->next;
+    }
+    ListNode* curr = head;
+    ListNode* prev = NULL;
+    ListNode* next = head;
+    for (int i = 0; i < k; i++) {
+        next = next->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    ListNode* afterK = reverseKGroup(next, k);
+    head->next = afterK;
+    return prev;
+}

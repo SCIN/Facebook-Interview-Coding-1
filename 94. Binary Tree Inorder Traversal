@@ -1,0 +1,24 @@
+94. Binary Tree Inorder Traversal
+
+vector<int> inorderTraversal(TreeNode* root) {
+    stack<TreeNode*> st;
+    vector<int> ret;
+    TreeNode* curr = root;
+    while (curr) {
+        st.push(curr);
+        curr = curr->left;
+    }
+    while (!st.empty()) {
+        TreeNode* curr = st.top();
+        st.pop();
+        ret.push_back(curr->val);
+        if (curr->right) {
+            TreeNode* tmp = curr->right;
+            while (tmp) {
+                st.push(tmp);
+                tmp = tmp->left;
+            }
+        }
+    }
+    return ret;
+}

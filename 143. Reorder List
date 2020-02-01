@@ -1,0 +1,41 @@
+143. Reorder List
+
+void reorderList(ListNode* head) {
+    if (!head) return;
+    ListNode* first_half = head;
+    ListNode* last_half = get_mid(head);
+    last_half = reverse(last_half);
+    head = merge(first_half, last_half);
+}
+ListNode* get_mid(ListNode* head) {
+    if (!head) return NULL;
+    ListNode* slow = head;
+    ListNode* fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    ListNode* half = slow->next;
+    slow->next = NULL;
+    return half;
+}
+ListNode* reverse(ListNode* head) {
+    ListNode* curr = head;
+    ListNode* prev = NULL;
+    while (curr) {
+        ListNode* tmp = curr;
+        curr = curr->next;
+        tmp->next = prev;
+        prev = tmp;
+    }
+    return prev;
+}
+ListNode* merge(ListNode* first, ListNode* last) {
+    if (!first) return last;
+    if (!last) return first;
+    merge(first->next, last->next);
+    ListNode* tmp = first->next;
+    first->next = last;
+    last->next = tmp;
+    return first;
+}

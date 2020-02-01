@@ -1,0 +1,22 @@
+ 415. Add Strings
+ 
+ string addStrings(string num1, string num2) {
+    int i = num1.size() - 1;
+    int j = num2.size() - 1;
+    int carry = 0;
+    string ret = "";
+    while (i >= 0 || j >= 0 || carry) {
+        // DO NOT FORGET - '0' !!!
+        int val1 = (i >= 0) ? num1[i] - '0' : 0;
+        int val2 = (j >= 0) ? num2[j] - '0' : 0;
+        int sum = val1 + val2 + carry;
+        carry = sum / 10;
+        // DO NOT FORGET TO_STRING!!!
+        ret += to_string(sum % 10);
+        i--;
+        j--;
+    }
+    // DO NOT FORGET REVERSE!!!
+    reverse(ret.begin(), ret.end());
+    return ret;
+}

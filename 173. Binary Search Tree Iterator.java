@@ -1,4 +1,40 @@
 173. Binary Search Tree Iterator
+C++
+    
+class BSTIterator {
+public:
+BSTIterator(TreeNode* root) {
+    pushLeft(root);
+}
+
+/** @return the next smallest number */
+    int next() {
+        TreeNode* top = st.top();
+        st.pop();
+        if (top->right) {
+            pushLeft(top->right);
+        }
+        return top->val;
+    }
+
+/** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !st.empty();
+    }
+
+private:
+    stack<TreeNode*> st;
+    void pushLeft(TreeNode* root) {
+        if (!root) return;
+        while (root) {
+            st.push(root);
+            root = root->left;
+        }
+    }
+};
+
+
+
 
 public class BSTIterator {
     private Stack<TreeNode> stack;

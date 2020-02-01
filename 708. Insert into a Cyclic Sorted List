@@ -1,0 +1,28 @@
+708. Insert into a Cyclic Sorted List
+
+Node* insert(Node* head, int insertVal) {
+    if (!head) {
+        Node* ret = new Node(insertVal, ret);
+        return ret;
+    }
+    Node* prev = head;
+    Node* next = head->next;
+    bool inserted = false;
+    while (true) {
+        if ((prev->val <= insertVal && next->val >= insertVal) ||
+            (prev->val > next->val && insertVal >= prev->val) || // The equal sign here does not matter
+            (prev->val > next->val && insertVal <= next->val)) {
+            inserted = true;
+            prev->next = new Node(insertVal, next);
+            // break!!!
+            break;
+        }
+        prev = prev->next;
+        next = next->next;
+        if (prev == head) break;
+    }
+    if (!inserted) {
+        prev->next = new Node(insertVal, next);
+    }
+    return head;
+}

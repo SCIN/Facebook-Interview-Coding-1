@@ -3,14 +3,53 @@
 
 Given n = 5 and edges = [[0, 1], [0, 2], [0, 3], [1, 4]], return true.
 Given n = 5 and edges = [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]], return false.
-
-
-Test:
+Reminder: Corner Test for union find:
 //1. corner case: n == 1 && edges.length == 0. eg. n = 1, [], it's true
 //2. edges.length != n - 1 --> a valid n-node tree should have n - 1 edges
 //3. initialize roots[i] = -1
 //4. find method --> cycle exists ? return false : union them
 
+DFS
+Time: O(E+V)
+To make a valid tree:
+1. acyclic (No back edge)
+2. connected (DFS starting any node should traverse all nodes in graph)
+
+bool validTree(int n, vector<vector<int>>& edges) {
+    if (n == 0) return true;
+    vector<vector<int>> graph(n);
+    for (auto edge : edges) {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+    }
+    vector<bool> visited(n, 0);
+    //cycle
+    if (hasCycle(graph, 0, -1, visited)) return false;
+    //connected
+    for (int i = 0; i < visited.size(); i++) {
+        if (visited[i] == 0) return false;
+    }
+    return true;
+}
+
+bool hasCycle(vector<vector<int>>& graph, int curr, int parent, vector<bool>& visited) {
+    if (visited[curr]) return true;
+    visited[curr] = true;
+    for (int nei : graph[curr]) {
+        if (nei != parent && hasCycle(graph, nei, curr, visited)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+Corner Test for union find:
+//1. corner case: n == 1 && edges.length == 0. eg. n = 1, [], it's true
+//2. edges.length != n - 1 --> a valid n-node tree should have n - 1 edges
+//3. initialize roots[i] = -1
+//4. find method --> cycle exists ? return false : union them
 
 Solution 1: Union - Find (no need to create disjoint set)
 Time: O(V*E), find: O(V)

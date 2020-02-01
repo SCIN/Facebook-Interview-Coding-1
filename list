@@ -1,0 +1,1030 @@
+1. Sum
+
+ (1) Prefix-Sum, Hashmap
+   724 https://leetcode.com/problems/find-pivot-index/
+   560 https://leetcode.com/problems/subarray-sum-equals-k/
+   523 https://leetcode.com/problems/continuous-subarray-sum/
+   325 https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+
+   (!) 209 https://leetcode.com/problems/minimum-size-subarray-sum/solution/
+   Find the continous subarray sum >= s
+
+   Using pre-fix sum O(nlogn), no hashmap
+   Use pre-fix sum array and find sum + s lower_bound in log(n)
+
+   Using two pointer O(n)
+
+   304 https://leetcode.com/problems/range-sum-query-2d-immutable/
+   2D Pre-fix Sum array O(1) get function
+   303 https://leetcode.com/problems/range-sum-query-immutable/
+   Simple Pre-fix Sum array O(1) get function
+
+   689 https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/
+   In a given array nums of positive integers, find three non-overlapping subarrays with maximum sum.
+   Each subarray will be of size k, and we want to maximize the sum of all 3*k entries.
+   Return the result as a list of indices representing the starting position of each interval (0-indexed). 
+   If there are multiple answers, return the lexicographically smallest one.
+   Input: [1,2,1,2,6,7,5,1], 2
+   Output: [0, 3, 5]
+   Explanation: Subarrays [1, 2], [2, 6], [7, 5] correspond to the starting indices [0, 3, 5].
+   We could have also taken [2, 1], but an answer of [1, 3, 5] would be lexicographically larger.
+
+   Pre-sum, Store index in pos_left, pos_right(pos_right[i] = i + k)
+   pos_left[i] = i - k, from k to n - 2k, (further no enough space on the right for mid and right parts)
+   pos_right[i] = i + k, from n - 2k to k
+   loop from k to n - 2k 
+ 
+ (2) DP
+   53 https://leetcode.com/problems/maximum-subarray/submissions/
+   
+   416 https://leetcode.com/problems/partition-equal-subset-sum/
+   Given a non-empty array containing only positive integers, 
+   find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+   Input: [1, 5, 11, 5]
+   Output: true
+   Explanation: The array can be partitioned as [1, 5, 5] and [11].
+   
+   494 https://leetcode.com/problems/target-sum/
+   You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. 
+   Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+   Find out how many ways to assign symbols to make sum of integers equal to target S.
+   
+   Brute Force: DFS, O(2^n) n: size of array.
+   From index 0 to n - 1, try +nums[i], -nums[i] every call of dfs.
+   
+   DP: (The sum of elements in the given array will not exceed 1000.) So use 2d dp array of size n * 2001.
+   
+   Base: dp[0][nums[0] + 1000] = 1, dp[0][-nums[0] + 1000] += 1.
+   For i from 0 to n - 1
+    For sum from -1000 to 1000
+      if (dp[i][sum + 1000] > 0)
+        dp[i][sum + 1000 + nums[i]] += dp[i - 1][sum + 1000];
+        dp[i][sum + 1000 - nums[i]] += dp[i - 1][sum + 1000];
+   Return dp[n - 1][S + 1000];    
+   
+ 
+ (3) Other
+   15 https://leetcode.com/problems/3sum/
+   1 https://leetcode.com/problems/2sum/
+ 
+ (4) Nested List
+   339 https://leetcode.com/problems/nested-list-weight-sum/
+   Input: [[1,1],2,[1,1]]
+   Output: 10 
+   Explanation: Four 1's at depth 2, one 2 at depth 1.
+   
+   Basic DFS, add one level each list
+   
+   364 https://leetcode.com/problems/nested-list-weight-sum-ii/
+   Input: [[1,1],2,[1,1]]
+   Output: 8 
+   Explanation: Four 1's at depth 1, one 2 at depth 2.
+   
+   Input: [1,[4,[6]]]
+   Output: 17 
+   Explanation: One 1 at depth 3, one 4 at depth 2, and one 6 at depth 1; 1*3 + 4*2 + 6*1 = 17.
+   
+   The most inner Integer is at level 1.
+   Two int variables, weighted and unweighted. 
+   unweighted += item.getInteger();
+   If !item.isInteger(), push the list into next level
+   swap two list
+   
+ (5) Binary Tree Path
+   112 https://leetcode.com/problems/path-sum/
+   124 https://leetcode.com/problems/binary-tree-maximum-path-sum/
+   
+   129 https://leetcode.com/problems/sum-root-to-leaf-numbers/
+   DFS, pass sum * 10 + root->val as new sum to next level(children)
+   
+   113 https://leetcode.com/problems/path-sum-ii/
+   DFS, base: check target == root->val
+   Use reference, no RETURN in check condition. 
+   129 https://leetcode.com/problems/sum-root-to-leaf-numbers/ 从root开始每一层的sum传下去，在dfs中乘10 + rootval
+   
+ (6) Backtrack in Array
+   39 https://leetcode.com/problems/combination-sum/
+   DFS, start with every index, (next dfs may start with the same index)
+   To avoid duplicates: 1. no dulicates in the input, 2. sort before dfs.
+   
+2. DFS Backtrack
+   (1) Add operation
+     494 https://leetcode.com/problems/target-sum/
+     + or - on every number 
+     Can be optimized using dp
+
+   (2) Word Break
+     139 https://leetcode.com/problems/word-break/
+     Remember Cache! 用index cache就可以
+     140 https://leetcode.com/problems/word-break-ii/
+    （有更简单的解法，补上）
+
+   (3) Word Ladder
+     127 https://leetcode.com/problems/word-ladder/
+     Return 最短路径 from beginWord to endWord
+     O(m*n)
+     Check if endWord in wordList before search
+     BFS from beginWord, try to change a-z for every position on current word(front of the queue)
+     As long as reach endWord, return step directly.
+
+     126 https://leetcode.com/problems/word-ladder-ii/
+     Return every shortest path from beginWord to endWord
+     O(2^n)
+     Best Solution so far
+     Maintain two unordered_set<string> curr, next;
+     Maintain unordered_map<string, vector<string>> parents;
+     While (!curr.empty()) {
+       remove every word in curr from dict;
+       add children for every word in dict to next;
+       if next empty break
+       if next contains endWord, do dfs to get paths and break;
+       swap(curr, next)
+       clear next
+     }
+     add children: try to change a-z for every position on current word, add into next if in dict
+     DFS get paths: from endWord to beginWord, try every parents, reverse path before return
+  (4) Graph Painting 
+      785 https://leetcode.com/problems/is-graph-bipartite/
+      用int代表0和1代表颜色，换颜色1-color即可
+  568 https://leetcode.com/problems/maximum-vacation-days/
+  78 https://leetcode.com/problems/subsets/ From every position, jump from 1 to n(if in bound)
+  394 [RECURSION!] https://leetcode.com/problems/decode-string/
+       while (i < s.length() && s[i] != ']') {
+       
+       }
+  93 https://leetcode.com/problems/restore-ip-addresses/
+  679 https://leetcode.com/problems/24-game/
+  17 O(3^n * 4^m) https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+  
+  
+  
+  
+      
+
+3. Palindrome
+  266 https://leetcode.com/problems/palindrome-permutation/
+  这个题和Palindrome几乎无关。
+  最优解是用hashmap存一次每个char的次数，然后再loop一次，maintain一个count variable，每次碰到出现次数为1的count++，当count大于1直接break
+  return count <= 1
+  
+  680 https://leetcode.com/problems/valid-palindrome-ii/
+  You may delete at most one character. Judge whether you can make it a palindrome.
+
+  Two pointer, from the beginning and the end, 
+  if not the same, try remove one of them and check the rest need to be a valid Palindrome.
+  
+  1216. Valid Palindrome III https://leetcode.com/problems/valid-palindrome-iii/
+  
+  Brute Force: DFS
+  
+  Optimized: DFS with memo O(n^2), hardcore is to find a workable hash function
+  i * 1001 * 1001 + j * 1001 + k, OR hash string i + "," + j + "," + k
+  
+  Optimized: DP Longest subsequence, return dp[0][n - 1] + k >= n
+
+  125 https://leetcode.com/problems/valid-palindrome/
+  Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+  Input: "A man, a plan, a canal: Panama"
+  Output: true
+
+  Two pointer, from the beginning and the end, 
+  while not isalnum i++, j--, compare lowercase and move pointers.
+
+  9 https://leetcode.com/problems/palindrome-number/
+
+  Two corner cases: 1. negative return false directly, 2. x % 10 == 0 && x != 0, false directly.
+  O(log(n)), while x > last_half, x /= 10 each iteration and keep track of the reversed last half.
+
+  647 https://leetcode.com/problems/palindromic-substrings/（似乎有一个O(1) time solution）
+  Given a string, your task is to count how many palindromic substrings in this string.
+  The substrings with different start indexes or end indexes are counted as different substrings 
+  even they consist of same characters.
+
+  2D DP n * n
+  Initialization: dp[i][i] = 1; count = n;
+  For i from n - 2 to 0
+    For j from i + 1 to n
+      If (s[i] == s[j]) 
+         If (j == i + 1) dp[i][j] = 1;
+         Else dp[i][j] = dp[i + 1][j - 1];
+      count += dp[i][j];
+  return count;
+
+  O(1) memory:
+  int n = s.length(), count = 0;
+  for (int i = 0; i < n; i++) {
+      for (int l = i, r = i; l >= 0 && r < n && s[l] == s[r]; l--, r++) count++;
+      for (int l = i, r = i + 1; l >= 0 && r < n && s[l] == s[r]; l--, r++) count++;
+  }
+  return count;
+  
+  5 https://leetcode.com/problems/longest-palindromic-substring/
+  Palindromic substring的dp题可以用expandAroundCenter的办法将space降至O(1)
+  
+  string longestPalindrome(string s) {
+      int n = s.length(), start = 0, end = 0;
+      for (int i = 0; i < n; i++) {
+          int lenOdd = expandAroundCenter(s, i, i);
+          int lenEven = expandAroundCenter(s, i, i + 1);
+          int len = max(lenOdd, lenEven);
+          if (len > (end - start)) {
+              end = i + len / 2;
+              start = i - (len - 1) / 2;
+          }
+      }
+      return s.substr(start, end - start + 1);
+  }
+  int expandAroundCenter(string& s, int i, int j) {
+      int left = i, right = j, n = s.length();
+      while (left >= 0 && right < n && s[left] == s[right]) {
+          left--, right++;
+      }
+      return right - left - 1;
+  }
+  
+  516 https://leetcode.com/problems/longest-palindromic-subsequence/
+  2D DP(n * n)
+  dp[i][j] longest palindromic subsequence from i to j inclusive
+  init: dp[i][i] = 1;
+  return: from 0 to n - 1 dp[0][n - 1]
+  int longestPalindromeSubseq(string s) {
+      int n = s.length();
+      vector<vector<int>> dp(n, vector<int>(n, 0));
+      for (int i = 0; i < n; i++) dp[i][i] = 1;
+      for (int i = n - 2; i >= 0; i--) {
+          for (int j = i + 1; j < n; j++) {
+              if (s[i] == s[j]) {
+                  if (j == i + 1) dp[i][j] = 2;
+                  else dp[i][j] = dp[i + 1][j - 1] + 2;
+              } else {
+                  dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+              }
+          }
+      }
+      return dp[0][n - 1];
+  }
+  
+  214 https://leetcode.com/problems/shortest-palindrome/
+  O(n^2): T(n) = T(n - 2) + O(n) 
+  Two pointers, from begining and end, i increase by one when s[i] == s[j]
+  if i == n return s;
+  extra = s.substr(i) is the extra part in this call.
+  ret = reversed(extra) + shortestPalindrome(s.substr(0, i)) + extra;
+  
+  336 https://leetcode.com/problems/palindrome-pairs/
+  Brute force: concatenate every two of the strings and call checkValid() O(n^2 * k)
+  Optimized: O(k^2 * n)
+  Build hashmap containing reversed words from input as key, the index in input as value.
+  For i from 0 to n - 1
+    For j from 0 to n - i?
+      string left = words[i].substr(0, j);
+      string right = words[i].substr(j + 1);
+      if (dict.find(left) != dict.end() && dict[left] != i && isPalindrome(right)) ret.push_back({i, dict[left]});
+      if (dict.find(right) != dict.end() && dict[right] != i && isPalindrome(left) && !left.empty()) ret.push_back({dict[right], i});
+  
+4. Search
+   一定要想怎么mark visited！
+   (0) Basic Search 
+       1091 [BFS] https://leetcode.com/problems/shortest-path-in-binary-matrix/ mark [visited] as 1
+       329 [DFS] https://leetcode.com/problems/longest-increasing-path-in-a-matrix/ 对每个index都search，dfs返回上下左右最大的+1，记得cache
+       200 https://leetcode.com/problems/number-of-islands/[Union find]适合此题变形
+       305 [Union find] https://leetcode.com/problems/number-of-islands-ii/ 这个题不查visited, roots[child] == -1 means grid[][] = 0
+       79 https://leetcode.com/problems/word-search/ O(m*n*4^k)这道题没有memo, 对每个char检查一遍，mark visited是改成空格并在recursion后改回来
+       529 https://leetcode.com/problems/minesweeper/ 开始bfs前先查start point是e的两种情况
+       463 https://leetcode.com/problems/island-perimeter/ boundary and 0 grid ++
+       212 [Trie][DFS] https://leetcode.com/problems/word-search-ii/
+       694 [Hash path by string] https://leetcode.com/problems/number-of-distinct-islands/
+           path += (row - start_x) + "," + (col - start_y);
+       417 https://leetcode.com/problems/pacific-atlantic-water-flow/ 两个矩阵, 分别记两个ocean, 从边缘开始dfs, 最后合法的是两个board都能到的
+       
+       
+       
+   (1) The Maze
+       490 https://leetcode.com/problems/the-maze/
+
+       DFS, return bool, O(m*n)
+       Start DFS from start[0],start[1].
+       Base case: out of bound(4) || if maze[row][col] != 0
+       Mark Visited: maze[row][col] = 2;
+       Try four direction(while loop) until the end(hit a wall), do dfs from the end
+       return dfs(left) || dfs(right) || dfs(up) || dfs(down).
+
+       505 https://leetcode.com/problems/the-maze-ii/
+
+       Find the shortest distance for the ball to stop at the destination
+       BFS O(m*n) return pathLength
+       Build another distance 2D vector, starting with INT_MAX, and update it duing the traversal.
+       Return dist[end[0]][end[1]] == INT_MAX ? -1 : dist[end[0]][end[1]];
+
+   (2) Walls and Gates/Shortest Distance from All Buildings
+       286 https://leetcode.com/problems/walls-and-gates/
+           Fill each empty room with the distance to its nearest gate. 
+           If it is impossible to reach a gate, it should be filled with INF
+
+           DFS/BFS
+           Do search on every gate, 
+           Update when grid[next_r][next_c] > grid[r][c] + 1, 
+           Start next search from (next_r, next_c) 
+
+       317 https://leetcode.com/problems/shortest-distance-from-all-buildings/
+
+           BFS 这道题因为要sum up all distance，所以更新visited的方式是对于每一个building的search，要找的target数字不一样
+           第一个building search 0，每个push进queue的空地都要grid[][]--；对于下一个building， search -1， 以此类推。
+           Also need to maintain another distance matrix to do the sum.
+           At last, traverse the distance matrix and return the smallest distance in it.
+    (3) Infinite Board
+        1197 https://leetcode.com/problems/minimum-knight-moves/ 记visited！step<=3可以不同方向跳
+    (4) Set Matrix Zeroes 
+        73 https://leetcode.com/problems/set-matrix-zeroes/
+           search i from 0 to n - 1, j from 1 to n - 1
+           If any first col is 0, mark bool as true and mark all cols 0 later
+           If there is 0, mark matrix[i][0] and matrix[0][i] as 0.
+           If matrix[0][0] is 0, all first row 0.
+ 
+
+
+5. Recursive Data Structures
+(1) Copy/Clone Same data structure
+  用unordered_map<Node*, Node*>记录已经build的新node，key: 原有的，value: 新的
+  找到了return，null return，
+  build root，加入cache（！）
+  加入neighbors
+  133 https://leetcode.com/problems/clone-graph/
+  138 https://leetcode.com/problems/copy-list-with-random-pointer/
+(2) Pure Linked List
+  24 (Recursive) https://leetcode.com/problems/swap-nodes-in-pairs/
+  143 https://leetcode.com/problems/reorder-list/
+  Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+  reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+  findHalf(2), reverse last half(3), and merge(Recursion)
+  
+  (BOTH) 206 https://leetcode.com/problems/reverse-linked-list/
+  (BOTH)(Merge) 21 https://leetcode.com/problems/merge-two-sorted-lists/
+  (Iterative) 19 https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+     用fast and slow pointer做，fast和slow start from dummy head，fast先走n+1次，然后再一起update，直到fast到null
+  (Iterative) 328 https://leetcode.com/problems/odd-even-linked-list/
+     odd even pointer，形成两条list，最后将odd的next连到even的head上
+  (BOTH)(Merge)23 https://leetcode.com/problems/merge-k-sorted-lists/
+     1. Priority Queue. O(nlogk), O(k).
+     2. Merge Sort. O(nlogk), O(n).
+  (Iterative) 160 https://leetcode.com/problems/intersection-of-two-linked-lists/
+     O(n), O(1) 两个指针from p1 = a and p2 = b，when p1 reaches end, redirect p1 to b, when p2 reaches end, redirect p2 to a.
+  (Recursive) 430 https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/ O(n),O(n)
+     Similar to 114 https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+  (Iterative) 708 https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/
+     If list empty, build, set pointers and return.
+     While(true) {
+        if (3conditions) {
+           set inserted = true;
+        }
+        move pointers;
+        if goes back to head, break;
+     }
+     check inserted, if not, insert right after head // This is for size 1 list
+     return head
+     
+(3) (!Recursive) Linked List - Binary Tree
+    426 https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/submissions/
+    
+    Convert a Binary Search Tree to a sorted Circular Doubly-Linked List in place.
+    
+    114 https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+    
+    Given a binary tree, flatten it to a linked list in-place.
+    Set root->right = func(root->left), root->left = NULL
+    
+    109 https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+    Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+    
+    O(nlogn), O(logn): 思路是找midpoint作为root，然后左为left，右边为right，实际操作中，任何情况左，root，右存在重叠，都会seg fault。
+    
+    避免bug的几个地方：
+    1. base return null，
+    2. 如果slow是null，return null，
+    3. 如果slow是head，应该直接return root，而不再进行dfs（很迷），
+    4. set prev->next = NULL前检查prev
+    
+    O(n), 0(n): convert list to array, and build
+    O(n), O(1): Store a public ListNode* curr, count length first, set left-right boundary, build left part first.
+    
+    ListNode* curr = NULL;
+    TreeNode* sortedListToBST(ListNode* head) {
+        int n = 0;
+        curr = head;
+        for (ListNode* curr = head; curr; curr = curr->next) n++;
+        return dfs(0, n - 1);
+    }
+    TreeNode* dfs(int left, int right) {
+        if (left > right) return NULL;
+        int mid = (left + right) / 2;
+        TreeNode* prev = dfs(left, mid - 1);
+        TreeNode* root = new TreeNode(curr->val);
+        if (left == right) {
+            curr = curr->next;
+            return root;
+        }
+        root->left = prev;
+        curr = curr->next;
+        root->right = dfs(mid + 1, right);
+        return root;
+    }
+(4) Iterator
+    314 https://leetcode.com/problems/flatten-nested-list-iterator/
+    很容易忘！
+    maintain two stack<vector<Integer>::iterator> begins, ends;
+    Constructor: push begin to begins, end to ends in constructor
+    
+    hasNext(): 
+    while (!begins.empty()) { // while loop is to get inner lists, each pop, we move to the next item
+        if (begins.top() == ends.top()) {
+            begins.pop();
+            ends.pop();
+        } else {
+            auto it = begins.top();
+            if (it->isInteger()) return true;
+            begins.top()++ // move to next one
+            begins.push(it->getList().begin());
+            ends.push(it->getList().end());
+        }
+    }
+    return false;
+    
+    int next() {
+        hasNext();
+        return (st.top()++)->getInteger(); // remember to move to next one in the current list
+    }
+    
+    173 https://leetcode.com/problems/binary-search-tree-iterator/
+    O(1) amrotized, O(h)
+    
+    145 https://leetcode.com/problems/binary-tree-postorder-traversal/
+        先推左，用一个prev node记录刚刚pop过的node避免重复推right
+  (5) Tree
+  
+    [1]. Traverse but not return recursive call
+       Be Careful about what to return when !root and !root->left && !root->right (recursive call may not change the return value)
+       [124] https://leetcode.com/problems/binary-tree-maximum-path-sum/
+       [543] https://leetcode.com/problems/diameter-of-binary-tree/
+       (!) [298] https://leetcode.com/problems/binary-tree-longest-consecutive-sequence/
+       
+       int ret = 0;
+       int longestConsecutive(TreeNode* root) {
+           if (!root) return 0;
+           dfs(root, 0, root->val);
+           return ret;
+       }
+       void dfs(TreeNode* root, int count, int target) {
+           if (!root) return;
+           if (root->val == target) count = count + 1;
+           else count = 1;
+           ret = max(ret, count);
+           dfs(root->left, count, root->val + 1);
+           dfs(root->right, count, root->val + 1);
+       }
+       [549] https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/
+             pair<int, int> first: increase from root, second: decrease from root
+       
+    [2]. DFS to fill the returned value
+       [DFS]199 https://leetcode.com/problems/binary-tree-right-side-view/
+       [LCA] 865 https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
+       [DFS] 257 https://leetcode.com/problems/binary-tree-paths/
+       [DFS][BFS] 575 https://leetcode.com/problems/find-largest-value-in-each-tree-row/
+    [3]. Return recursive call
+       98 https://leetcode.com/problems/validate-binary-search-tree/
+       111 [BFS BETTER] https://leetcode.com/problems/minimum-depth-of-binary-tree/
+       104 https://leetcode.com/problems/maximum-depth-of-binary-tree/
+       100 https://leetcode.com/problems/same-tree/
+       
+    [4]. Traversal
+       vertical order用dfs会增加复杂度，因为要sort height，用bfs自带sorting
+       要看清同一位置的return顺序，一般traverse都是需要level和height两变量
+       987 https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+       314 https://leetcode.com/problems/binary-tree-vertical-order-traversal/
+       
+       [BFS] 863 https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
+             Build parents map first using DFS, then use BFS to count distance as a graph problem
+       [BFS] 958 https://leetcode.com/problems/check-completeness-of-a-binary-tree/
+             用vector或queue都可以，null进去，检查方法是null后面没有非null的node（用bool或者move index）
+       [BFS][LevelOrder] 637 https://leetcode.com/problems/average-of-levels-in-binary-tree/
+       [BFS] 103 https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+       [Iterative] 145 https://leetcode.com/problems/binary-tree-postorder-traversal/
+      
+    [5]. BST BST考虑boundary！！
+       270 O(h) https://leetcode.com/problems/closest-binary-search-tree-value/
+       
+    [6]. Build Tree
+       297 https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+           用stringstream，null用#，用space分开
+       428 https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/
+           stringstream存的是val和children size，space分割
+       1008 https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/
+            需要传boundary
+       
+       
+    [7]. LCA Sequence 
+         236 https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+         用parent就是hashmap从一个走到root再从另一个走，遇到即return
+         用recursion做就是post order traversal，左null返回右，右null返回左，都有返回root，这里的return node像是一个bool证明有or没有
+         865 https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
+         1123 https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/
+
+6. Merge Interval
+  56 https://leetcode.com/problems/merge-intervals/
+  Input: [[1,3],[2,6],[8,10],[15,18]]
+  Output: [[1,6],[8,10],[15,18]]
+
+    先sort, curr = intervals[0]
+    push at last
+
+  986 https://leetcode.com/problems/interval-list-intersections/
+    two pointers,谁先结束谁++
+
+  57 https://leetcode.com/problems/insert-interval/
+    input has been sorted by start time
+    1. One index variable, push every interval while intervals[i][1] < newIntervals[0]
+    2. merge, while intervals[i][0] < newIntervals[1], update newIntervals[0], newIntervals[1]
+    3. push newIntervals
+    4. push the rest
+  253 https://leetcode.com/problems/meeting-rooms-ii/
+    O(nlogn) priority_queue, push intervals[i][1] only
+  1094 O(n) Bucket Sort https://leetcode.com/problems/car-pooling/
+  452 https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/ 
+      Sort by end time,
+      for loop, if found start time later than current end_time, count++, re-set end_time;
+  435 https://leetcode.com/problems/non-overlapping-intervals/
+  616 https://leetcode.com/problems/add-bold-tag-in-string/
+7. Parentheses
+
+20 https://leetcode.com/problems/valid-parentheses/
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+O(n), O(n) 用stack，左括号推入，右括号检查，valid pop，invalid return，中间任何时候stack空了都false，最后查stack是否空了
+
+22 https://leetcode.com/problems/generate-parentheses/
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+DFS, left right start with n 
+If(left > 0), dfs加左括号
+If(right > left) dfs加右括号
+
+921 https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/
+分别记多出来的左括号和右括号最后加起来return
+
+1249 https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
+If: s[i] is one of  '(' , ')' and lowercase English letters.
+Loop from left to right, if meet ')' when count < 0, change char to *
+Loop from right to left, if count > 0, change '(' to *, decrease count by 1
+Mark extra parentheses as '*', and loop again, add chars not '*'
+Else, use helper function, removeParentheses()
+Remove s ()
+reverse the removed s, remove again )(
+reverse again, return 
+
+301 https://leetcode.com/problems/remove-invalid-parentheses/
+1249升级版, return all
+
+DFS
+算extra left, extra right
+dfs backtrack
+*** 同一个括号内，是否remove是没有else的，都要查 是if if 而非if else
+
+32 https://leetcode.com/problems/longest-valid-parentheses/
+三种方法，最简单的是stack
+1.Stack. O(n), O(n)
+stack storing index
+left parenthese, push(i)
+right, pop
+if not empty, update ret
+if empty, push i
+2. DP
+3. Two pointers. O(n), O(1) 查一遍左，right超过left take max of ret, 再查一遍右
+
+8. Operator/Calculaters
+   查0
+   679 https://leetcode.com/problems/24-game/
+   224 https://leetcode.com/problems/basic-calculator-i/
+   227 https://leetcode.com/problems/basic-calculator-ii/
+   772 https://leetcode.com/problems/basic-calculator-iii/
+   282 https://leetcode.com/problems/expression-add-operators/
+
+9. Math related
+  (1) Addition/Subtraction
+      67 Add binary https://leetcode.com/problems/add-binary/
+      2 Add Two Numbers https://leetcode.com/problems/add-two-numbers/
+      415 Add Strings https://leetcode.com/problems/add-strings/
+  (2) Division
+      29 https://leetcode.com/problems/divide-two-integers/submissions/
+      OVERFLOW because of INT_MIN
+      在操作前解决所有overflow的可能
+      转换成abs
+      用binary search的方法不断的从dvd减去dvs的倍数，该倍数呈2的指数次增长
+      增长的方法：tmp << 1 然后从dvd中减去，quotient += m
+      检查符号并return
+  (3) Multiply
+      43 https://leetcode.com/problems/multiply-strings/
+      两个for loop，inner loop前set carry = 0，在inner loop内做加法，但要记得同样的位置要累加 +=
+      在inner loop外，outer loop内，结束加法后，检查carry，加到i - 1上，如果i是0，增加一位
+      最后检查前面的leading zeros，并且trim掉，return
+  (4) Power
+      50 https://leetcode.com/problems/powx-n/
+      如果n是负数，把x变成1/x，n变正
+      Recursion
+      base 如果n == 0，return 1, 如果n == 1，return x
+      如果n为偶数，return pow(x, n / 2) * pow(x, n / 2)
+      n为奇数return pow(x, n / 2) * pow(x, n / 2) * x
+  (5) Fraction to Recurring Decimal
+      166 https://leetcode.com/problems/fraction-to-recurring-decimal/
+      查0，加符号，转成abs，如果整除return，没有加dot，build hashmap<long, int>进入whileloop (while(r))
+      先查是否循环，循环insert括号return
+      不循环把当前r加入map, m[r] = ret.size();把r乘10（借位除法）结果加上商(r / d)（注意是商）; r %= d;
+  (6) Valid Number
+      65 https://leetcode.com/problems/valid-number/
+      Rules: 1. Sign +/- only at the begin of the number or right after a e
+             2. No e after e, No dot after e, e must after number appeared, e must followed by number
+             3. No dot after dot, e can be after dot, No dot after e
+             4. No other char except number, sign, e, dot, after trim
+      return numSeen && numAfterE;
+  (7) Bulb Switch
+      Numbers from 1 to n (inclusive) can be grouped into 3 groups.
+      1. primes
+      2. square
+      3. non-primes except square
+
+      Primes will be turned on at 1 and itself -> off
+      Non-primes will be turned on at every factor pairs. eg 6, (1 6), (2 3) -> off
+      Squares will be turned on at factor pairs and itself. eg 4 (1 4), ->off, (2 2) ->on
+
+      Therefore only the square numbers can be on at last.
+      There are sqrt(n) number of square numbers from 1 to n(inclusive).
+
+      int bulbSwitch(int n) {
+          return sqrt(n);
+      }
+   (8) 8 https://leetcode.com/problems/string-to-integer-atoi/ 查overflow before *10
+   (9) 13 https://leetcode.com/problems/roman-to-integer/
+       从后往前走, 遇到比后面一位小的剪掉，否则加上
+       
+      
+10. Stack
+    636 https://leetcode.com/problems/exclusive-time-of-functions/ 
+        自定义log struct，有点像括号题，start都push，end先算interval，
+        在当前id的ret位置加interval，pop，在pop后的top位置减去interval
+    71  https://leetcode.com/problems/simplify-path/
+        用stringstream
+          If empty或者single dot continue
+          else if 不空并且当前为double dot pop
+          else if 不是dot dot push
+        空了return/
+        pop空stack全部加入ret
+    
+11. Matrix related
+  (1) Traversal 
+  766 https://leetcode.com/problems/toeplitz-matrix/
+      用一个unordered_map<int, int>记录，key是row index - col index，value是对应row col的val
+      if not find, add, else compare and return
+      O(1) Space是不用hashmap，每次都和左上角比较
+  498 https://leetcode.com/problems/diagonal-traverse/
+      for sum from [0 to n * m - 1)
+        for x from [0 to sum]
+          
+  (2) Sprial Matrix
+  54 Spiral Matrix https://leetcode.com/problems/spiral-matrix/
+  继续转圈的if条件是r2 > r1 && c2 > c1
+  885 https://leetcode.com/problems/spiral-matrix-iii/
+  rpos, cpos, dis(推dis个进去per direction), dir(奇数dir增加dis)
+  (3) Search
+  240 https://leetcode.com/problems/search-a-2d-matrix-ii/
+  O(m + n)经典做法
+  O(nlogn) Binary Search 每个row扫一遍，有true即return，对each row做binary search
+  
+  378 https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
+  Minheap O(nlogm + n)
+  Binary Search O(n*log(max−min)) 
+  Search value not index!
+  int kthSmallest(vector<vector<int>>& matrix, int k) {
+     int n = matrix.size();
+     int lo = matrix[0][0], hi = matrix[n - 1][n - 1] + 1;
+     while (lo < hi) {
+         int mid = lo + (hi - lo) / 2;
+         int count = 0, j = n - 1;
+         for (int i = 0; i < n; i++) {
+             while (j >= 0 && matrix[i][j] > mid) j--;
+             count += j + 1;
+         }
+         if (count < k) lo = mid + 1;
+         else hi = mid;
+     }
+     return lo;
+  }
+  
+  (4) Sparse Matrix Compression
+  311 https://leetcode.com/problems/sparse-matrix-multiplication/
+  There is no better solution than O(m*n*k) given the input like this problem.
+  However, we can do optimization if the input have already been compressed. 
+    vector<vector<int>> multiply(vector<vector<int>>& A, vector<vector<int>>& B) {
+       int m = A.size(), n = A[0].size(), k = B[0].size();
+       vector<vector<int>> ret(m, vector<int>(k, 0));
+       for (int i = 0; i < m; i++) {
+           for (int j = 0; j < n; j++) {
+               if (A[i][j] != 0) {
+                   for (int h = 0; h < k; h++) {
+                       ret[i][h] += A[i][j] * B[j][h];
+                   }
+               }
+           }
+       }
+       return ret;
+     }
+   Do compression
+     int m = A.size(), n = A[0].size(), k = B[0].size();
+     vector<vector<int>> ret(m, vector<int>(k, 0));
+     unordered_map<int, unordered_map<int, int>> map;
+     for (int i = 0; i < m; i++) {
+         unordered_map<int, int> tmp;
+         for (int j = 0; j < n; j++) {
+             if (A[i][j] != 0) {
+                 tmp[j] = A[i][j];
+             }
+         }
+         map[i] = tmp;
+     }
+     for (auto it : map) {
+         for (int j = 0; j < k; j++) {
+             for (auto itt : it.second) {
+                 if (B[itt.first][j] != 0) {
+                     ret[it.first][j] += B[itt.first][j] * itt.second;
+                 } 
+             }
+         }
+     }
+    return ret;
+  Sparse Vector Multiplication
+  vector<pair<int, int>> a, vector<pair<int, int>> b.
+  If sorted,  O(m+n)
+    int i = 0;
+    int j = 0;
+    while (i < m && j < n) {
+        ArrayList<Integer> pairA = a.get(i);
+        ArrayList<Integer> pairB = b.get(j);
+        if (pairA.get(0) < pairB.get(0)) {
+            i++;
+        } else if (pairA.get(0) > pairB.get(0)) {
+            j++;
+        } else {
+            res += pairA.get(1) * pairB.get(1);
+            i++;
+            j++;
+        }
+    }
+  If not, O(m*n) or sort first O(mlogm + nlogn)
+     for (int i = 0; i < m; i++) {
+         ArrayList<Integer> pairA = a.get(i);
+         for (int j = 0; j < n; j++) {
+             ArrayList<Integer> pairB = b.get(i);
+             if (pairA.get(0) == pairB.get(0)) {//if their indices are the same, calculate and break
+                 res += pairA.get(1) * pairB.get(1);
+                 break;//pairA has been calculated, jump to next pair
+             }
+         }
+     }
+   If two inputs are sorted by index0, have same size, sometimes dense, sometimes sparse; two pointes + binary search
+   用两个count记录a超出b多少orb超出a多少个index
+       int i = 0;
+       int j = 0;
+       int countA = 0;
+       int countB = 0;
+       while (i < m && j < n) {
+           ArrayList<Integer> pairA = a.get(i);
+           ArrayList<Integer> pairB = b.get(j);
+           if (pairA.get(0) < pairB.get(0)) {
+               i++;
+               countA++;
+               countB = 0;
+               if (countA > Math.log(m)) {
+                   i = search(a, i, m, pairB.get(0));
+                   countA = 0;
+               }
+           } else if (pairA.get(0) > pairB.get(0)) {
+               j++;
+               countB++;
+               countA = 0;
+               if (countB > Math.log(n)) {
+                   j = search(b, j, n, pairA.get(0));
+                   countB = 0;
+               }
+           } else {
+               res += pairA.get(1) * pairB.get(1);
+               i++;
+               j++;
+               countA = 0;
+               countB = 0;
+           }
+       }
+   If two inputs are sorted by index0, input b is much larger than input a, iterate a and binary search b; O(m*logn) time
+       int i = 0;
+       int j = 0;
+       while (i < m) {
+           ArrayList<Integer> pairA = a.get(i++);
+           j = search(b, j, n, pairA.get(0));
+           ArrayList<Integer> pairB = b.get(j++);
+           if (pairA.get(0) == pairB.get(0)) {
+               res += pairA.get(1) * pairB.get(1);
+           }
+       }
+       return res;
+12. Binary Search
+(first)(last)
+    278 https://leetcode.com/problems/first-bad-version/
+    34 https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/ lower bound to upper bound
+    33 https://leetcode.com/problems/search-in-rotated-sorted-array/ 
+       🈚️duplicates 找到一端sorted
+       如果在sorted part search sorted一侧 如果不在search另一侧
+       If there are duplicates, if (nums[left] == nums[mid] && nums[mid] == nums[right]) left++, right--;
+       Worst Case O(n)
+    153 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+    154 https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
+    1060 https://leetcode.com/problems/missing-element-in-sorted-array/ right starts from nums.size()
+    162 https://leetcode.com/problems/find-peak-element/
+    1146 https://leetcode.com/problems/snapshot-array/
+    658 https://leetcode.com/problems/find-k-closest-elements/ 
+    875 https://leetcode.com/problems/koko-eating-bananas/
+        O(nlogW) count += (pile + mid - 1) / mid
+    540 https://leetcode.com/problems/single-element-in-a-sorted-array/ SORTED! 
+        This one is not sorted, therefore, we should use bit manipulation! 136 https://leetcode.com/problems/single-number/
+    852 https://leetcode.com/problems/peak-index-in-a-mountain-array/
+
+13. MultiSet
+    MultiSet -- AVL tree allowing duplicates keys
+    295 https://leetcode.com/problems/find-median-from-data-stream/
+    maintain 2 iterators, 
+    if odd size before insertion, move 
+    if even size, insert in between 
+    insert before lo, lo = hi--
+    insert after hi(num >= *hi), lo++
+    480 https://leetcode.com/problems/sliding-window-median/
+    First push [0, k) into multiset window
+    set med pointer at next(window.begin(), k / 2); 
+    start iteration from [k to n)
+    push med into ret first
+    if i == n break and return
+    window insert nums[i]
+    if nums[i] < *mid mid--; // think about nums[i - k] is larger than mid, remove something later how to move the iterator
+    if nums[i - k] <= *mid mid++; 
+    erase(window.lower_bound(nums[i - k])) // erase the first one
+    
+14. Data Structure Design
+    [CircularQueue] 622 https://leetcode.com/problems/design-circular-queue/
+         Maintain 4 int variables and a vector. 
+         first, last, curr_size, max_size. update last when enqueue, update first when dequeue
+         last start with -1
+    [CircularQueue] 346 https://leetcode.com/problems/moving-average-from-data-stream/
+    [HashMap Array] 380 https://leetcode.com/problems/insert-delete-getrandom-o1/
+    [LRU] 146 https://leetcode.com/problems/lru-cache/ 
+              list<pair<int, int>> cache first key, second value
+              unordered_map<int, list<pair<int, int>>::iterator> key: key, value: position in list
+              stl list in c++ special function: splice 
+              move iterator it to the begining of the list: splice(cache.begin(), cache, it);
+    [Tic-Tac-Toe] 348 https://leetcode.com/problems/design-tic-tac-toe/
+    
+              
+15. Reservoir Sampling
+    [ONLY THIS ONE] 398 https://leetcode.com/problems/random-pick-index/
+    [Pre-Sum][Binary Search Upper] 528 https://leetcode.com/problems/random-pick-with-weight/
+16. Trie
+    如果不只是26个字母，用unorderedmap存children
+    有的trie需要存string，count（autocomplete）
+    208 https://leetcode.com/problems/implement-trie-prefix-tree/ 没有任何花样
+    211 https://leetcode.com/problems/add-and-search-word-data-structure-design/ 只有dot时有for loop，用recursion check children
+    642 https://leetcode.com/problems/design-search-autocomplete-system/ 非常复杂
+        存一个共用的maxHeap pq<pair<string, int>>, 共用的string s记录所有加入的char, 共用的trienode* curr记录现在到了trie tree的哪里
+        Trienode: unordered_map存children，存count，存string（不到end存empty string）
+        Constructor insert所有的string
+        vector<string> input(c) {
+          c==# insert, set s empty, set curr back to root, return empty
+          s adds char, re-build empty pq, check curr and curr->children[c], move curr to curr->chilren if valid, set to null and return empty elsewise 
+          search all children from curr
+          clear pq and return top 3
+        }
+        Helpers: insert, search
+17. Union Find
+    Accounts Merge 721 https://leetcode.com/problems/accounts-merge/
+      First nested For loop
+      Build owner map, key: email, value, name
+      Build email_groups for union find, each email belongs to one group at the beginning, key email, value email(Same)
+
+      Second nested for loop
+      Group emails, use the first email in accounts[i] as the parent for the group, set email_groups[email] = parent
+
+      Third for loop grouped_emails(unordered_map<string, set<string>> key parent, set<string> all emails in this group
+      Build grouped_emails, at this time, we need to merge accounts in different group with same parents to one group
+      The idea is loop through all emails, grouped_emails[find(email)].insert(email);
+
+      Fourth for loop
+      add owner name and insert all emails in this group
+    
+18. [Greedy][array]
+    277 https://leetcode.com/problems/find-the-celebrity/
+    334 https://leetcode.com/problems/increasing-triplet-subsequence/ init两个variable to intmax, update两个最大值, 找到大于最大的即为true 找最小值
+    414 https://leetcode.com/problems/third-maximum-number/ 三个variable, 遇到大数要把比这个数小的variables都swap,最后查第三大variable是不是int max still
+19. Task Schedule系列
+    767 O(nlogA, A = 26) https://leetcode.com/problems/reorganize-string/
+    621 O(n) https://leetcode.com/problems/reorganize-string/
+    358 https://leetcode.com/problems/rearrange-string-k-distance-apart/ 
+        right_bound starts from s.length(), decrease by 1 every push
+        int iterations = min(k, right_bound);
+        for (int i =0 ; i < iterations; i++) {
+            if (pq.empty()) return "";
+            ....
+        }
+        
+    
+20. Graph
+    Topo Sort 最后检查的都是process的count和一共的degree array的key的数量一不一样
+    207 Return True or False https://leetcode.com/problems/course-schedule/
+    210 与207完全一样, pop的时候pushback即可 https://leetcode.com/problems/course-schedule-ii/
+    
+    
+21. Sliding Window [Substring Search]
+    438 https://leetcode.com/problems/find-all-anagrams-in-a-string/ i - j + 1 == p.size()合法
+    76 https://leetcode.com/problems/minimum-window-substring/ i - j + 1 < max_length update
+    340 [这道题不count] https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/ dict[c] == 0, erase掉
+    1004 https://leetcode.com/problems/max-consecutive-ones-iii/ count 0, while loop 移动 j, update ret after while
+    567 [这道题可以不用pointer][代码和438一样] https://leetcode.com/problems/permutation-in-string/
+        这道题要make sure window remains s1.length()
+        所以先从0查到s1.length(), s1有的++, s2有的--, 结束后如果all zeros return true
+        从s1.length() 到s2.length(), 每一步s2有的++, s2[i - s1.length()]++, 每一步都要查是否all zeros
+        all zeros considers as o(1) operation(only 26 chars）
+    209 [sum >= s] https://leetcode.com/problems/minimum-size-subarray-sum/
+    3 https://leetcode.com/problems/longest-substring-without-repeating-characters/ map no erase no count
+    
+    
+    
+22. Two Pointers
+    (1) Intersection
+        重复的是否计算入结果？？
+        349 不算 只记一次 用hashset, 算完就erase https://leetcode.com/problems/intersection-of-two-arrays/
+        350 算 num2出现在不同位置上的同一个数match到了都算入结果 https://leetcode.com/problems/intersection-of-two-arrays-ii/
+            用hashmap, match一次减一次
+        1213 https://leetcode.com/problems/intersection-of-three-sorted-arrays/
+             三个指针, 每次push back最小的然后++
+        160 https://leetcode.com/problems/intersection-of-two-linked-lists/
+            while (pa != pb) {
+              pa = (pa) ? pa->next : headB;
+              pb = (pb) ? pb->next : headA;
+            }
+     (2) Merge
+         88 [2 while loops] https://leetcode.com/problems/merge-sorted-array/
+         先从后往前同时移动ij
+         如果num1移到开始但nums2还有剩下的,还需要一直把nums2剩下的移进去
+         283 https://leetcode.com/problems/move-zeroes/ lastNonZero++;
+         977 https://leetcode.com/problems/squares-of-a-sorted-array/
+         
+         
+23. DP
+    1027 https://leetcode.com/problems/longest-arithmetic-sequence/
+    nested for loop 所有的combination，减出distance，dp[dist][i] = dp[dist].count(j) ? dp[dist][j] + 1 : 2;
+    对每一个dp[dist][i]去max return
+    161 https://leetcode.com/problems/one-edit-distance/
+    72 https://leetcode.com/problems/edit-distance/
+    91 https://leetcode.com/problems/decode-ways/
+       dp[0] = 1, dp[1] = s[0] == '0' ? 0 : 1;
+       for loop starts from 2 to n]
+    691 https://leetcode.com/problems/wildcard-matching/
+    312 https://leetcode.com/problems/burst-balloons/
+24. Strobogrammatic number
+    246 https://leetcode.com/problems/strobogrammatic-number/
+        Write a function to determine if a number is strobogrammatic.
+        前后两个pointer查是否match, match包括018一样, 6match9, 9match6,如果都不是return false
+    247 https://leetcode.com/problems/strobogrammatic-number-ii/
+        Find all strobogrammatic numbers that are of length = n.
+        dfs with left right boundary, hardcode every pair
+        注意如果left = 0不能放(0,0)
+
+25. Use nums[i] as index : nums[i] from 1 to n inclusive
+    [binary search] 1060 https://leetcode.com/problems/missing-element-in-sorted-array/ right starts from nums.size()
+    41 https://leetcode.com/problems/first-missing-positive/
+    287 [binary search better] https://leetcode.com/problems/find-the-duplicate-number/
+    442 https://leetcode.com/problems/find-all-duplicates-in-an-array/ 
+        abs(nums[i]) is the key!
+    
+26. Sorting 
+    969 O(n^2) https://leetcode.com/problems/pancake-sorting/
+        search from the maximum(size), fint the index
+        Reverse from beginning to index, to make search at A[0], push i + 1;
+        Reverse from beginning to search, to make search at position, push search;
+    791 O(n) https://leetcode.com/problems/custom-sort-string/
+     
+27. monotonous array
+monotonous
+28 Boyer-Moore Voting Algorithm
+https://leetcode.com/problems/majority-element/
+https://leetcode.com/problems/majority-element-ii/
+find celebrity
+29 Kth O(n)
+Average Case T(n) = T(n/2) + O(n) => O(n)
+Worst Case T(n) = T(n - 1) + O(n)
+Sort By Frequency: Best Solution is Bucket Sort O(n) else, priorityqueue
+30 next permutation
+31 sudoku
+check valid use hashset, hash string, c + "in row" + i, c+ "col" + j ...
+

@@ -37,6 +37,23 @@ Given the below binary tree,
      2
 Return 7.
 
+class Solution {
+public:
+    int ret = INT_MIN;
+    int maxPathSum(TreeNode* root) {
+        dfs(root);
+        return ret;
+    }
+    int dfs(TreeNode* root) {
+        if (!root) return 0;
+        int left = max(dfs(root->left), 0);
+        int right = max(dfs(root->right), 0);
+        ret = max(ret, left + right + root->val);
+        return max(left, right) + root->val;
+    }
+};
+
+
 
 private int max = Integer.MIN_VALUE;
 public int maxPathSum(TreeNode root) {
@@ -50,11 +67,6 @@ private int dfs(TreeNode root) {
     max = Math.max(max, left + right + root.val);
     return Math.max(left, right) + root.val;
 }
-
-
-
-
-
 
 
 

@@ -1,0 +1,56 @@
+317. Shortest Distance from All Buildings
+Each 0 marks an empty land which you can pass by freely.
+Each 1 marks a building which you cannot pass through.
+Each 2 marks an obstacle which you cannot pass through.
+
+For every Building, do bfs from here.
+Maintain a dist matrix and update it with step every time.
+The way we mark visited is, for every bfs from a building, we decrease the grid[i][j] by 1. 
+(Use negative to check, use different number check different iteration)
+At last loop all distance with negative grid[][] value(previously 0) and find the minimum one.
+
+int shortestDistance(vector<vector<int>>& grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+    vector<vector<int>> dist(m, vector<int>(n, 0));
+    int target = 0;
+    vector<int> dx = {0, 0, 1, -1};
+    vector<int> dy = {1, -1, 0, 0};
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                queue<pair<int, int>> q;
+                q.push({i, j});
+                int step = 1;
+                while (!q.empty()) {
+                    int size = q.size();
+                    for (int i = 0; i < size; i++) {
+                        pair<int, int> front = q.front();
+                        q.pop();
+                        int x = front.first, y = front.second;
+                        for (int j = 0; j < 4; j++) {
+                            int next_x = x + dx[j];
+                            int next_y = y + dy[j];
+                            if (next_x >= 0 && next_y >= 0 && next_x < m && next_y < n && grid[next_x][next_y] == target) {
+                                q.push({next_x, next_y});
+                                grid[next_x][next_y]--;
+                                dist[next_x][next_y] += step;
+                            }
+                        }
+                    }
+                    step++;
+                }
+                target--;
+            }
+        }
+    }
+    int mindist = INT_MAX;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == target) {
+                mindist = min(mindist, dist[i][j]);
+            }
+        }
+    }
+    return mindist == INT_MAX ? -1 : mindist;
+}

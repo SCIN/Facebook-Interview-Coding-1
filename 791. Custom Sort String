@@ -1,0 +1,26 @@
+791. Custom Sort String
+
+First collect all char in T
+Then follow the order in S and put the char in order of S
+Then put all rest of chars (in T not in S)
+
+string customSortString(string S, string T) {
+    unordered_map<char, int> m;
+    for (int i = 0; i < T.size(); i++) {
+        m[T[i]]++;
+    }
+    string ret = "";
+    for (int i = 0; i < S.size(); i++) {
+        while (m[S[i]] > 0) {
+            ret += S[i];
+            m[S[i]]--;
+        }
+    }
+    for (auto it = m.begin(); it != m.end(); ++it) {
+        while (it->second > 0) {
+            ret += it->first;
+            it->second--;
+        }
+    }
+    return ret;
+}

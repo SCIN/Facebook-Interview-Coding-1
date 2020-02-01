@@ -1,0 +1,33 @@
+490. The Maze
+Do not use DFS for this problem. -> TLE
+O(m*n)
+bool hasPath(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination) {
+    vector<int> dx = {0, 0, -1, 1};
+    vector<int> dy = {1, -1, 0, 0};
+    int m = maze.size();
+    int n = maze[0].size();
+    queue<pair<int, int>> q;
+    q.push(make_pair(start[0], start[1]));
+    vector<vector<bool>> visited(m, vector<bool>(n, 0));
+    visited[start[0]][start[1]] = 1;
+    while (!q.empty()) {
+        auto front = q.front();
+        q.pop();
+        int x = front.first;
+        int y = front.second;
+        if (x == destination[0] && y == destination[1]) { return true; }
+        for (int i = 0; i < 4; i++) {
+            int next_x = x + dx[i];
+            int next_y = y + dy[i];
+            while (next_x >= 0 && next_y >= 0 && next_x < maze.size() && next_y < maze[0].size() && maze[next_x][next_y] == 0) {
+                next_x += dx[i];
+                next_y += dy[i];
+            }
+            if (!visited[next_x - dx[i]][next_y - dy[i]]) {
+                q.push(make_pair(next_x - dx[i], next_y - dy[i]));
+                visited[next_x - dx[i]][next_y - dy[i]] = 1;
+            }
+        }
+    }
+    return false;
+}

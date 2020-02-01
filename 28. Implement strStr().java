@@ -1,7 +1,22 @@
 28. Implement strStr()
 
 Time: O(mn)
-
+int strStr(string haystack, string needle) {
+    if (needle.empty()) return 0;
+    if (haystack.empty()) return -1;
+    int m = haystack.size();
+    int n = needle.size();
+    for (int i = 0; i <= m - n; i++) {
+        int j = 0; 
+        for (; j < n; j++) {
+            if (haystack[i + j] != needle[j]) {
+                break;
+            }
+        }
+        if (j == n) return i;
+    }
+    return -1;
+}
 public int strStr(String haystack, String needle) {
     // TLE
     // if (needle.length() == 0)     return 0;

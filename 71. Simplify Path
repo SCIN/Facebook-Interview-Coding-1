@@ -1,0 +1,23 @@
+71. Simplify Path
+Use a stack
+string simplifyPath(string path) {
+    string canonical = "";
+    stack<string> st;
+    stringstream ss(path);
+    while (ss) {
+        string curr_level;
+        getline(ss, curr_level, '/');
+        // continue when empty or current directory
+        if (curr_level == "." || curr_level == "") continue;
+        // go to the previous level when ".."
+        else if (curr_level == ".." && !st.empty()) st.pop();
+        // add path when not ".."
+        else if (curr_level != "..") st.push(curr_level);
+    }
+    while (!st.empty()) {
+      // top is the end so add the canonical to the end
+        canonical = "/" + st.top() + canonical;
+        st.pop();
+    }
+    return canonical.empty() ?  "/" : canonical;
+}

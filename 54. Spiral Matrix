@@ -1,0 +1,36 @@
+54. Spiral Matrix
+Up: all
+Right: all except the right-top corner (in up)
+Down: except two corners
+Left: all except the left-top corner (in up)
+
+vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    vector<int> ret;
+    if (matrix.size() == 0) return ret;
+    int row_first = 0;
+    int row_last = matrix.size() - 1;
+    int col_first = 0;
+    int col_last = matrix[0].size() - 1;
+    while (row_first <= row_last && col_first <= col_last) {
+        for (int i = col_first; i <= col_last; i++) {
+            ret.push_back(matrix[row_first][i]);
+        }
+        for (int i = row_first + 1; i <= row_last; i++) {
+            ret.push_back(matrix[i][col_last]);
+        }
+        if (row_first < row_last && col_first < col_last) {
+            for (int i = col_last - 1; i > col_first; i--) {
+                ret.push_back(matrix[row_last][i]);
+            }
+            for (int i = row_last; i > row_first; i--) {
+                ret.push_back(matrix[i][col_first]);   
+            }
+        }
+
+        row_first++;
+        row_last--;
+        col_first++;
+        col_last--;
+    }
+    return ret;
+}

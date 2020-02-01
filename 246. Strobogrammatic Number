@@ -1,0 +1,53 @@
+246. Strobogrammatic Number
+
+bool isStrobogrammatic(string num) {
+    unordered_map<char, char> dict = {{'6', '9'}, {'1', '1'}, {'0', '0'}, {'9', '6'}, {'8', '8'}};
+    for (int i = 0, j = num.size() - 1; i <= j; i++, j--) {
+        if (dict.find(num[i]) == dict.end()) return false;
+        if (dict[num[i]] != num[j]) return false;
+    }
+    return true;
+}
+
+247. Strobogrammatic Number II
+A strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).
+
+Find all strobogrammatic numbers that are of length = n.
+
+Example:
+
+Input:  n = 2
+Output: ["11","69","88","96"]
+
+vector<string> findStrobogrammatic(int n) {
+    vector<string> ret;
+    string solution(n, ' ');
+    dfs(0, n - 1, solution, ret);
+    return ret;
+}
+void dfs(int left, int right, string solution, vector<string>& ret) {
+    if (left == right) {
+        solution[left] = '0';
+        ret.push_back(solution);
+        solution[left] = '1';
+        ret.push_back(solution);
+        solution[left] = '8';
+        ret.push_back(solution);
+        return;
+    } else if (left > right) {
+        ret.push_back(solution);
+        return;
+    } 
+    solution[left] = solution[right] = '1';
+    dfs(left + 1, right - 1, solution, ret);
+    solution[left] = solution[right] = '8';
+    dfs(left + 1, right - 1, solution, ret);
+    solution[left] = '6', solution[right] = '9';
+    dfs(left + 1, right - 1, solution, ret);
+    solution[left] = '9', solution[right] = '6';
+    dfs(left + 1, right - 1, solution, ret);
+    if (left != 0) {
+        solution[left] = solution[right] = '0';
+        dfs(left + 1, right - 1, solution, ret);
+    }
+}

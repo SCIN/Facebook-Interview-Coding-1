@@ -5,6 +5,117 @@
 在multithreading的时候同类型的thread要等上一个thread跑完冷却时间之后才能运行，求最后scheduler用了多少time slot。 
 
 举个例子，thread: 1, 2, 1, 1, 3, 4; 冷却时间: 2 time slot，scheduler应该是这样的：1, 2, _, 1, _, _, 1, 3, 4，最后返回9. 
+  unordered_map<char, int> key: job name, value: the nearest position for this job to happen next time
+
+1. Tasks needed to be done in original order.
+    
+  Return time
+  int leastInterval(vector<char>& tasks, int n) {
+    if (tasks.size() == 0) return 0;
+    unordered_map<char, int> positions;
+    int slots = 0;
+    for (char c : tasks) {
+      if (positions.find(c) != positions.end() && positions[c] > slots) {
+         slots = positions[c];
+      }
+      positions[c] = slots + n + 1;
+      slots++;
+    }
+    return slots;
+  }
+  
+  Return String
+  string leastInterval(vector<char>& tasks, int n) {
+    if (tasks.size() == 0) return "";
+    unordered_map<char, int> positions;
+    int slots = 0;
+    string ret = "";
+    for (char c : tasks) {
+      if (positions.find(c) != positions.end() && positions[c] > slots) {
+        int idles = positions[c] - slots;
+        string s('_', idles);
+        ret += s;
+        slots = positions[c];
+      }
+      
+      positions[c] = slots + n + 1;
+      ret += c;
+      slots++;
+    }
+    return ret;
+  }
+
+2. Tasks could be done without original order.
+  https://leetcode.com/problems/task-scheduler/
+  Output time
+  1. O(nlogn) Maxheap
+  int leastInterval(vector<char>& tasks, int n) {
+    unordered_map<char, int> count;
+    priority_queue<int> pq; // maxHeap
+    int total_time = 0;
+    for (char c : tasks) {
+      count[c]++;
+    }
+    for (auto it : count) {
+      pq.push(it.second);
+    }
+    while (!pq.empty()) {
+      vector<int> curr_interval;
+      for (int i = 0; i < n + 1; i++) {
+        if (!pq.empty()) {
+          curr_interval.push(pq.top());
+          pq.pop();
+        }
+      }
+      for (int cnt : curr_interval) {
+        if (cnt - 1 > 0) {
+          pq.push(cnt - 1);
+        }
+      }
+      total_time += (pq.empty()) ? curr_interval.size() : n + 1;
+    }
+    return total_time;
+  }
+  
+Return string
+struct compare {
+  bool operator() (pair<int, char>& a, pair<int, char>& b) {
+    return a.first > b.first;
+  }
+};
+string leastInterval(vector<char>& tasks, int n) {
+  string ret = "";
+  // max Heap, rewrite comparator for sorting on int
+  priority_queue<pair<int, char>, vector<pair<int, char>, compare> pq;
+  unordered_map<char, int> count;
+  for (auto it : count) {
+    pq.push(make_pair(it.second, it.first));
+  }
+  int total_time = 0;
+  while (!pq.empty()) {
+    vector<pair<int, char>> curr_interval;
+    int num_valid_job = 0;
+    while (num_valid_job <= n && !pq.empty()) {
+      curr_interval.push_back(pq.top());
+      pq.pop();
+      ret += pq.top().second;
+      num_valid_job++;
+    }
+    while (num_valid_job <= n) {
+      ret += "_";
+      num_valid_job++;
+    }
+    for (int cnt : curr_interval) {
+      if (cnt - 1) {
+        pq.push(cnt - 1);
+      }
+    } 
+  }
+  for (int i = ret.size(); i >= 0 && ret[i] == '_'; i--) {
+    ret.erase(i);
+  }
+  return ret;
+}
 
 
 1，最正常的task schedule：输出的是最后的时间

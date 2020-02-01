@@ -1,0 +1,37 @@
+166. Fraction to Recurring Decimal
+
+1. numerator is zero -> return "0"
+2. denominator is zero -> throw exception
+3. 20 / 4 -> no fractional part -> return directly after division
+4. 1 / 2 -> no recurring decimal -> 
+5. negative (-1/4 or 1/-4) -> add the sign, then abs()
+6. overflow (-INT_MIN / -1) -> use long
+
+ string fractionToDecimal(int numerator, int denominator) {
+    // if (denominator == 0) throw exception;
+    if (numerator == 0) return "0";
+    string ret = "";
+    //sign
+    if (numerator > 0 ^ denominator > 0) ret += '-';
+    long n = labs(numerator), d = labs(denominator), r = n % d;
+    //int part
+    ret += to_string(n / d);
+    // no fractional part -> return
+    if (!r) return ret;
+    // fractional part
+    ret += '.';
+    unordered_map<long, int> repeat;
+    while (r) {
+        // repeat part, add parenthese
+        if (repeat.find(r) != repeat.end()) {
+            ret.insert(repeat[r], "(");
+            ret += ')';
+            break;
+        }
+        repeat[r] = ret.size();
+        r *= 10;
+        ret += to_string(r / d);
+        r %= d;
+    }
+    return ret;
+}

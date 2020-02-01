@@ -1,0 +1,13 @@
+111. Minimum Depth of Binary Tree
+
+int minDepth(TreeNode* root) {
+    return dfs(root);
+}
+int dfs(TreeNode* root) {
+    if (!root) return 0;
+    int left = dfs(root->left);
+    int right = dfs(root->right);
+    if (!root->left) return right + 1;
+    if (!root->right) return left + 1;
+    return min(left, right) + 1;
+}

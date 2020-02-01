@@ -1,0 +1,15 @@
+1269. Number of Ways to Stay in the Same Place After Some Steps
+
+int numWays(int steps, int arrLen) {
+    int num_positions = min(steps / 2 + 1, arrLen);
+    vector<int> positions(num_positions + 2, 0), positions_swap(num_positions + 2, 0);
+    positions[1] = 1;
+    while (steps) {
+        for (int i = 1; i <= num_positions; i++) {
+            positions_swap[i] = ((long) positions[i] + positions[i - 1] + positions[i + 1]) % 1000000007;
+        }
+        swap(positions, positions_swap);
+        steps--;
+    }
+    return positions[1];
+}

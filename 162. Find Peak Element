@@ -1,0 +1,19 @@
+162. Find Peak Element
+
+Test cases:
+[1,2,3,4] -> 3, go 4, return 4
+[4,3,2,1] -> 2 go [4,3,2], -> 3 go to [4,3] -> 4 -> return 4
+For increasing and decreasing sequences, we always end up at the end or the beginning and return, it will work
+
+int findPeakElement(vector<int>& nums) {
+    return binarySearch(nums, 0, nums.size() - 1);
+}
+int binarySearch(vector<int>& nums, int left, int right) {
+    if (left == right) return left;
+    int mid = (left + right) / 2;
+    if (nums[mid] < nums[mid + 1]) {
+        return binarySearch(nums, mid + 1, right);
+    } else {
+        return binarySearch(nums, left, mid);   
+    }
+}

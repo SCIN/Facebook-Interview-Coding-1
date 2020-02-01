@@ -1,0 +1,25 @@
+bool isBipartite(vector<vector<int>>& graph) {
+    int n = graph.size();
+    // -1: un-visited, 0: color 0, 1: color 1
+    vector<int> group(n, -1);
+    for (int i = 0; i < n; i++) {
+        if (group[i] == -1 && !dfs(graph, group, i, 0)) {
+            return false;
+        }
+    }
+    return true;
+}
+bool dfs(vector<vector<int>>& graph, vector<int>& group, int index, int color) {
+    // set node index to this color
+    if (group[index] == color) {
+        return true;
+    }
+    group[index] = color;
+    // traverse neighbors, set neighbors to another color
+    for (int i = 0; i < graph[index].size(); i++) {
+        // neighbor node: graph[index][i]
+        if (group[graph[index][i]] == color) return false;
+        if (!dfs(graph, group, graph[index][i], 1 - color)) return false;
+    }
+    return true;
+}

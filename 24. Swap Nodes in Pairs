@@ -1,0 +1,30 @@
+24. Swap Nodes in Pairs
+
+ListNode* swapPairs(ListNode* head) {
+    if (!head) return head;
+    if (!head->next) return head;
+    ListNode* next = swapPairs(head->next->next);
+    ListNode* ret = head->next;
+    ret->next = head;
+    head->next = next;
+    return ret;
+}
+
+
+ListNode* swapPairs(ListNode* head) {
+    if (head == NULL) return head;
+    if (head->next == NULL) return head;
+    int count = 0;
+    ListNode* curr = head;
+    while (curr != NULL) {
+        if (count % 2 == 0 && curr->next != NULL) {
+            int tmp = curr->val;
+            curr->val = curr->next->val;
+            curr->next->val = tmp;   
+        }
+        count++;
+        curr = curr->next;
+    }
+
+    return head;
+}

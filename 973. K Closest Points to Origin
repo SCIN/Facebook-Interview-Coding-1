@@ -1,0 +1,61 @@
+973. K Closest Points to Origin
+O(n), O(1)
+vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+    // edge case
+    if (points.size() < K) return vector<vector<int>>();
+    int left = 0;
+    int right = points.size() - 1;
+    while (left < right) {
+        int pivot = partition(points, left, right);
+        if (pivot == K - 1) {
+            break;
+        } else if (pivot < K - 1) {
+            left = pivot + 1;
+        } else {
+            right = pivot - 1;
+        }
+    }
+    return vector<vector<int>>(points.begin(), points.begin() + K);
+}
+int partition(vector<vector<int>>& points, int left, int right) {
+    int pivot = right;
+    for (int i = left; i < right; i++) {
+        if (getDistance(points[i]) < getDistance(points[pivot])) {
+            swap(points[i], points[left]);
+            left++;
+        }
+    }
+    swap(points[left], points[right]);
+    return left;
+}
+int getDistance(vector<int>& point) {
+    return pow(point[0], 2) + pow(point[1], 2);
+}
+
+
+MaxHeap
+O(nlogk), O(k)
+struct compare {
+    bool operator() (vector<int>& a, vector<int>& b) {
+        return (a[0] * a[0] + a[1] * a[1]) < (b[0] * b[0] + b[1] * b[1]);
+    }
+};
+
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+        priority_queue<vector<int>, vector<vector<int>>, compare> pq;
+        for (int i = 0; i < points.size(); i++) {
+            pq.push(points[i]);
+            if (pq.size() > K) {
+                pq.pop();
+            }
+        }
+        vector<vector<int>> ret;
+        while (!pq.empty()) {
+            ret.push_back(pq.top());
+            pq.pop();
+        }
+        return ret;
+    }
+};

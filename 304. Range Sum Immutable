@@ -1,0 +1,34 @@
+304. Range Sum Query 2D - Immutable
+sumRegion 大的index + 1
+NumMatrix(vector<vector<int>>& matrix) {
+    int n = matrix.size();
+    if (n == 0) return;
+    int m = matrix[0].size();
+    if (m == 0) return;
+    cache = vector<vector<int>>(n + 1, vector<int>(m + 1, 0));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cache[i + 1][j + 1] = cache[i + 1][j] + cache[i][j + 1] - cache[i][j] + matrix[i][j];
+        }
+    }
+}
+
+int sumRegion(int row1, int col1, int row2, int col2) {
+    return cache[row2 + 1][col2 + 1] - cache[row2 + 1][col1] - cache[row1][col2 + 1] + cache[row1][col1];
+}
+vector<vector<int>> cache;
+
+303. Range Sum Query - Immutable
+
+ NumArray(vector<int>& nums) {
+    int n = nums.size();
+    cache = vector<int> (n + 1, 0);
+    for (int i = 0; i < n; i++) {
+        cache[i + 1] = cache[i] + nums[i];
+    }
+}
+
+int sumRange(int i, int j) {
+    return cache[j + 1] - cache[i];
+}
+vector<int> cache;

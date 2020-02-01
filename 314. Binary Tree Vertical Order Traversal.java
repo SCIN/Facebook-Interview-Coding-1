@@ -1,5 +1,64 @@
 314. Binary Tree Vertical Order Traversal
 
+BFS: only use one coordinate level, DFS we need to use two coordinates level and height
+Considering the case when in DFS, we are still in the left subtree while there is one node with higher height(closer to root)
+on the right subtree which is supposed to be at the front of the current node.
+In DFS, we always finish one route and go to the other. So we need another coordinate to sort(not technically sort, just the order)
+based on the height as well.
+
+C++ BFS
+vector<vector<int>> verticalOrder(TreeNode* root) {
+    vector<vector<int>> ret;
+    if (!root) return ret;
+    map<int, vector<int>> level_map;
+    queue<pair<TreeNode*, int>> q;
+    q.push({root, 0});
+    while (!q.empty()) {
+        auto front = q.front();
+        TreeNode* curr = front.first;
+        int level = front.second;
+        q.pop();
+        level_map[level].push_back(curr->val);
+        if (curr->left) {
+            q.push({curr->left, level - 1});
+        }
+        if (curr->right) {
+            q.push({curr->right, level + 1});
+        }
+    }
+    for (auto it : level_map) {
+        ret.push_back(it.second);
+    }
+    return ret;
+}
+
+C++ DFS
+Time O(n) ? O(nlogn) because of using map
+Space O(n)
+    
+vector<vector<int>> verticalOrder(TreeNode* root) {
+    map<int, map<int, vector<int>>> coordinate;
+    vector<vector<int>> ret;
+    dfs(coordinate, 0, 0, root);
+    for (auto it_x : coordinate) {
+        vector<int> curr_level;
+        for (auto it_y : it_x.second) {
+            for (int val : it_y.second) {
+                 curr_level.push_back(val);
+            }
+        }
+        ret.push_back(curr_level);
+    }
+    return ret;
+}
+void dfs(map<int, map<int, vector<int>>>& coordinate, int height, int level, TreeNode* root) {
+    if (!root) return;
+    coordinate[level][height].push_back(root->val);
+    dfs(coordinate, height + 1, level - 1, root->left);
+    dfs(coordinate, height + 1, level + 1, root->right);
+}
+
+JAVA:
 class TreeNodeWithCol {
     TreeNode treeNode;
     int col;
